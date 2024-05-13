@@ -22,8 +22,24 @@ The Library Management System (LMS) is a program software in Java (using the com
 
 ### 3. **Specific Requirements:**
 
-- Functional Requirements: enumerates the system's functional requirements, including importing CSV files, deleting entities, searching, borrowing, and returning book copies, and reporting.
+Functional Requirements:
 
-- Non-Functional Requirements: outlines the non-functional requirements such as using Java, efficiency, user-friendliness, and system maintainability.
+1. Add/delete/modify a book
+2. Add/delete/modify a customer
+3. Add/delete/modify a borrowing
+4. Check return date of a borrowing/check fee if return date is in the past
+5. Search for a book/customer/borrowing
+6. Import a file (CSV)
+
+
+Non-Functional Requirements:
+
+1. The used language should be java.
+2. The application should run most efficient.
+3. The system should be user-friendly and easy to use.
+4. The system should be easy to maintain by implementing a proper codebase.
+5. The code should be secure so no user can break the program.
+6. The code should also be secure from any unauthorized access from the outside.
+
 
 ### 4. **Tables:** includes use case tables for borrowing and returning a copy of a book, detailing the goals, actors, preconditions, postconditions, standard procedure, and handling of particular cases.
