@@ -1,37 +1,40 @@
 package view;
 
-import controller.Controller;
+import controller.*;
+import model.*;
 
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-public class BookMenu implements View {
-    private final String name = "Book Menu";
-    private Controller controller;
-    private View prev;
-
+public class BookMenu extends View {
+    private final List<String> options;
 
     public BookMenu(Controller controller, View prev) {
-        this.controller = controller;
-        this.prev = prev;
+        super(controller, prev);
+
+        this.name = "Book Menu";
+
+        this.options = new ArrayList<>();
+        this.options.add("Search for a book");
+        this.options.add("Add a new book");
     }
 
     public void show() {
-        System.out.println("**Book Menu**\n(0) - Search for a book\n(1) - Add a new book");
-        System.out.println("Press 'q' to go back");
-        System.out.print("> ");
-
-        String input = controller.getScanner().next();
-        while (input.length() != 1 || (input.charAt(0) != 48 && input.charAt(0) != 49 && input.charAt(0) != 'q')) {
-            System.out.println("Please only enter 0, 1 or 'q'");
-            System.out.print("> ");
-            input = controller.getScanner().next();
-        }
+        String input = super.prompt(options);
 
         if (input.charAt(0) == '0') {
             controller.setMenu(new BookInfo(controller, this));
         }
         else if (input.charAt(0) == '1') {
-            //showCustomerMenu();
+            System.out.println("A prompt to add a book will be displayed. " +
+                    "Alternatively a csv file can be imported\n" +
+                    "Ex: Please type : 'create <Title>,<Author>,<Date of publication>,<classification number>,<nb of copies>'" +
+                    "or 'import <filepath>");
+
+            controller.getBooks().add(new Book("Les Fleurs du Mal", "Charles Baudelaire", LocalDate.of(1857, 6, 21), "BAU01", 5));
+            super.promptAndExit("Book with new id XYZ was successfully added!");
+            this.show();
         }
         else {
             prev.show();

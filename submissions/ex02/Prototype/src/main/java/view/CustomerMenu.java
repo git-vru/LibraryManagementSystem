@@ -1,35 +1,40 @@
 package view;
 
 import controller.Controller;
+import model.Customer;
 
-public class CustomerMenu implements View {
-    private final String name = "Customer Menu";
-    private Controller controller;
-    private View prev;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+public class CustomerMenu extends View {
+    private final List<String> options;
 
     public CustomerMenu(Controller controller, View prev) {
-        this.controller = controller;
-        this.prev = prev;
+        super(controller, prev);
+
+        this.name = "Customer Menu";
+
+        this.options = new ArrayList<>();
+        this.options.add("Search for a customer");
+        this.options.add("Add a new customer");
     }
 
     public void show() {
-        System.out.println("**Customer Menu**\n(0) - Search for a customer\n(1) - Add a new customer");
-        System.out.println("Press 'q' to go back");
-        System.out.print("> ");
-
-        String input = controller.getScanner().next();
-        while (input.length() != 1 || (input.charAt(0) != 48 && input.charAt(0) != 49 && input.charAt(0) != 'q')) {
-            System.out.println("Please only enter 0, 1 or 'q'");
-            System.out.print("> ");
-            input = controller.getScanner().next();
-        }
+        String input = super.prompt(options);
 
         if (input.charAt(0) == '0') {
             controller.setMenu(new CustomerInfo(controller, this));
         }
         else if (input.charAt(0) == '1') {
-            //showCustomerMenu();
+            System.out.println("A prompt to add a customer will be displayed. " +
+                    "Alternatively a csv file can be imported\n" +
+                    "Ex: Please type : 'create <FirstName>,<LastName>,<DOB>'" +
+                    "or 'import <filepath>");
+
+            controller.getCustomers().add(new Customer("Add", "Add", LocalDate.now()));
+            super.promptAndExit("Customer with new id XYZ was successfully added!");
+            this.show();
         }
         else {
             prev.show();
