@@ -8,17 +8,10 @@ The Library Management System (LMS) is a program software in Java (using the com
 ### 2. **General Description:** details about the Library Management System, including its implementation, core classes, and how the library staff uses it.
 
 - *Domain Model: explains the system's domain model, including the classes Customer, Book, and BookCopy.*
+![Domain Model diagram](https://gitlab.lrz.de/ise-ss24/g2-kaputt-corp/-/raw/main/submissions/ex02/domainModel.png?ref_type=heads)
 
 - *Use Case Diagram: describes the use cases of the system, divided into groups like Data Management, Reporting, and core functions.*
-- Data Management :
-	- Create an entry (book, bookcopy, customer)
-	- Delete an entry (book, bookcopy, custormer)
-	- Modify an entry
-- Reporting :
-	- Borrowing a book
-	- Returning a book
-- Core functions :
-	- Search for an entry
+
 
 ### 3. **Specific Requirements:**
 
