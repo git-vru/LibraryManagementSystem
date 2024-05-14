@@ -8,17 +8,11 @@ The Library Management System (LMS) is a program software in Java (using the com
 ### 2. **General Description:** details about the Library Management System, including its implementation, core classes, and how the library staff uses it.
 
 - *Domain Model: explains the system's domain model, including the classes Customer, Book, and BookCopy.*
+![Domain Model diagram](https://gitlab.lrz.de/ise-ss24/g2-kaputt-corp/-/raw/main/submissions/ex02/domainModel.png?ref_type=heads)
 
 - *Use Case Diagram: describes the use cases of the system, divided into groups like Data Management, Reporting, and core functions.*
-- Data Management :
-	- Create an entry (book, bookcopy, customer)
-	- Delete an entry (book, bookcopy, custormer)
-	- Modify an entry
-- Reporting :
-	- Borrowing a book
-	- Returning a book
-- Core functions :
-	- Search for an entry
+![Use Case diagram](https://gitlab.lrz.de/ise-ss24/g2-kaputt-corp/-/raw/main/submissions/ex02/UseCaseDiagram.png)
+
 
 ### 3. **Specific Requirements:**
 
@@ -40,6 +34,11 @@ Non-Functional Requirements:
 4. The system should be easy to maintain by implementing a proper codebase.
 5. The code should be secure so no user can break the program.
 6. The code should also be secure from any unauthorized access from the outside.
+7. The program should allowed user to access and modify settings.
 
 
 ### 4. **Tables:** includes use case tables for borrowing and returning a copy of a book, detailing the goals, actors, preconditions, postconditions, standard procedure, and handling of particular cases.
+
+![Borrowing Book Table](https://gitlab.lrz.de/ise-ss24/g2-kaputt-corp/-/raw/main/submissions/ex02/use_case_borrowing_book_copy.png?ref_type=heads)
+
+![Returning Book Table](https://gitlab.lrz.de/ise-ss24/g2-kaputt-corp/-/raw/main/submissions/ex02/returning_copy_book_use_case.png?ref_type=heads)
