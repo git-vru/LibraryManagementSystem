@@ -63,6 +63,6 @@ public class Borrowing {
     }
 
     public String toString() {
-        return String.format("%s\nBorrower:\n%s\n---\nStart:%s\nEnd:%s\nExtended:%b\nFees:%f\n", book, borrower, startDate.toString(), endDate.toString(), extended, lateFee);
+        return String.format("Book:\n%s\nBorrower:\n%s\n---\nStart:%s\nEnd:%s\nExtended:%b\nFees:%f\n", book, borrower, startDate.toString(), endDate.toString(), extended, lateFee);
     }
 }

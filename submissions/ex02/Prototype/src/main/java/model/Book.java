@@ -49,6 +49,6 @@ public class Book {
     }
 
     public String toString() {
-        return String.format("Book:\nClassification Number:%s\nTitle:%s\nAuthor:%s\nDate of first publication:%s\n---\n", classificationNumber, title, author, dateOfFirstPublication.toString());
+        return String.format("Classification Number:%s\nTitle:%s\nAuthor:%s\nDate of first publication:%s\n---\n", classificationNumber, title, author, dateOfFirstPublication.toString());
     }
 }
