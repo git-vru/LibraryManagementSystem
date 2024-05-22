@@ -13,7 +13,7 @@ public class BookInfo extends View {
     
     public void show() {
         System.out.print("Please enter a book id:");
-        Book b = controller.search(controller.getBooks(), controller.getScanner().next());
+        Book b = controller.search(controller.getBooks().keySet().stream().toList(), controller.getScanner().next());
 
         this.name = "Book Id: " + b.getClassificationNumber();
 
