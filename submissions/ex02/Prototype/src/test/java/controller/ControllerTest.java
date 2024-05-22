@@ -111,9 +111,15 @@ class ControllerTest {
 
     @Test
     void addCustomerSuccessfully() {
-        assertTrue(controller.addCustomer(customer.getFirstName(),customer.getLastName(),customer.getDob().toString()));
+        assertTrue(controller.addCustomer("","Kemmler","2005-08-28"));
         assertEquals(customerListSize+1, controller.getCustomers().size());
-        assertFalse(controller.getCustomers().contains(customer));
+
+        Customer newCustomer = controller.getCustomers().get(controller.getCustomers().size() - 1);
+        assertEquals("Samuel", newCustomer.getFirstName());
+        assertEquals("Kemmler", newCustomer.getLastName());
+        assertEquals(LocalDate.of(2005, 8, 28), newCustomer.getDob());
+        assertEquals(LocalDate.now(), newCustomer.getSubscriptionDate());
+        assertEquals(0, newCustomer.getBorrowedList().size());
     }
 
     @Test
