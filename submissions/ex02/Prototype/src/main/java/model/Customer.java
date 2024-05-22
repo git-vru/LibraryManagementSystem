@@ -12,12 +12,15 @@ public class Customer {
     private final LocalDate subscriptionDate;
     private final Set<Borrowing> borrowedList;
 
+    private static int ID_GENERATOR = 0;
+
     public Customer(String firstName, String lastName, LocalDate dob) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
 
-        this.id = "03781849"; //Will be generated consecutively
+        ID_GENERATOR += 1;
+        this.id = String.valueOf(ID_GENERATOR);
         this.subscriptionDate = java.time.LocalDate.now();
         this.borrowedList = new HashSet<>();
     }

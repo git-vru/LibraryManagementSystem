@@ -5,23 +5,29 @@ import java.util.*;
 
 public class Book {
     private String classificationNumber;
+    private final String isbn;
     private final String title;
     private final String author;
-    private final LocalDate dateOfFirstPublication;
+    private final LocalDate publicationDate;
 
     private final List<PhysicalBook> bookList;
 
-    public Book(String title, String author, LocalDate dateOfFirstPublication, String classificationNumber, int numberOfCopy) {
+    public Book(String title, String author, String isbn, LocalDate dateOfFirstPublication, String classificationNumber, int numberOfCopy) {
         this.title = title;
         this.author = author;
-        this.dateOfFirstPublication = dateOfFirstPublication;
+        this.isbn = isbn;
+        this.publicationDate = dateOfFirstPublication;
         this.classificationNumber = classificationNumber;
 
         this.bookList = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            bookList.add(new PhysicalBook(this, LocalDate.now()));
+            bookList.add(new PhysicalBook(this));
         }
+    }
+
+    public Book getBook() {
+        return this;
     }
 
     public String getTitle() {
@@ -32,8 +38,12 @@ public class Book {
         return author;
     }
 
-    public LocalDate getDateOfFirstPublication() {
-        return dateOfFirstPublication;
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public LocalDate getPublicationDate() {
+        return publicationDate;
     }
 
     public String getClassificationNumber() {
@@ -49,6 +59,6 @@ public class Book {
     }
 
     public String toString() {
-        return String.format("Classification Number:%s\nTitle:%s\nAuthor:%s\nDate of first publication:%s\n---\n", classificationNumber, title, author, dateOfFirstPublication.toString());
+        return String.format("Classification Number:%s\nTitle:%s\nAuthor:%s\nDate of first publication:%s\n---\n", classificationNumber, title, author, publicationDate.toString());
     }
 }

@@ -1,13 +1,11 @@
-package org.example;
-
 import controller.Controller;
 
 import java.io.IOException;
 
 public class Main {
 
-
     public static void main(String[] args) throws IOException {
-        new Controller();
+        Controller controller = new Controller();
+        controller.getMenu().show();
     }
 }

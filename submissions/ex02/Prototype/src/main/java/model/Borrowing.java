@@ -22,6 +22,10 @@ public class Borrowing {
         this.lateFee = 0.0;
     }
 
+    public Borrowing(PhysicalBook book, Customer borrower){
+        this(book, borrower, LocalDate.now(), LocalDate.now().plusDays(10));
+    }
+
     public String getId() {
         return id;
     }
