@@ -114,15 +114,45 @@ class ControllerTest {
 
     @Test
     void addBookSuccessfully() {
-        assertTrue(controller.addBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getPublicationDate(), book.getClassificationNumber()));
+        assertTrue(controller.addBook("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", "1968-05-01", "DIC01"));
         assertEquals(bookListSize + 1, controller.getBooks().size());
-        assertFalse(controller.getBooks().containsKey(book));
+        assertTrue(controller.getBooks().containsKey(book));
+
+        assertEquals("Do Androids Dream of Electric Sheep?", book.getTitle());
+        assertEquals("Philip K. Dick", book.getAuthor());
+        assertEquals("0-345-40447-5", book.getIsbn());
+        assertEquals(LocalDate.of(1968, 5, 1), book.getPublicationDate());
+        assertEquals("DIC01", book.getClassificationNumber());
     }
 
     @Test
     void addBookUnsuccessful() {
-        assertThrows(NoSuchElementException.class, () -> {
-            controller.addBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getPublicationDate(), book.getClassificationNumber());
+        assertThrows(IllegalArgumentException.class, () -> {
+            controller.addBook("", "author","isbn", "2024-05-23", "classificationNumber");
+        });
+        assertEquals(bookListSize, controller.getBooks().size());
+        assertTrue(controller.getBooks().containsKey(book));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            controller.addBook("title", "","isbn", "2024-05-23", "classificationNumber");
+        });
+        assertEquals(bookListSize, controller.getBooks().size());
+        assertTrue(controller.getBooks().containsKey(book));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            controller.addBook("title", "author","", "2024-05-23", "classificationNumber");
+        });
+        assertEquals(bookListSize, controller.getBooks().size());
+        assertTrue(controller.getBooks().containsKey(book));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            controller.addBook("title", "author","isbn", "24-24-24", "classificationNumber");
+        });
+        assertEquals(bookListSize, controller.getBooks().size());
+        assertTrue(controller.getBooks().containsKey(book));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            controller.addBook("title", "author","isbn", "2024-05-23", "");
         });
         assertEquals(bookListSize, controller.getBooks().size());
         assertTrue(controller.getBooks().containsKey(book));
@@ -130,7 +160,8 @@ class ControllerTest {
 
     @Test
     void modifyBookSuccessfully() {
-        assertTrue(controller.modifyBook("1234","abc","def", "22/5/2024","12"));
+        assertTrue(controller.modifyBook(book,"abc","def", "22/5/2024","12"));
+
         assertEquals("abc", book.getTitle());
         assertEquals("def",book.getAuthor());
         assertEquals("ghi",book.getIsbn());
@@ -140,28 +171,28 @@ class ControllerTest {
 
     @Test
     void modifyBookUnsuccessful() {
-        assertThrows(NoSuchElementException.class, () -> {
-            controller.modifyBook("1234", "", "b", "c", "d");
+        Book modifiedBook = book;
+        assertThrows(IllegalArgumentException.class, () -> {
+            controller.modifyBook(modifiedBook, "", "b", "c", "d");
         });
-        assertEquals("", book.getTitle());
 
-        assertThrows(NoSuchElementException.class, () -> {
-            controller.modifyBook("1234","a", "", "c", "d");
+        assertThrows(IllegalArgumentException.class, () -> {
+            controller.modifyBook(modifiedBook,"a", "", "c", "d");
         });
-        assertEquals(bookListSize, controller.getBooks().size());
-        assertFalse(controller.getBooks().containsKey(book));
 
-        assertThrows(NoSuchElementException.class, () -> {
-            controller.modifyBook("1234","a", "b", "", "d");
+        assertThrows(IllegalArgumentException.class, () -> {
+            controller.modifyBook(modifiedBook,"a", "b", "", "d");
         });
-        assertEquals(bookListSize, controller.getBooks().size());
-        assertFalse(controller.getBooks().containsKey(book));
-        assertThrows(NoSuchElementException.class, () -> {
-            controller.modifyBook("1234","a", "b", "c", "");
-        });
-        assertEquals(bookListSize, controller.getBooks().size());
-        assertFalse(controller.getBooks().containsKey(book));
 
+        assertThrows(IllegalArgumentException.class, () -> {
+            controller.modifyBook(modifiedBook,"a", "b", "c", "");
+        });
+
+        assertEquals(bookListSize, controller.getBooks().size());
+        assertEquals(book.getTitle(), modifiedBook.getTitle());
+        assertEquals(book.getAuthor(),modifiedBook.getAuthor());
+        assertEquals(book.getPublicationDate(), modifiedBook.getPublicationDate());
+        assertEquals(book.getClassificationNumber(),modifiedBook.getClassificationNumber());
     }
 
     @Test
@@ -177,23 +208,21 @@ class ControllerTest {
         assertEquals(0, newCustomer.getBorrowedList().size());
     }
 
-
-
     @Test
     void addCustomerUnsuccessful() {
-        assertThrows(NoSuchElementException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             controller.addCustomer("", "Smith", "10/10/2010");
         });
         assertEquals(customerListSize, controller.getCustomers().size());
         assertFalse(controller.getCustomers().contains(customer));
 
-        assertThrows(NoSuchElementException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             controller.addCustomer("Will", "", "10/10/2010");
         });
         assertEquals(customerListSize, controller.getCustomers().size());
         assertFalse(controller.getCustomers().contains(customer));
 
-        assertThrows(NoSuchElementException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             controller.addCustomer("Will", "Smith", "10/10/10");
         });
         assertEquals(customerListSize, controller.getCustomers().size());
@@ -203,7 +232,8 @@ class ControllerTest {
 
     @Test
     void modifyCustomerSuccessfully() {
-        assertTrue(controller.modifyCustomer("123","Unga", "Bunga", "01/01/2001","22/05/2024"));
+        assertTrue(controller.modifyCustomer(customer,"Unga", "Bunga", "01/01/2001","22/05/2024"));
+
         assertEquals("Unga",customer.getFirstName());
         assertEquals("Bunga",customer.getLastName());
         assertEquals(LocalDate.of(2001,1,1),customer.getDob());
@@ -213,23 +243,23 @@ class ControllerTest {
 
     @Test
     void modifyCustomerUnsuccessful() {
+        Customer modifiedCustomer = customer;
         assertThrows(NoSuchElementException.class, () -> {
-            controller.modifyBook("","ee", "Smith", "10/10/2010", "656");
+            controller.modifyCustomer(modifiedCustomer,"", "Smith", "10/10/2010");
         });
-        assertFalse(controller.getCustomers().contains(customer));
 
         assertThrows(NoSuchElementException.class, () -> {
-            controller.addCustomer("Will", "", "10/10/2010");
+            controller.modifyCustomer(modifiedCustomer, "Will", "", "10/10/2010");
         });
+
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.modifyCustomer(modifiedCustomer, "Will", "Smith", "10/10/10");
+        });
+
         assertEquals(customerListSize, controller.getCustomers().size());
-        assertFalse(controller.getCustomers().contains(customer));
-
-        assertThrows(NoSuchElementException.class, () -> {
-            controller.addCustomer("Will", "Smith", "10/10/10");
-        });
-        assertEquals(customerListSize, controller.getCustomers().size());
-        assertFalse(controller.getCustomers().contains(customer));
-
+        assertEquals(customer.getFirstName(), modifiedCustomer.getFirstName());
+        assertEquals(customer.getLastName(), modifiedCustomer.getLastName());
+        assertEquals(customer.getDob(), modifiedCustomer.getDob());
     }
 
     @Test

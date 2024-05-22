@@ -132,14 +132,14 @@ public class Controller {
         this.books.get(optionalBook.get().getBook()).remove(optionalBook.get());
     }
 
-    public boolean addBook(String title, String author, String isbn, LocalDate dateOfFirstPublication, String classificationNumber){
+    public boolean addBook(String title, String author, String isbn, String dateOfFirstPublication, String classificationNumber){
         return true;
     }
 
-    public boolean modifyBook(String isbn, String title, String author, String dateOfFirstPublication, String classificationNumber){
+    public boolean modifyBook(Book book, String title, String author, String dateOfFirstPublication, String classificationNumber){
         return true;
     }
-    public boolean modifyCustomer(String id, String Fname, String Lname, String dob, String subscription){
+    public boolean modifyCustomer(Customer customer, String Fname, String Lname, String dob){
         return true;
     }
 

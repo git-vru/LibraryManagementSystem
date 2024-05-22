@@ -7,7 +7,7 @@ public class Customer {
     private final String id;
     private String firstName;
     private String lastName;
-    private final LocalDate dob;
+    private LocalDate dob;
     private final LocalDate subscriptionDate;
     private final ArrayList<PhysicalBook> borrowedList;
 
@@ -46,6 +46,10 @@ public class Customer {
 
     public LocalDate getDob() {
         return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
     }
 
     public LocalDate getSubscriptionDate() {
