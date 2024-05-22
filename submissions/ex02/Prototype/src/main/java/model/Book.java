@@ -11,21 +11,15 @@ public class Book {
     private final String author;
     private final LocalDate publicationDate;
 
-    private final List<PhysicalBook> bookList;
-
-    public Book(String title, String author, String isbn, LocalDate dateOfFirstPublication, String classificationNumber, int numberOfCopy) {
+    public Book(String title, String author, String isbn, LocalDate dateOfFirstPublication, String classificationNumber) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.publicationDate = dateOfFirstPublication;
         this.classificationNumber = classificationNumber;
-
-        this.bookList = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            bookList.add(new PhysicalBook(this));
-        }
     }
+
+
 
     public Book getBook() {
         return this;
@@ -53,10 +47,6 @@ public class Book {
 
     public void setClassificationNumber(String classificationNumber) {
         this.classificationNumber = classificationNumber;
-    }
-
-    public List<PhysicalBook> getBookList() {
-        return bookList;
     }
 
     public String toString() {

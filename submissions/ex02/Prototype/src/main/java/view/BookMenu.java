@@ -32,7 +32,7 @@ public class BookMenu extends View {
                     "Ex: Please type : 'create <Title>,<Author>,<Date of publication>,<classification number>,<nb of copies>'" +
                     "or 'import <filepath>");
 
-            controller.getBooks().add(new Book("Les Fleurs du Mal", "Charles Baudelaire", "isbn", LocalDate.of(1857, 6, 21), "BAU01", 5));
+            controller.getBooks().put(new Book("Les Fleurs du Mal", "Charles Baudelaire", "isbn", LocalDate.of(1857, 6, 21), "BAU01"), new ArrayList<>());
             super.promptAndExit("Book with new id XYZ was successfully added!");
             this.show();
         }

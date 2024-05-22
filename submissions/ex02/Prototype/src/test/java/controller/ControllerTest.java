@@ -4,10 +4,10 @@ import model.Book;
 import model.Customer;
 import model.PhysicalBook;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,13 +15,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class ControllerTest {
     int bookListSize;
     int customerListSize;
+    int physicalBookList;
     Controller controller = new Controller();
-    Book book = new Book("Candide", "Voltaire", "isbn02", LocalDate.of(1759, 1, 1), "VOL01", 5);
+    Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01");
+    PhysicalBook physicalBook = new PhysicalBook(book);
     Customer customer = new Customer("Vrushabh", "Jain", LocalDate.of(2004, 10, 30));
 
     @BeforeEach
     void setUp() {
-        controller.getBooks().add(book);
+        controller.getBooks().put(book, new ArrayList<>());
+        controller.getPhysicalBooks(book).add(physicalBook);
         controller.getCustomers().add(customer);
         customerListSize = controller.getCustomers().size();
         bookListSize = controller.getBooks().size();
@@ -29,16 +32,18 @@ class ControllerTest {
 
     @Test
     void deleteBookSuccessfully() {
-        assertTrue(controller.deleteBook("isbn02"));
+        controller.deleteBook("isbn02");
         assertEquals(bookListSize - 1, controller.getBooks().size());
-        assertFalse(controller.getBooks().contains(book));
+        assertFalse(controller.getBooks().containsKey(book));
     }
 
     @Test
     void deleteBookUnsuccessful() {
-        assertFalse(controller.deleteBook("wrong isbn"));
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.deleteBook("wrong isbn");
+        });
         assertEquals(bookListSize, controller.getBooks().size());
-        assertTrue(controller.getBooks().contains(book));
+        assertTrue(controller.getBooks().containsKey(book));
     }
 
     @Test
@@ -49,7 +54,7 @@ class ControllerTest {
     }
 
     @Test
-    void deleteCustomerUnsuccessfully() {
+    void deleteCustomerUnsuccessful() {
         assertThrows(NoSuchElementException.class, () -> {
             controller.deleteCustomer("wrong id");
         });
@@ -57,21 +62,70 @@ class ControllerTest {
         assertTrue(controller.getCustomers().contains(customer));
     }
 
-    @Disabled
-    void borrowBookSuccessfully() {
+    @Test
+    void deletePhysicalBookSuccessfully() {
+        controller.deletePhysicalBook("Generated consecutively");
+        assertEquals(physicalBookList - 1, controller.getPhysicalBooks(book).size());
+        assertFalse(controller.getPhysicalBooks(book).contains(physicalBook));
     }
 
-    @Disabled
-    void borrowBookUnsuccessfully() {
-
+    @Test
+    void deletePhysicalBookUnsuccessful() {
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.deletePhysicalBook("wrong id");
+        });
+        assertEquals(physicalBookList, controller.getPhysicalBooks(book).size());
+        assertTrue(controller.getPhysicalBooks(book).contains(physicalBook));
     }
 
-    @Disabled
-    void returnBookSuccessfully() {
-
+    @Test
+    void addBookSuccessfully() {
+        assertTrue(controller.addBook(book.getTitle(), book.getAuthor(), book.getPublicationDate(), book.getClassificationNumber()));
+        assertEquals(bookListSize + 1, controller.getBooks().size());
+        assertFalse(controller.getBooks().containsKey(book));
     }
 
-    @Disabled
-    void returnBookUnsuccessfully() {
+    @Test
+    void addBookUnsuccessful() {
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.deletePhysicalBook("wrong id");
+        });
+        assertEquals(physicalBookList, controller.getPhysicalBooks(book).size());
+        assertTrue(controller.getPhysicalBooks(book).contains(physicalBook));
     }
+
+    @Test
+    void modifyBookSuccessfully() {}
+
+    @Test
+    void modifyBookUnsuccessful() {}
+
+    @Test
+    void addCustomerSuccessfully() {
+        assertTrue(controller.addBook(book.getTitle(), book.getAuthor(), book.getPublicationDate(), book.getClassificationNumber()));
+        assertEquals(bookListSize + 1, controller.getBooks().size());
+        assertFalse(controller.getBooks().containsKey(book));
+    }
+
+    @Test
+    void addCustomerUnsuccessful() {}
+
+    @Test
+    void modifyCustomerSuccessfully() {}
+
+    @Test
+    void modifyCustomerUnsuccessful() {}
+
+    @Test
+    void addPhysicalBookSuccessfully() {}
+
+    @Test
+    void addPhysicalBookUnsuccessful() {}
+
+    @Test
+    void modifyPhysicalBookSuccessfully() {}
+
+    @Test
+    void modifyPhysicalBookUnsuccessful() {}
+
 }
