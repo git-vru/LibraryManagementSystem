@@ -118,7 +118,7 @@ public class Controller {
     public boolean modifyBook(String title, String author, LocalDate dateOfFirstPublication, String classificationNumber){
         return true;
     }
-    public boolean modifyCustomer(String Fname, String Lname, LocalDate dob, LocalDate subscription){
+    public boolean modifyCustomer(String id, String Fname, String Lname, String dob, String subscription){
         return true;
     }
 

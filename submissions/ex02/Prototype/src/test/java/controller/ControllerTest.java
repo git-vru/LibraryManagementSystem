@@ -127,7 +127,12 @@ class ControllerTest {
 
     @Test
     void modifyCustomerSuccessfully() {
-        assertTrue(controller.modifyCustomer("Unga", "Bunga", LocalDate.of(2001,1,1),LocalDate.of(2024,5,22)));
+        assertTrue(controller.modifyCustomer("123","Unga", "Bunga", "01/01/2001","22/05/2024"));
+        assertEquals("Unga",customer.getFirstName());
+        assertEquals("Bunga",customer.getLastName());
+        assertEquals(LocalDate.of(2001,1,1),customer.getDob());
+        assertEquals(LocalDate.of(2024,5,22),customer.getSubscriptionDate());
+        ;
     }
 
     @Test
@@ -143,10 +148,5 @@ class ControllerTest {
     @Test
     void addPhysicalBookUnsuccessful() {}
 
-    @Test
-    void modifyPhysicalBookSuccessfully() {}
-
-    @Test
-    void modifyPhysicalBookUnsuccessful() {}
 
 }
