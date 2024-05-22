@@ -1,7 +1,7 @@
 package view;
 
-import controller.*;
-import model.*;
+import controller.Controller;
+import model.Book;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

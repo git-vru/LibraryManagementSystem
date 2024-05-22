@@ -1,10 +1,16 @@
 package controller;
 
-import model.*;
-import view.*;
+import model.Book;
+import model.Customer;
+import model.PhysicalBook;
+import view.MainMenu;
+import view.View;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
 
 public class Controller {
     private View menu;

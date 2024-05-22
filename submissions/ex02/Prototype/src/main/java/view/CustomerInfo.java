@@ -1,9 +1,7 @@
 package view;
 
 import controller.Controller;
-import model.*;
-
-import java.time.LocalDate;
+import model.Customer;
 
 public class CustomerInfo extends View {
 

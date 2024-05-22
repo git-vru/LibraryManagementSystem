@@ -1,9 +1,9 @@
 package view;
 
+import controller.Controller;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import controller.Controller;
 
 public class MainMenu extends View{
     private final List<String> options;

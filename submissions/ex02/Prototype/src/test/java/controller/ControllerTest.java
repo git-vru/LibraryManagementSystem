@@ -57,24 +57,21 @@ class ControllerTest {
         assertTrue(controller.getCustomers().contains(customer));
     }
 
-//    @Disabled
-//    void borrowBookSuccessfully() {
-//        PhysicalBook physicalBook = new PhysicalBook(new Book("", "", "", LocalDate.of(0,0,0), "", 0));
-//
-//        assertTrue(controller.borrowBook(customer.getId(), physicalBook.getId()));
-//    }
-//
-//    @Disabled
-//    void borrowBookUnsuccessfully() {
-//
-//    }
-//
-//    @Disabled
-//    void returnBookSuccessfully() {
-//
-//    }
-//
-//    @Disabled
-//    void returnBookUnsuccessfully() {
-//    }
+    @Disabled
+    void borrowBookSuccessfully() {
+    }
+
+    @Disabled
+    void borrowBookUnsuccessfully() {
+
+    }
+
+    @Disabled
+    void returnBookSuccessfully() {
+
+    }
+
+    @Disabled
+    void returnBookUnsuccessfully() {
+    }
 }

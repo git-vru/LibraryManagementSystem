@@ -1,8 +1,7 @@
 package view;
 
 import controller.Controller;
-import model.*;
-import view.*;
+import model.Book;
 
 public class BookInfo extends View {
 
