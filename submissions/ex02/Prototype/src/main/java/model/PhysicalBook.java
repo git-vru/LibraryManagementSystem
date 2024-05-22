@@ -48,6 +48,10 @@ public class PhysicalBook {
         return borrower;
     }
 
+    public Book getBook() {
+        return book;
+    }
+
     public void setBorrower(Customer borrower) {
         this.borrower = borrower;
     }

@@ -103,7 +103,12 @@ public class Controller {
         }
     }
 
-    public boolean addBook(String title, String author, LocalDate dateOfFirstPublication, String classificationNumber){
+    public boolean addBook(String title, String author, String isbn, LocalDate dateOfFirstPublication, String classificationNumber){
+
+        return true;
+    }
+
+    public boolean addPhysicalBook(String id, String book, String borrower, String borrowedDate, String returnedDate, String fee){
 
         return true;
     }
