@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ControllerTest {
     int bookListSize;
     int customerListSize;
-    int physicalBookList;
+    int physicalBookListSize;
     Controller controller = new Controller();
     Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01");
     PhysicalBook physicalBook = new PhysicalBook(book);
@@ -66,7 +66,7 @@ class ControllerTest {
     @Test
     void deletePhysicalBookSuccessfully() {
         controller.deletePhysicalBook("Generated consecutively");
-        assertEquals(physicalBookList - 1, controller.getPhysicalBooks(book).size());
+        assertEquals(physicalBookListSize - 1, controller.getPhysicalBooks(book).size());
         assertFalse(controller.getPhysicalBooks(book).contains(physicalBook));
     }
 
@@ -75,13 +75,13 @@ class ControllerTest {
         assertThrows(NoSuchElementException.class, () -> {
             controller.deletePhysicalBook("wrong id");
         });
-        assertEquals(physicalBookList, controller.getPhysicalBooks(book).size());
+        assertEquals(physicalBookListSize, controller.getPhysicalBooks(book).size());
         assertTrue(controller.getPhysicalBooks(book).contains(physicalBook));
     }
 
     @Test
     void addBookSuccessfully() {
-        assertTrue(controller.addBook(book.getTitle(), book.getAuthor(), book.getPublicationDate(), book.getClassificationNumber()));
+        assertTrue(controller.addBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getPublicationDate(), book.getClassificationNumber()));
         assertEquals(bookListSize + 1, controller.getBooks().size());
         assertFalse(controller.getBooks().containsKey(book));
     }
@@ -89,10 +89,10 @@ class ControllerTest {
     @Test
     void addBookUnsuccessful() {
         assertThrows(NoSuchElementException.class, () -> {
-            controller.deletePhysicalBook("wrong id");
+            controller.addBook(book.getTitle(), book.getAuthor(), book.getPublicationDate(), book.getClassificationNumber());
         });
-        assertEquals(physicalBookList, controller.getPhysicalBooks(book).size());
-        assertTrue(controller.getPhysicalBooks(book).contains(physicalBook));
+        assertEquals(bookListSize, controller.getBooks().size());
+        assertTrue(controller.getBooks().containsKey(book));
     }
 
     @Test
@@ -103,9 +103,9 @@ class ControllerTest {
 
     @Test
     void addCustomerSuccessfully() {
-        assertTrue(controller.addBook(book.getTitle(), book.getAuthor(), book.getPublicationDate(), book.getClassificationNumber()));
-        assertEquals(bookListSize + 1, controller.getBooks().size());
-        assertFalse(controller.getBooks().containsKey(book));
+        assertTrue(controller.addCustomer(customer.getFirstName(),customer.getLastName(),customer.getDob().toString()));
+        assertEquals(customerListSize+1, controller.getCustomers().size());
+        assertFalse(controller.getCustomers().contains(customer));
     }
 
     @Test
@@ -118,7 +118,11 @@ class ControllerTest {
     void modifyCustomerUnsuccessful() {}
 
     @Test
-    void addPhysicalBookSuccessfully() {}
+    void addPhysicalBookSuccessfully() {
+        assertTrue(controller.addPhysicalBook(physicalBook.getId(),physicalBook.getBook().toString(),physicalBook.getBorrower().toString(),physicalBook.getBorrowedDate().toString(),physicalBook.getReturnedDate().toString(), String.valueOf(physicalBook.getFee())));
+        assertEquals(physicalBookListSize + 1, controller.getPhysicalBooks(book).size());
+        assertFalse(controller.getPhysicalBooks(book).contains(physicalBook));
+    }
 
     @Test
     void addPhysicalBookUnsuccessful() {}
