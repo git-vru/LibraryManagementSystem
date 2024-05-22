@@ -78,9 +78,9 @@ public class Controller {
         return optionalCustomer.map(customer -> this.customers.get(this.customers.indexOf(customer))).orElse(null);
     }
 
-    public boolean createCustomer(String firstName, String lastName, String dob) {
-        LocalDate dt = LocalDate.parse(dob);
-        Customer customer = new Customer(firstName, lastName, dt);
+    public boolean addCustomer(String firstName, String lastName, LocalDate date) {
+
+        Customer customer = new Customer(firstName, lastName, date);
 
         return this.customers.add(customer);
     }

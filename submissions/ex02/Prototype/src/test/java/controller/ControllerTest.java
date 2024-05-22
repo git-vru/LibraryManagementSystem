@@ -102,9 +102,9 @@ class ControllerTest {
 
     @Test
     void addCustomerSuccessfully() {
-        assertTrue(controller.addBook(book.getTitle(), book.getAuthor(), book.getPublicationDate(), book.getClassificationNumber()));
-        assertEquals(bookListSize + 1, controller.getBooks().size());
-        assertFalse(controller.getBooks().containsKey(book));
+        assertTrue(controller.addCustomer(customer.getFirstName(),customer.getLastName(),customer.getDob()));
+        assertEquals(customerListSize+1, controller.getCustomers().size());
+        assertFalse(controller.getCustomers().contains(customer));
     }
 
     @Test
