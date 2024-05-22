@@ -102,7 +102,7 @@ class ControllerTest {
 
     @Test
     void addCustomerSuccessfully() {
-        assertTrue(controller.addCustomer(customer.getFirstName(),customer.getLastName(),customer.getDob()));
+        assertTrue(controller.addCustomer(customer.getFirstName(),customer.getLastName(),customer.getDob().toString()));
         assertEquals(customerListSize+1, controller.getCustomers().size());
         assertFalse(controller.getCustomers().contains(customer));
     }
