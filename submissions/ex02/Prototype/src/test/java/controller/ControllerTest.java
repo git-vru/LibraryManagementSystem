@@ -130,7 +130,7 @@ class ControllerTest {
 
     @Test
     void modifyBookSuccessfully() {
-        assertTrue(controller.modifyBook("abc","def", LocalDate.of(2024,5,22),"12"));
+        assertTrue(controller.modifyBook("1234","abc","def", "22/5/2024","12"));
         assertEquals("abc", book.getTitle());
         assertEquals("def",book.getAuthor());
         assertEquals("ghi",book.getIsbn());
@@ -139,7 +139,30 @@ class ControllerTest {
     }
 
     @Test
-    void modifyBookUnsuccessful() {}
+    void modifyBookUnsuccessful() {
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.modifyBook("1234", "", "b", "c", "d");
+        });
+        assertEquals("", book.getTitle());
+
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.modifyBook("1234","a", "", "c", "d");
+        });
+        assertEquals(bookListSize, controller.getBooks().size());
+        assertFalse(controller.getBooks().containsKey(book));
+
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.modifyBook("1234","a", "b", "", "d");
+        });
+        assertEquals(bookListSize, controller.getBooks().size());
+        assertFalse(controller.getBooks().containsKey(book));
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.modifyBook("1234","a", "b", "c", "");
+        });
+        assertEquals(bookListSize, controller.getBooks().size());
+        assertFalse(controller.getBooks().containsKey(book));
+
+    }
 
     @Test
     void addCustomerSuccessfully() {
@@ -154,8 +177,29 @@ class ControllerTest {
         assertEquals(0, newCustomer.getBorrowedList().size());
     }
 
+
+
     @Test
-    void addCustomerUnsuccessful() {}
+    void addCustomerUnsuccessful() {
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.addCustomer("", "Smith", "10/10/2010");
+        });
+        assertEquals(customerListSize, controller.getCustomers().size());
+        assertFalse(controller.getCustomers().contains(customer));
+
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.addCustomer("Will", "", "10/10/2010");
+        });
+        assertEquals(customerListSize, controller.getCustomers().size());
+        assertFalse(controller.getCustomers().contains(customer));
+
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.addCustomer("Will", "Smith", "10/10/10");
+        });
+        assertEquals(customerListSize, controller.getCustomers().size());
+        assertFalse(controller.getCustomers().contains(customer));
+
+    }
 
     @Test
     void modifyCustomerSuccessfully() {
@@ -168,17 +212,39 @@ class ControllerTest {
     }
 
     @Test
-    void modifyCustomerUnsuccessful() {}
+    void modifyCustomerUnsuccessful() {
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.modifyBook("","ee", "Smith", "10/10/2010", "656");
+        });
+        assertFalse(controller.getCustomers().contains(customer));
 
-    @Test
-    void addPhysicalBookSuccessfully() {
-        assertTrue(controller.addPhysicalBook(physicalBook.getId(),physicalBook.getBook().toString(),physicalBook.getBorrower().toString(),physicalBook.getBorrowedDate().toString(),physicalBook.getReturnedDate().toString(), String.valueOf(physicalBook.getFee())));
-        assertEquals(physicalBookListSize + 1, controller.getPhysicalBooks(book).size());
-        assertFalse(controller.getPhysicalBooks(book).contains(physicalBook));
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.addCustomer("Will", "", "10/10/2010");
+        });
+        assertEquals(customerListSize, controller.getCustomers().size());
+        assertFalse(controller.getCustomers().contains(customer));
+
+        assertThrows(NoSuchElementException.class, () -> {
+            controller.addCustomer("Will", "Smith", "10/10/10");
+        });
+        assertEquals(customerListSize, controller.getCustomers().size());
+        assertFalse(controller.getCustomers().contains(customer));
+
     }
 
     @Test
-    void addPhysicalBookUnsuccessful() {}
+    void addPhysicalBookSuccessfully() {
+        assertTrue(controller.addPhysicalBook("123456"));
+        assertEquals(physicalBookListSize + 1, controller.getPhysicalBooks(book).size());
+        assertTrue(controller.getPhysicalBooks(book).contains(physicalBook));
+    }
+
+    @Test
+    void addPhysicalBookUnsuccessful() {
+        assertFalse(controller.addPhysicalBook("wrong"));
+        assertEquals(physicalBookListSize , controller.getPhysicalBooks(book).size());
+    }
+
 
 
 }
