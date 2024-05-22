@@ -88,14 +88,17 @@ class ControllerTest {
     @Test
     void addBookUnsuccessful() {
         assertThrows(NoSuchElementException.class, () -> {
-            controller.addBook(book.getTitle(), book.getAuthor(), book.getPublicationDate(), book.getClassificationNumber());
+            controller.addBook(book.getTitle(), book.getAuthor(),book.getIsbn(), book.getPublicationDate(), book.getClassificationNumber());
         });
         assertEquals(bookListSize, controller.getBooks().size());
         assertTrue(controller.getBooks().containsKey(book));
     }
 
     @Test
-    void modifyBookSuccessfully() {}
+    void modifyBookSuccessfully() {
+        assertTrue(controller.modifyBook("ugiztr", "wer",book.getIsbn(), book.getPublicationDate(), book.getClassificationNumber()));
+        assertEquals("ugiztr", "wer", book.getTitle());
+    }
 
     @Test
     void modifyBookUnsuccessful() {}

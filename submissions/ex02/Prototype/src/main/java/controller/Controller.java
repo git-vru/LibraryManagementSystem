@@ -104,7 +104,10 @@ public class Controller {
     }
 
     public boolean addBook(String title, String author, String isbn, LocalDate dateOfFirstPublication, String classificationNumber){
+        return true;
+    }
 
+    public boolean modifyBook(String title, String author, String isbn, LocalDate dateOfFirstPublication, String classificationNumber){
         return true;
     }
 
