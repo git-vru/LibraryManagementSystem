@@ -1,7 +1,10 @@
 package controller;
 
-import model.*;
-import view.*;
+import model.Book;
+import model.Customer;
+import model.PhysicalBook;
+import view.MainMenu;
+import view.View;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -24,14 +27,6 @@ public class Controller {
         for (int i = 0; i < 3; i++) {
             this.books.get(book).add(new PhysicalBook(book));
         }
-    }
-
-    public <T> T search(List<T> list, String query)  {
-        if (list.isEmpty()) {
-            return null;
-        }
-
-        return list.get(0);
     }
 
     public Book searchBook(String isbn) {
@@ -95,9 +90,22 @@ public class Controller {
        return this.customers.remove(optionalCustomer.get());
     }
 
-    public void deletePhysicalBook (String id){
+    public PhysicalBook searchPhysicalBook(String id){
         PhysicalBook book = null;
         // Optional<PhysicalBook> optionalPhysicalBook = this.books.values().tostream().filter(physicalBook -> physicalBook.getId().equals(id)).findFirst();
+        for (List<PhysicalBook> list : books.values()) {
+            for (PhysicalBook physicalBook : list) {
+                if (physicalBook.getId().equals(id)) {
+                    book = physicalBook;
+                    break;
+                }
+            }
+        }
+        return book;
+    }
+
+    public void deletePhysicalBook(String id){
+        PhysicalBook book = null;
         for (List<PhysicalBook> list : books.values()) {
             list.removeIf(physicalBook -> physicalBook.getId().equals(id) && physicalBook.getBorrower() != null);
         }

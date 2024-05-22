@@ -1,8 +1,10 @@
 package view;
 
 import controller.Controller;
-import model.*;
-import view.*;
+import model.Book;
+
+import java.util.List;
+import java.util.Scanner;
 
 public class BookInfo extends View {
 
@@ -10,14 +12,37 @@ public class BookInfo extends View {
         super(controller, prev);
         this.name = "Book Info";
     }
-    
+
+    // TODO null-check
     public void show() {
-        System.out.print("Please enter a book id:");
-        Book b = controller.search(controller.getBooks().keySet().stream().toList(), controller.getScanner().next());
+        Book book = null;
+        while (book == null) {
+            System.out.print("Please enter a book ISBN: ");
+            String bookISBN = controller.getScanner().next();
 
-        this.name = "Book Id: " + b.getClassificationNumber();
+            book = controller.searchBook(bookISBN);
 
-        super.promptAndExit(b.toString());
+            if (book == null) {
+                System.out.println("---\nPlease enter a valid ISBN!\n");
+                continue;
+            }
+
+            this.name = "Book Id: " + book.getClassificationNumber();
+
+            System.out.printf("\t** %s **\n", book.getClassificationNumber());
+            System.out.println(book);
+
+            List<String> options = List.of("Delete the book : " + book.getClassificationNumber());
+
+            String input = super.prompt(options);
+
+            if (input.charAt(0) == '0') {
+                controller.deleteBook(bookISBN);
+            }
+            else if (input.charAt(0) == 'q') {
+                break;
+            }
+        }
         prev.show();
     }
 }

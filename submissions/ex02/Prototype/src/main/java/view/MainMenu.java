@@ -1,9 +1,9 @@
 package view;
 
+import controller.Controller;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import controller.Controller;
 
 public class MainMenu extends View{
     private final List<String> options;
@@ -23,7 +23,7 @@ public class MainMenu extends View{
     @Override
     public void show() {
         System.out.println("Welcome to the Library Management System!\nPlease type a number or press enter.");
-        String input = super.prompt(this.options);
+        String input = super.promptMenu(this.options);
 
         switch (input.charAt(0)) {
             case '0':
