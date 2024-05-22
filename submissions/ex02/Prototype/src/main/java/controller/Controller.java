@@ -10,7 +10,6 @@ public class Controller {
     private View menu;
     private Scanner sc;
     private final List<Customer> customers = new ArrayList<>();
-    private final List<Borrowing> borrowing = new ArrayList<>();
     private final Map<Book, List<PhysicalBook>> books = new HashMap<>();
 
     public Controller() {
@@ -40,14 +39,33 @@ public class Controller {
         return optionalBook.orElse(null);
     }
 
-    public void createBorrowing(String bookId, String customerId) {
-        /*Customer customer = getCustomers().get(0);
-        //PhysicalBook book = getBooks().getO;
-        Borrowing borrowing = new Borrowing(book, customer, LocalDate.now(), (LocalDate.now()).plusDays(20));
+    public boolean borrowBook(String customerId, String bookId) {
+        /*Customer customer = searchCustomer(customerId);
+        PhysicalBook physicalBook = getBooks().get(0).getBookList().get(0);
 
-        getBorrowing().add(borrowing);
-        customer.getBorrowedList().add(borrowing);
-        book.setBorrower(customer);*/
+        if (customer == null || physicalBook == null) return false;
+
+        customer.getBorrowedList().add(physicalBook);
+        physicalBook.setBorrower(customer);
+
+        return true;*/
+        return false;
+    }
+
+    public boolean returnBook(String customerId, String bookId) {
+        /*Customer customer = searchCustomer(customerId);
+        PhysicalBook physicalBook = getBooks().get(0).getBookList().get(0);
+
+        if (physicalBook.getFee() == 0) {
+            customer.getBorrowedList().remove(physicalBook);
+            // physicalBook.setReturnedDate(some date);
+            physicalBook.setBorrower(null);
+            return true;
+        }
+        else {
+            return false;
+        }*/
+        return false;
     }
 
     public void deleteBook(String isbn) {
@@ -117,10 +135,6 @@ public class Controller {
 
     public Map<Book, List<PhysicalBook>> getBooks() {
         return books;
-    }
-
-    public List<Borrowing> getBorrowing() {
-        return borrowing;
     }
 
     public List<PhysicalBook> getPhysicalBooks(Book book) {

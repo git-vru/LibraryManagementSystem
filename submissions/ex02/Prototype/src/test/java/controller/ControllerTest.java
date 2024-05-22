@@ -1,7 +1,6 @@
 package controller;
 
 import model.Book;
-import model.Borrowing;
 import model.Customer;
 import model.PhysicalBook;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,21 +15,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class ControllerTest {
     int bookListSize;
     int customerListSize;
-    int borrowingListSize;
     int physicalBookList;
     Controller controller = new Controller();
     Book book = new Book("Candide", "Voltaire","isbn", LocalDate.of(1759, 1, 1), "VOL01");
-    Customer customer = new Customer("Vrushabh", "Jain", LocalDate.of(2004, 10, 30));
     PhysicalBook physicalBook = new PhysicalBook(book);
+    Customer customer = new Customer("Vrushabh", "Jain", LocalDate.of(2004, 10, 30));
 
     @BeforeEach
     void setUp() {
-        //controller.getPhysicalBooks(book).add(physicalBook);
         controller.getBooks().put(book, new ArrayList<>());
+        controller.getPhysicalBooks(book).add(physicalBook);
         controller.getCustomers().add(customer);
         customerListSize = controller.getCustomers().size();
         bookListSize = controller.getBooks().size();
-        borrowingListSize = controller.getBorrowing().size();
     }
 
     @Test
@@ -68,8 +65,8 @@ class ControllerTest {
     @Test
     void deletePhysicalBookSuccessfully() {
         controller.deletePhysicalBook("Generated consecutively");
-        assertEquals(physicalBookList - 1, controller.getPhysicalBooks().size());
-        assertFalse(controller.getPhysicalBooks().contains(physicalBook));
+        assertEquals(physicalBookList - 1, controller.getPhysicalBooks(book).size());
+        assertFalse(controller.getPhysicalBooks(book).contains(physicalBook));
     }
 
     @Test
@@ -77,8 +74,8 @@ class ControllerTest {
         assertThrows(NoSuchElementException.class, () -> {
             controller.deletePhysicalBook("wrong id");
         });
-        assertEquals(physicalBookList, controller.getPhysicalBooks().size());
-        assertTrue(controller.getPhysicalBooks().contains(physicalBook));
+        assertEquals(physicalBookList, controller.getPhysicalBooks(book).size());
+        assertTrue(controller.getPhysicalBooks(book).contains(physicalBook));
     }
 
     @Test
@@ -93,8 +90,8 @@ class ControllerTest {
         assertThrows(NoSuchElementException.class, () -> {
             controller.deletePhysicalBook("wrong id");
         });
-        assertEquals(physicalBookList, controller.getPhysicalBooks().size());
-        assertTrue(controller.getPhysicalBooks().contains(physicalBook));
+        assertEquals(physicalBookList, controller.getPhysicalBooks(book).size());
+        assertTrue(controller.getPhysicalBooks(book).contains(physicalBook));
     }
 
     @Test
