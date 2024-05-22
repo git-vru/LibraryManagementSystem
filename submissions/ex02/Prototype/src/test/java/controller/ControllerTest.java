@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,7 +29,7 @@ class ControllerTest {
         controller.getCustomers().add(customer);
         customerListSize = controller.getCustomers().size();
         bookListSize = controller.getBooks().size();
-        physicalBookList = controller.getPhysicalBooks(book).size();
+        physicalBookListSize = controller.getPhysicalBooks(book).size();
     }
 
     @Test
@@ -89,7 +90,7 @@ class ControllerTest {
     @Test
     void addBookUnsuccessful() {
         assertThrows(NoSuchElementException.class, () -> {
-            controller.addBook(book.getTitle(), book.getAuthor(),book.getIsbn(), book.getPublicationDate(), book.getClassificationNumber());
+            controller.addBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getPublicationDate(), book.getClassificationNumber());
         });
         assertEquals(bookListSize, controller.getBooks().size());
         assertTrue(controller.getBooks().containsKey(book));
@@ -97,8 +98,12 @@ class ControllerTest {
 
     @Test
     void modifyBookSuccessfully() {
-        assertTrue(controller.modifyBook("ugiztr", "wer",book.getIsbn(), book.getPublicationDate(), book.getClassificationNumber()));
-        assertEquals("ugiztr", "wer", book.getTitle());
+        assertTrue(controller.modifyBook("abc","def", LocalDate.of(2024,5,22),"12"));
+        assertEquals("abc", book.getTitle());
+        assertEquals("def",book.getAuthor());
+        assertEquals("ghi",book.getIsbn());
+        assertEquals(LocalDate.of(2024,5,22),book.getPublicationDate());
+        assertEquals("12",book.getClassificationNumber());
     }
 
     @Test
@@ -115,7 +120,9 @@ class ControllerTest {
     void addCustomerUnsuccessful() {}
 
     @Test
-    void modifyCustomerSuccessfully() {}
+    void modifyCustomerSuccessfully() {
+        assertTrue(controller.modifyCustomer("Unga", "Bunga", LocalDate.of(2001,1,1),LocalDate.of(2024,5,22)));
+    }
 
     @Test
     void modifyCustomerUnsuccessful() {}

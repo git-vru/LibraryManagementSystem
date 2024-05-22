@@ -115,7 +115,10 @@ public class Controller {
         return true;
     }
 
-    public boolean modifyBook(String title, String author, String isbn, LocalDate dateOfFirstPublication, String classificationNumber){
+    public boolean modifyBook(String title, String author, LocalDate dateOfFirstPublication, String classificationNumber){
+        return true;
+    }
+    public boolean modifyCustomer(String Fname, String Lname, LocalDate dob, LocalDate subscription){
         return true;
     }
 
