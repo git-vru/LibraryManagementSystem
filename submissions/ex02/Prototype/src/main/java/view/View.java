@@ -19,7 +19,6 @@ public abstract class View {
     public abstract void show();
 
     public String prompt(List<String> options) {
-        System.out.printf("\t** %s **\n", this.name);
         for (int i = 0; i < options.size(); i++) {
             System.out.printf("(%d) - %s\n", i, options.get(i));
         }
@@ -35,11 +34,15 @@ public abstract class View {
         return input;
     }
 
+    public String promptMenu(List<String> options) {
+        System.out.printf("\t** %s **\n", this.name);
+        return prompt(options);
+    }
+
     public void promptAndExit(String s) {
         System.out.printf("\t** %s **\n", this.name);
         System.out.println(s);
         System.out.print(PROMPT_TO_EXIT + CURSOR);
-
         String input = controller.getScanner().next();
         while (input.length() != 1 || input.charAt(0) != 'q') {
             System.out.print(PROMPT_TO_EXIT + CURSOR);

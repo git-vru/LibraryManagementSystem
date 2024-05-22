@@ -23,7 +23,7 @@ public class MainMenu extends View{
     @Override
     public void show() {
         System.out.println("Welcome to the Library Management System!\nPlease type a number or press enter.");
-        String input = super.prompt(this.options);
+        String input = super.promptMenu(this.options);
 
         switch (input.charAt(0)) {
             case '0':

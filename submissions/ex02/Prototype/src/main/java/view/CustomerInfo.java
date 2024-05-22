@@ -13,7 +13,10 @@ public class CustomerInfo extends View {
 
     public void show() {
         System.out.print("Please enter a customer id:");
-        Customer c = controller.search(controller.getCustomers(), controller.getScanner().next());
+
+        String customerId = controller.getScanner().next();
+
+        Customer c = controller.searchCustomer(customerId);
 
         this.name = "Customer Id: " + c.getId();
 

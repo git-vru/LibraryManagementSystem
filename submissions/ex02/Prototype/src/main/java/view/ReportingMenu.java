@@ -19,7 +19,7 @@ public class ReportingMenu extends View {
     }
 
     public void show() {
-        String input = super.prompt(options);
+        String input = super.promptMenu(options);
 
         if (input.charAt(0) == '0') {
             controller.setMenu(new ReportingInfo(controller, this));

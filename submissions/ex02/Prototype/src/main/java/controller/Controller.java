@@ -7,10 +7,7 @@ import view.MainMenu;
 import view.View;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class Controller {
     private View menu;
@@ -30,14 +27,6 @@ public class Controller {
         for (int i = 0; i < 3; i++) {
             this.books.get(book).add(new PhysicalBook(book));
         }
-    }
-
-    public <T> T search(List<T> list, String query)  {
-        if (list.isEmpty()) {
-            return null;
-        }
-
-        return list.get(0);
     }
 
     public Book searchBook(String isbn) {
