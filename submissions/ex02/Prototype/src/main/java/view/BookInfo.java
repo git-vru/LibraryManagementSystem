@@ -15,24 +15,34 @@ public class BookInfo extends View {
 
     // TODO null-check
     public void show() {
-        System.out.print("Please enter a book ISBN: ");
-        String bookISBN = controller.getScanner().next();
+        Book book = null;
+        while (book == null) {
+            System.out.print("Please enter a book ISBN: ");
+            String bookISBN = controller.getScanner().next();
 
-        Book book = controller.searchBook(bookISBN);
+            book = controller.searchBook(bookISBN);
 
-        this.name = "Book Id: " + book.getClassificationNumber();
+            if (book == null) {
+                System.out.println("---\nPlease enter a valid ISBN!\n");
+                continue;
+            }
 
-        System.out.printf("\t** %s **\n", book.getClassificationNumber());
-        System.out.println(book);
+            this.name = "Book Id: " + book.getClassificationNumber();
 
-        List<String> options = List.of("Delete the book : " + book.getClassificationNumber());
+            System.out.printf("\t** %s **\n", book.getClassificationNumber());
+            System.out.println(book);
 
-        String input = super.prompt(options);
+            List<String> options = List.of("Delete the book : " + book.getClassificationNumber());
 
-        if (input.charAt(0) == '0') {
-            controller.deleteBook(bookISBN);
+            String input = super.prompt(options);
+
+            if (input.charAt(0) == '0') {
+                controller.deleteBook(bookISBN);
+            }
+            else if (input.charAt(0) == 'q') {
+                break;
+            }
         }
-
         prev.show();
     }
 }
