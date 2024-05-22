@@ -1,6 +1,7 @@
 package view;
 
 import controller.Controller;
+import exceptions.BorrowingNotNullException;
 import model.Book;
 
 import java.util.List;
@@ -37,7 +38,12 @@ public class BookInfo extends View {
             String input = super.prompt(options);
 
             if (input.charAt(0) == '0') {
-                controller.deleteBook(bookISBN);
+                try {
+                    controller.deleteBook(bookISBN);
+                }
+                catch (BorrowingNotNullException e) {
+                    throw new RuntimeException(e);
+                }
             }
             else if (input.charAt(0) == 'q') {
                 break;

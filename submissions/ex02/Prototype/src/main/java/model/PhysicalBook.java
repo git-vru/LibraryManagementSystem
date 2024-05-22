@@ -14,7 +14,7 @@ public class PhysicalBook {
     public PhysicalBook(Book book) {
         this.book = book;
         this.borrower = null;
-        this.id = "Generated consecutively";
+        this.id = book.getClassificationNumber() + "_01";
     }
 
     public LocalDate getBorrowedDate() {

@@ -5,6 +5,7 @@ import model.Customer;
 import model.PhysicalBook;
 import view.MainMenu;
 import view.View;
+import exceptions.*;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -21,7 +22,7 @@ public class Controller {
 
         this.customers.add(new Customer("Max", "Musterman", LocalDate.of(2024, 11, 1)));
 
-        Book book = new Book("Les Fleurs du Mal", "Charles Baudelaire", "isbn", LocalDate.of(1857, 6, 21), "BAU01");
+        Book book = new Book("Les Fleurs du Mal", "Charles Baudelaire", "978-2-290-11507-7", LocalDate.of(1857, 6, 21), "BAU01");
         this.books.put(book, new ArrayList<>());
 
         for (int i = 0; i < 3; i++) {
@@ -63,8 +64,17 @@ public class Controller {
         return false;
     }
 
-    public void deleteBook(String isbn) {
+    public void deleteBook(String isbn) throws BorrowingNotNullException {
         Optional<Book> optionalBook = this.books.keySet().stream().filter(book -> book.getIsbn().equals(isbn)).findFirst();
+
+        if (optionalBook.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+
+        if (this.books.get(optionalBook.get()).stream().anyMatch(physicalBook -> physicalBook.getBorrower() != null)) {
+            throw new BorrowingNotNullException("A physical copy of this book is still borrowed by someone.");
+        }
+
         this.books.remove(optionalBook.get());
     }
 
@@ -80,14 +90,18 @@ public class Controller {
         return this.customers.add(customer);
     }
 
-    public boolean deleteCustomer(String id) {
+    public void deleteCustomer(String id) throws BorrowingNotNullException {
         Optional<Customer> optionalCustomer = this.customers.stream().filter(customer -> customer.getId().equals(id)).findFirst();
 
-       if (!optionalCustomer.get().getBorrowedList().isEmpty()) {
-           return false;
-       }
+        if (optionalCustomer.isEmpty()) {
+            throw new NoSuchElementException();
+        }
 
-       return this.customers.remove(optionalCustomer.get());
+        if (!optionalCustomer.get().getBorrowedList().isEmpty()) {
+            throw new BorrowingNotNullException("This customer is still borrowing a book.");
+        }
+
+        this.customers.remove(optionalCustomer.get());
     }
 
     public PhysicalBook searchPhysicalBook(String id){
@@ -104,11 +118,18 @@ public class Controller {
         return book;
     }
 
-    public void deletePhysicalBook(String id){
-        PhysicalBook book = null;
-        for (List<PhysicalBook> list : books.values()) {
-            list.removeIf(physicalBook -> physicalBook.getId().equals(id) && physicalBook.getBorrower() != null);
+    public void deletePhysicalBook(String id) throws BorrowingNotNullException {
+        Optional<PhysicalBook> optionalBook = this.books.values().stream().flatMap(Collection::stream).filter(physicalBook -> physicalBook.getId().equals(id)).findFirst();
+
+        if (optionalBook.isEmpty()) {
+            throw new NoSuchElementException();
         }
+
+        if (optionalBook.get().getBorrower() != null) {
+            throw new BorrowingNotNullException("This copy is still borrowed by someone.");
+        }
+
+        this.books.get(optionalBook.get().getBook()).remove(optionalBook.get());
     }
 
     public boolean addBook(String title, String author, String isbn, LocalDate dateOfFirstPublication, String classificationNumber){

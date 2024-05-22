@@ -1,5 +1,6 @@
 package controller;
 
+import exceptions.BorrowingNotNullException;
 import model.Book;
 import model.Customer;
 import model.PhysicalBook;
@@ -8,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +33,7 @@ class ControllerTest {
     }
 
     @Test
-    void deleteBookSuccessfully() {
+    void deleteBookSuccessfully() throws BorrowingNotNullException {
         controller.deleteBook("isbn02");
         assertEquals(bookListSize - 1, controller.getBooks().size());
         assertFalse(controller.getBooks().containsKey(book));
@@ -49,8 +49,19 @@ class ControllerTest {
     }
 
     @Test
-    void deleteCustomerSuccessfully() {
-        assertTrue(controller.deleteCustomer(customer.getId()));
+    void deleteBookWhenBorrowingNotNull() {
+        physicalBook.setBorrower(customer);
+
+        assertThrows(BorrowingNotNullException.class, () -> {
+            controller.deleteBook("isbn02");
+        });
+        assertEquals(bookListSize, controller.getBooks().size());
+        assertTrue(controller.getBooks().containsKey(book));
+    }
+
+    @Test
+    void deleteCustomerSuccessfully() throws BorrowingNotNullException {
+        controller.deleteCustomer(customer.getId());
         assertEquals(customerListSize - 1, controller.getCustomers().size());
         assertFalse(controller.getCustomers().contains(customer));
     }
@@ -65,8 +76,19 @@ class ControllerTest {
     }
 
     @Test
-    void deletePhysicalBookSuccessfully() {
-        controller.deletePhysicalBook("Generated consecutively");
+    void deleteCustomerBorrowingNotNull() {
+        customer.getBorrowedList().add(physicalBook);
+
+        assertThrows(BorrowingNotNullException.class, () -> {
+            controller.deleteCustomer(customer.getId());
+        });
+        assertEquals(customerListSize, controller.getCustomers().size());
+        assertTrue(controller.getCustomers().contains(customer));
+    }
+
+    @Test
+    void deletePhysicalBookSuccessfully() throws BorrowingNotNullException {
+        controller.deletePhysicalBook("VOL01_01");
         assertEquals(physicalBookListSize - 1, controller.getPhysicalBooks(book).size());
         assertFalse(controller.getPhysicalBooks(book).contains(physicalBook));
     }
@@ -75,6 +97,16 @@ class ControllerTest {
     void deletePhysicalBookUnsuccessful() {
         assertThrows(NoSuchElementException.class, () -> {
             controller.deletePhysicalBook("wrong id");
+        });
+        assertEquals(physicalBookListSize, controller.getPhysicalBooks(book).size());
+        assertTrue(controller.getPhysicalBooks(book).contains(physicalBook));
+    }
+
+    @Test
+    void deletePhysicalBookWhenBorrowingNotNull() {
+        physicalBook.setBorrower(customer);
+        assertThrows(BorrowingNotNullException.class, () -> {
+            controller.deletePhysicalBook("VOL01_01");
         });
         assertEquals(physicalBookListSize, controller.getPhysicalBooks(book).size());
         assertTrue(controller.getPhysicalBooks(book).contains(physicalBook));
