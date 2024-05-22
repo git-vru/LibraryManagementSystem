@@ -115,14 +115,14 @@ public class Controller {
         return true;
     }
 
-    public boolean modifyBook(String title, String author, LocalDate dateOfFirstPublication, String classificationNumber){
+    public boolean modifyBook(String isbn, String title, String author, String dateOfFirstPublication, String classificationNumber){
         return true;
     }
     public boolean modifyCustomer(String Fname, String Lname, LocalDate dob, LocalDate subscription){
         return true;
     }
 
-    public boolean addPhysicalBook(String id, String book, String borrower, String borrowedDate, String returnedDate, String fee){
+    public boolean addPhysicalBook(String isbn){
 
         return true;
     }
