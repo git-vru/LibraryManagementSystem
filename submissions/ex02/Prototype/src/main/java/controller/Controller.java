@@ -11,7 +11,6 @@ public class Controller {
     private Scanner sc;
     private final List<Customer> customers = new ArrayList<>();
     private final List<Book> books = new ArrayList<>();
-    private final List<Borrowing> borrowing = new ArrayList<>();
 
     public Controller() {
         sc = new Scanner(System.in);
@@ -35,14 +34,31 @@ public class Controller {
         return optionalBook.map(book -> this.books.get(this.books.indexOf(book))).orElse(null);
     }
 
-    public void createBorrowing(String bookId, String customerId) {
-        Customer customer = getCustomers().get(0);
-        PhysicalBook book = getBooks().get(0).getBookList().get(0);
-        Borrowing borrowing = new Borrowing(book, customer, LocalDate.now(), (LocalDate.now()).plusDays(20));
+    public boolean borrowBook(String customerId, String bookId) {
+        Customer customer = searchCustomer(customerId);
+        PhysicalBook physicalBook = getBooks().get(0).getBookList().get(0);
 
-        getBorrowing().add(borrowing);
-        customer.getBorrowedList().add(borrowing);
-        book.setBorrower(customer);
+        if (customer == null || physicalBook == null) return false;
+
+        customer.getBorrowedList().add(physicalBook);
+        physicalBook.setBorrower(customer);
+
+        return true;
+    }
+
+    public boolean returnBook(String customerId, String bookId) {
+        Customer customer = searchCustomer(customerId);
+        PhysicalBook physicalBook = getBooks().get(0).getBookList().get(0);
+
+        if (physicalBook.getFee() == 0) {
+            customer.getBorrowedList().remove(physicalBook);
+            // physicalBook.setReturnedDate(some date);
+            physicalBook.setBorrower(null);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public boolean deleteBook(String isbn) {
@@ -72,10 +88,6 @@ public class Controller {
        return this.customers.remove(optionalCustomer.get());
     }
 
-    public boolean deleteBorrowing(String id) {
-        return true;
-    }
-
     public void setMenu(View menu) {
         this.menu = menu;
         this.menu.show();
@@ -103,9 +115,5 @@ public class Controller {
 
     public List<Book> getBooks() {
         return books;
-    }
-
-    public List<Borrowing> getBorrowing() {
-        return borrowing;
     }
 }

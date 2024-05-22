@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,7 +11,7 @@ public class Customer {
     private String lastName;
     private final LocalDate dob;
     private final LocalDate subscriptionDate;
-    private final Set<Borrowing> borrowedList;
+    private final ArrayList<PhysicalBook> borrowedList;
 
     private static int ID_GENERATOR = 0;
 
@@ -22,7 +23,7 @@ public class Customer {
         ID_GENERATOR += 1;
         this.id = String.valueOf(ID_GENERATOR);
         this.subscriptionDate = java.time.LocalDate.now();
-        this.borrowedList = new HashSet<>();
+        this.borrowedList = new ArrayList<>();
     }
 
     public String getId() {
@@ -53,11 +54,11 @@ public class Customer {
         return subscriptionDate;
     }
 
-    public Set<Borrowing> getBorrowedList() {
+    public ArrayList<PhysicalBook> getBorrowedList() {
         return borrowedList;
     }
 
     public String toString() {
-        return String.format("First Name:%s\nLast Name:%s\nDOB:%s\nMember since:%s\n---\nBorrowed Book.s:\n...\n...", firstName, lastName, dob.toString(), subscriptionDate.toString());
+        return String.format("First Name: %s\nLast Name: %s\nDOB: %s\nMember since: %s\n---\nBorrowed Books:\n...\n...", firstName, lastName, dob.toString(), subscriptionDate.toString());
     }
 }

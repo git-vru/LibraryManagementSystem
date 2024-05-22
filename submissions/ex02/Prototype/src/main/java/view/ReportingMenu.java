@@ -1,13 +1,6 @@
 package view;
-
-import model.Book;
-import model.Borrowing;
-import model.Customer;
-import model.PhysicalBook;
-import view.*;
 import controller.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +29,6 @@ public class ReportingMenu extends View {
                     "Ex: Please type : 'create <Book Id>,<Customer Id>,<Start Date>,<End Date>'" +
                     "or 'import <filepath>");
 
-            controller.createBorrowing("Book Id", "Customer Id");
             super.promptAndExit("Book with new id XYZ was successfully added!");
             this.show();
         }
