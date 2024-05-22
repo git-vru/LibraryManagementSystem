@@ -95,9 +95,22 @@ public class Controller {
        return this.customers.remove(optionalCustomer.get());
     }
 
-    public void deletePhysicalBook (String id){
+    public PhysicalBook searchPhysicalBook(String id){
         PhysicalBook book = null;
         // Optional<PhysicalBook> optionalPhysicalBook = this.books.values().tostream().filter(physicalBook -> physicalBook.getId().equals(id)).findFirst();
+        for (List<PhysicalBook> list : books.values()) {
+            for (PhysicalBook physicalBook : list) {
+                if (physicalBook.getId().equals(id)) {
+                    book = physicalBook;
+                    break;
+                }
+            }
+        }
+        return book;
+    }
+
+    public void deletePhysicalBook(String id){
+        PhysicalBook book = null;
         for (List<PhysicalBook> list : books.values()) {
             list.removeIf(physicalBook -> physicalBook.getId().equals(id) && physicalBook.getBorrower() != null);
         }

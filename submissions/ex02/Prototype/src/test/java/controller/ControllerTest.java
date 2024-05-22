@@ -28,6 +28,7 @@ class ControllerTest {
         controller.getCustomers().add(customer);
         customerListSize = controller.getCustomers().size();
         bookListSize = controller.getBooks().size();
+        physicalBookList = controller.getPhysicalBooks(book).size();
     }
 
     @Test
