@@ -17,7 +17,7 @@ class ControllerTest {
     int customerListSize;
     int physicalBookList;
     Controller controller = new Controller();
-    Book book = new Book("Candide", "Voltaire","isbn", LocalDate.of(1759, 1, 1), "VOL01");
+    Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01");
     PhysicalBook physicalBook = new PhysicalBook(book);
     Customer customer = new Customer("Vrushabh", "Jain", LocalDate.of(2004, 10, 30));
 
