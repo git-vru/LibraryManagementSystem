@@ -95,6 +95,7 @@ public class Controller {
             throw new BorrowingNotNullException("This copy is still borrowed by someone.");
         }
 
+        optionalBook.get().getBook().decreaseCopyCount();
         this.books.get(optionalBook.get().getBook()).remove(optionalBook.get());
     }
 
@@ -110,7 +111,6 @@ public class Controller {
     }
 
     public boolean addBookCopy(String isbn){
-
         return true;
     }
 

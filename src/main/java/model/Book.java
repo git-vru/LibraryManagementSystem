@@ -63,7 +63,11 @@ public class Book {
         this.copyCount++;
     }
 
+    public void decreaseCopyCount() {
+        this.copyCount--;
+    }
+
     public String toString() {
-        return String.format("Classification Number:%s\nTitle:%s\nAuthor:%s\nDate of first publication:%s\n---\n", classificationNumber, title, author, publicationDate.toString());
+        return String.format("Classification Number:%s\nTitle:%s\nAuthor:%s\nDate of first publication:%s\nNb of physical copies:%d\n---\n", classificationNumber, title, author, publicationDate.toString(), copyCount);
     }
 }
