@@ -11,6 +11,14 @@
 ## Execute the test
 1. Go in test file (```src/test/java/controller/ControllerTest.java```) and click on the first green play button, then ```Run ControllerTest```.
 
+## How to calculate the Coverage test
+1. Go in test file (```src/test/java/controller/ControllerTest.java```) and click on the ```Run``` button.
+2. choose ```Edit Configurations```.
+3. click on ```Modify options```.
+4. click on ```Specify alternative coverage runner```.
+5. choose ```JaCoCo``` in ```Choose coverage runner```.
+6. go to the src>test>java>run 'Tests in Prototype.test' with coverage
+
 ## Usage of the Core Processes
 #### 1. Delete a book (via ISBN):
 Navigate to the book menu `0`, then search for a book `0`. After entering the correct ISBN, select delete book `0`.
@@ -23,4 +31,6 @@ Navigate to the customer menu `1`, then search for a customer `0`. After enterin
 
 - If the green button doesn't appear or you can't run the program, please make sure that you open the right folder.
 - If the problem persists, please check your JDK version and your Gradle version.
+
+
 
