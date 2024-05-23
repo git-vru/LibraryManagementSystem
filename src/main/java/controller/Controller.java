@@ -19,15 +19,6 @@ public class Controller {
     public Controller() {
         sc = new Scanner(System.in);
         this.menu = new MainMenu(this);
-
-        this.customers.add(new Customer("Max", "Musterman", LocalDate.of(2024, 11, 1)));
-
-        Book book = new Book("Les Fleurs du Mal", "Charles Baudelaire", "978-2-290-11507-7", LocalDate.of(1857, 6, 21), "BAU01");
-        this.books.put(book, new ArrayList<>());
-
-        for (int i = 0; i < 3; i++) {
-            this.books.get(book).add(new PhysicalBook(book));
-        }
     }
 
     public Book searchBook(String isbn) {
@@ -36,31 +27,10 @@ public class Controller {
     }
 
     public boolean borrowBook(String customerId, String bookId) {
-        /*Customer customer = searchCustomer(customerId);
-        PhysicalBook physicalBook = getBooks().get(0).getBookList().get(0);
-
-        if (customer == null || physicalBook == null) return false;
-
-        customer.getBorrowedList().add(physicalBook);
-        physicalBook.setBorrower(customer);
-
-        return true;*/
         return false;
     }
 
     public boolean returnBook(String customerId, String bookId) {
-        /*Customer customer = searchCustomer(customerId);
-        PhysicalBook physicalBook = getBooks().get(0).getBookList().get(0);
-
-        if (physicalBook.getFee() == 0) {
-            customer.getBorrowedList().remove(physicalBook);
-            // physicalBook.setReturnedDate(some date);
-            physicalBook.setBorrower(null);
-            return true;
-        }
-        else {
-            return false;
-        }*/
         return false;
     }
 
@@ -71,7 +41,8 @@ public class Controller {
             throw new NoSuchElementException();
         }
 
-        if (this.books.get(optionalBook.get()).stream().anyMatch(physicalBook -> physicalBook.getBorrower() != null)) {
+        if (this.books.get(optionalBook.get()).stream()
+                .anyMatch(physicalBook -> physicalBook.getBorrower() != null)) {
             throw new BorrowingNotNullException("A physical copy of this book is still borrowed by someone.");
         }
 
@@ -104,18 +75,13 @@ public class Controller {
         this.customers.remove(optionalCustomer.get());
     }
 
-    public PhysicalBook searchPhysicalBook(String id){
-        PhysicalBook book = null;
-        // Optional<PhysicalBook> optionalPhysicalBook = this.books.values().tostream().filter(physicalBook -> physicalBook.getId().equals(id)).findFirst();
-        for (List<PhysicalBook> list : books.values()) {
-            for (PhysicalBook physicalBook : list) {
-                if (physicalBook.getId().equals(id)) {
-                    book = physicalBook;
-                    break;
-                }
+    public PhysicalBook searchPhysicalBook(Book book, String id){
+        for (PhysicalBook physicalBook : books.get(book)) {
+            if (physicalBook.getId().equals(id)) {
+                return  physicalBook;
             }
         }
-        return book;
+        return null;
     }
 
     public void deletePhysicalBook(String id) throws BorrowingNotNullException {

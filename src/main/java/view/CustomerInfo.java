@@ -1,7 +1,10 @@
 package view;
 
 import controller.Controller;
+import exceptions.BorrowingNotNullException;
 import model.Customer;
+
+import java.util.List;
 
 public class CustomerInfo extends View {
 
@@ -12,15 +15,39 @@ public class CustomerInfo extends View {
     }
 
     public void show() {
-        System.out.print("Please enter a customer id:");
+        Customer customer = null;
+        while (customer == null) {
+            System.out.print("Please enter a customer id:");
+            String customerId = controller.getScanner().next();
 
-        String customerId = controller.getScanner().next();
+            customer = controller.searchCustomer(customerId);
 
-        Customer c = controller.searchCustomer(customerId);
+            if (customer == null) {
+                System.out.println("---\nPlease enter a valid customer ID!\n");
+                continue;
+            }
 
-        this.name = "Customer Id: " + c.getId();
+            this.name = "Customer Id: " + customerId;
 
-        super.promptAndExit(c.toString());
+            System.out.printf("\t** %s **\n", customerId);
+            System.out.println(customer);
+
+            List<String> options = List.of("Delete the customer : " + customerId);
+
+            String input = super.prompt(options);
+
+            if (input.charAt(0) == '0') {
+                try  {
+                    controller.deleteCustomer(customerId);
+                    System.out.println("Customer with the id : " + customerId + " has been successfully deleted!");
+                } catch (BorrowingNotNullException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            else if (input.charAt(0) == 'q') {
+                break;
+            }
+        }
         prev.show();
     }
 }
