@@ -64,6 +64,8 @@ public class BookInfo extends View {
                     else {
                         try {
                             controller.deletePhysicalBook(physicalBookID);
+                            System.out.println("Book copy with the ID : " + physicalBookID + " has been successfully deleted!");
+                            break;
                         } catch (BorrowingNotNullException e) {
                             System.out.println(e.getMessage());
                         }

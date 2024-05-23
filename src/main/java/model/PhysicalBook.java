@@ -14,7 +14,8 @@ public class PhysicalBook {
     public PhysicalBook(Book book) {
         this.book = book;
         this.borrower = null;
-        this.id = book.getClassificationNumber() + "_01";
+        book.increaseCopyCount();
+        this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
     }
 
     public LocalDate getBorrowedDate() {

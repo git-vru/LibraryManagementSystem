@@ -11,12 +11,16 @@ public class Book {
     private final String author;
     private final LocalDate publicationDate;
 
+    private int copyCount;
+
     public Book(String title, String author, String isbn, LocalDate dateOfFirstPublication, String classificationNumber) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.publicationDate = dateOfFirstPublication;
         this.classificationNumber = classificationNumber;
+
+        copyCount = 0;
     }
 
 
@@ -47,6 +51,18 @@ public class Book {
 
     public void setClassificationNumber(String classificationNumber) {
         this.classificationNumber = classificationNumber;
+    }
+
+    public int getCopyCount() {
+        return copyCount;
+    }
+
+    public void setCopyCount(int copyCount) {
+        this.copyCount = copyCount;
+    }
+
+    public void increaseCopyCount() {
+        this.copyCount++;
     }
 
     public String toString() {
