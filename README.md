@@ -23,3 +23,4 @@ Navigate to the customer menu `1`, then search for a customer `0`. After enterin
 
 - If the green button doesn't appear or you can't run the program, please make sure that you open the right folder.
 - If the problem persists, please check your JDK version and your Gradle version.
+
