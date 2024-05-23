@@ -3,10 +3,9 @@ package view;
 import controller.Controller;
 import exceptions.BorrowingNotNullException;
 import model.Book;
-import model.PhysicalBook;
+import model.BookCopy;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class BookInfo extends View {
 
@@ -51,20 +50,20 @@ public class BookInfo extends View {
                 }
             }
             else if (input.charAt(0) == '1') {
-                PhysicalBook physicalBook = null;
-                while (physicalBook == null) {
-                    System.out.print("Please enter a physical book ID: ");
-                    String physicalBookID = controller.getScanner().next();
-                    if (physicalBookID.equals("q")) break;
+                BookCopy bookCopy = null;
+                while (bookCopy == null) {
+                    System.out.print("Please enter a book copy ID: ");
+                    String bookCopyID = controller.getScanner().next();
+                    if (bookCopyID.equals("q")) break;
 
-                    physicalBook = controller.searchPhysicalBook(book, physicalBookID);
-                    if (physicalBook == null) {
+                    bookCopy = controller.searchbookCopy(book, bookCopyID);
+                    if (bookCopy == null) {
                         System.out.println("---\nPlease enter a valid ID!\n");
                     }
                     else {
                         try {
-                            controller.deletePhysicalBook(physicalBookID);
-                            System.out.println("Book copy with the ID : " + physicalBookID + " has been successfully deleted!");
+                            controller.deleteBookCopy(bookCopyID);
+                            System.out.println("Book copy with the ID : " + bookCopyID + " has been successfully deleted!");
                             break;
                         } catch (BorrowingNotNullException e) {
                             System.out.println(e.getMessage());

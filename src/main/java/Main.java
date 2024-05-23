@@ -1,7 +1,7 @@
 import controller.Controller;
 import model.Book;
 import model.Customer;
-import model.PhysicalBook;
+import model.BookCopy;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ public class Main {
         controller.getBooks().put(book, new ArrayList<>());
 
         for (int i = 0; i < 3; i++) {
-            controller.getBooks().get(book).add(new PhysicalBook(book));
+            controller.getBooks().get(book).add(new BookCopy(book));
         }
         controller.getMenu().show();
     }

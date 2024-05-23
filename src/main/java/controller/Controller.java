@@ -2,7 +2,7 @@ package controller;
 
 import model.Book;
 import model.Customer;
-import model.PhysicalBook;
+import model.BookCopy;
 import view.MainMenu;
 import view.View;
 import exceptions.*;
@@ -14,7 +14,7 @@ public class Controller {
     private View menu;
     private Scanner sc;
     private final List<Customer> customers = new ArrayList<>();
-    private final Map<Book, List<PhysicalBook>> books = new HashMap<>();
+    private final Map<Book, List<BookCopy>> books = new HashMap<>();
 
     public Controller() {
         sc = new Scanner(System.in);
@@ -42,7 +42,7 @@ public class Controller {
         }
 
         if (this.books.get(optionalBook.get()).stream()
-                .anyMatch(physicalBook -> physicalBook.getBorrower() != null)) {
+                .anyMatch(bookCopy -> bookCopy.getBorrower() != null)) {
             throw new BorrowingNotNullException("A physical copy of this book is still borrowed by someone.");
         }
 
@@ -75,17 +75,17 @@ public class Controller {
         this.customers.remove(optionalCustomer.get());
     }
 
-    public PhysicalBook searchPhysicalBook(Book book, String id){
-        for (PhysicalBook physicalBook : books.get(book)) {
-            if (physicalBook.getId().equals(id)) {
-                return  physicalBook;
+    public BookCopy searchbookCopy(Book book, String id){
+        for (BookCopy bookCopy : books.get(book)) {
+            if (bookCopy.getId().equals(id)) {
+                return  bookCopy;
             }
         }
         return null;
     }
 
-    public void deletePhysicalBook(String id) throws BorrowingNotNullException {
-        Optional<PhysicalBook> optionalBook = this.books.values().stream().flatMap(Collection::stream).filter(physicalBook -> physicalBook.getId().equals(id)).findFirst();
+    public void deleteBookCopy(String id) throws BorrowingNotNullException {
+        Optional<BookCopy> optionalBook = this.books.values().stream().flatMap(Collection::stream).filter(bookCopy -> bookCopy.getId().equals(id)).findFirst();
 
         if (optionalBook.isEmpty()) {
             throw new NoSuchElementException();
@@ -109,7 +109,7 @@ public class Controller {
         return true;
     }
 
-    public boolean addPhysicalBook(String isbn){
+    public boolean addBookCopy(String isbn){
 
         return true;
     }
@@ -139,11 +139,11 @@ public class Controller {
         this.sc = sc;
     }
 
-    public Map<Book, List<PhysicalBook>> getBooks() {
+    public Map<Book, List<BookCopy>> getBooks() {
         return books;
     }
 
-    public List<PhysicalBook> getPhysicalBooks(Book book) {
+    public List<BookCopy> getBookCopys(Book book) {
         return books.get(book);
     }
 }

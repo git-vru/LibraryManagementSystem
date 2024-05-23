@@ -23,8 +23,6 @@ public class Book {
         copyCount = 0;
     }
 
-
-
     public Book getBook() {
         return this;
     }

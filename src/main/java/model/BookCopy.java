@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDate;
 
-public class PhysicalBook {
+public class BookCopy {
     private final String id;
     private final Book book;
     private Customer borrower;
@@ -11,7 +11,7 @@ public class PhysicalBook {
     private LocalDate returnedDate;
     private float fee;
 
-    public PhysicalBook(Book book) {
+    public BookCopy(Book book) {
         this.book = book;
         this.borrower = null;
         book.increaseCopyCount();

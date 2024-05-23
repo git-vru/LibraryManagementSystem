@@ -9,7 +9,7 @@ public class Customer {
     private String lastName;
     private LocalDate dob;
     private final LocalDate subscriptionDate;
-    private final ArrayList<PhysicalBook> borrowedList;
+    private final ArrayList<BookCopy> borrowedList;
 
     private static int ID_GENERATOR = 0;
 
@@ -56,7 +56,7 @@ public class Customer {
         return subscriptionDate;
     }
 
-    public ArrayList<PhysicalBook> getBorrowedList() {
+    public ArrayList<BookCopy> getBorrowedList() {
         return borrowedList;
     }
 
