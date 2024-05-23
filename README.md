@@ -11,6 +11,14 @@
 ## Execute the test
 1. Go in test file (```src/test/java/controller/ControllerTest.java```) and click on the first green play button, then ```Run ControllerTest```.
 
+## Usage of the Core Processes
+#### 1. Delete a book (via ISBN):
+Navigate to the book menu `0`, then search for a book `0`. After entering the correct ISBN, select delete book `0`.
+#### 2. Delete a book copy (via ID)
+Navigate to the book menu `0`, then search for a book `0`. After entering the correct ISBN, select delete a copy of this book `1`. Then enter a valid ID to delete the book copy.
+#### 3. Delete a customer (via ID)
+Navigate to the customer menu `1`, then search for a customer `0`. After entering the correct ID, select delete the customer `0`. 
+
 ## Troubleshooting
 
 - If the green button doesn't appear or you can't run the program, please make sure that you open the right folder.
