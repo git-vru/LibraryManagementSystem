@@ -27,6 +27,31 @@ Navigate to the book menu `0`, then search for a book `0`. After entering the co
 #### 3. Delete a customer (via ID)
 Navigate to the customer menu `1`, then search for a customer `0`. After entering the correct ID, select delete the customer `0`. 
 
+## Objects Example
+
+To properly test our prototype, we are creating some objects statically in the Main class and the Test class.
+You can also look at the following examples to see how the different objects are implemented.
+
+### Book
+| Title             | Author             | Isbn              | Publication Date | Classification Number |
+|-------------------|--------------------|-------------------|------------------|-----------------------|
+| Les Fleurs du Mal | Charles Baudelaire | 978-2-290-11507-7 | 21/06/1857       | BAU01                 |
+| Candide           | Voltaire           | isbn02            | 01/01/1759       | VOL01                 |
+
+
+### Customer
+| Id | First Name | Last Name  | Date of Birth | Subscription Date | Borrowing List                  |
+|----|------------|------------|---------------|-------------------|---------------------------------|
+| 1  | Max        | Mustermann | 01/11/2024    | Date of today     | Empty ArrayList                 |
+| 2  | Vrushabh   | Jain       | 30/10/2004    | 01/05/2024        | ArrayList<BookCopy1, BookCopy2> |
+
+
+### Book Copy
+| Id       | Book                    | Borrower    | Borrowed Date | Returned Date | Fee  |
+|----------|-------------------------|-------------|---------------|---------------|------|
+| VOL01_01 | Book                    | Customer<1> | 05/05/2024    | 20/05/2024    | 0.00 |
+| BAU01_01 | Book<978-2-290-11507-7> | null        | null          | null          | 0.00 |
+
 ## Troubleshooting
 
 - If the green button doesn't appear or you can't run the program, please make sure that you open the right folder.
