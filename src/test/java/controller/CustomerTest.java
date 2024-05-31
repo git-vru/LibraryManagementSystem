@@ -29,8 +29,6 @@ class CustomerTest {
         controller.getBookCopys(book).add(bookCopy);
         controller.getCustomers().add(customer);
         customerListSize = controller.getCustomers().size();
-
-
     }
 
     @Test

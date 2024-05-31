@@ -7,9 +7,9 @@ import model.BookCopy;
 
 import java.util.List;
 
-public class BookInfo extends View {
+public class BookSearch extends View {
 
-    public BookInfo(Controller controller, View prev) {
+    public BookSearch(Controller controller, View prev) {
         super(controller, prev);
         this.name = "Book Info";
     }
@@ -38,7 +38,7 @@ public class BookInfo extends View {
                     "Delete the book : " + book.getClassificationNumber(),
                     "Delete a copy of this book");
 
-            String input = super.prompt(options);
+            String input = super.promptOptions(options);
 
             if (input.charAt(0) == '0') {
                 try {

@@ -1,7 +1,6 @@
 package view;
 
 import controller.Controller;
-import exceptions.BorrowingNotNullException;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ public abstract class View {
     }
     public abstract void show();
 
-    public String prompt(List<String> options) {
+    public String promptOptions(List<String> options) {
         for (int i = 0; i < options.size(); i++) {
             System.out.printf("(%d) - %s\n", i, options.get(i));
         }
@@ -37,7 +36,7 @@ public abstract class View {
 
     public String promptMenu(List<String> options) {
         System.out.printf("\t** %s **\n", this.name);
-        return prompt(options);
+        return promptOptions(options);
     }
 
     public void promptAndExit(String s) {

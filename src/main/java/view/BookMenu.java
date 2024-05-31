@@ -24,7 +24,7 @@ public class BookMenu extends View {
         String input = super.promptMenu(options);
 
         if (input.charAt(0) == '0') {
-            controller.setMenu(new BookInfo(controller, this));
+            controller.setMenu(new BookSearch(controller, this));
         }
         else if (input.charAt(0) == '1') {
             System.out.println("A prompt to add a book will be displayed. " +

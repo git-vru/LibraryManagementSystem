@@ -34,7 +34,7 @@ public class CustomerInfo extends View {
 
             List<String> options = List.of("Delete the customer : " + customerId);
 
-            String input = super.prompt(options);
+            String input = super.promptOptions(options);
 
             if (input.charAt(0) == '0') {
                 try  {
