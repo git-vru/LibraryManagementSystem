@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class ReportingMenu extends View {
     private final List<String> options;
@@ -32,15 +33,15 @@ public class ReportingMenu extends View {
 
         switch (input.charAt(0)) {
             case '0':
-                List<String[]> bookList = controller.searchBook(Comparator.comparing(Book::getTitle)).stream().map(book -> book.toCsv().split(";")).toList();
+                List<String[]> bookList = controller.searchBook(book -> true, Comparator.comparing(Book::getTitle)).stream().map(book -> book.toCsv().split(";")).toList();
                 printTable("List of all books", new String[]{"%-50s", "%-30s", "%-7s", "%17s"}, new String[]{"TITLE", "AUTHOR", "DATE", "ISBN"}, bookList, 117);
                 break;
             case '1':
-                List<String[]> borrewedBookList = controller.searchThoughtBookCopies(BookCopy::isBorrowed).stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
+                List<String[]> borrewedBookList = controller.searchBookCopy(BookCopy::isBorrowed, Comparator.comparing(bookCopy -> bookCopy.getBorrower().getId())).stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
                 printTable("List of all borrowed book copies", new String[]{"%-50s", "%-30s", "%-7s", "%17s", "%11s", "%-10s", "%11s", "%-5s"}, new String[]{"TITLE", "AUTHOR", "DATE", "ISBN", "Borrower Id", "Start Date", "Return Date", "Fees"}, borrewedBookList, 166);
                 break;
             case '2':
-                List<String[]> notBorrewedBookList = controller.searchThoughtBookCopies(bookCopy -> !bookCopy.isBorrowed()).stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
+                List<String[]> notBorrewedBookList = controller.searchBookCopy(bookCopy -> !bookCopy.isBorrowed(), Comparator.comparing(bookCopy -> bookCopy.getBorrower().getId())).stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
                 printTable("List of all available book copies", new String[]{"%-50s", "%-30s", "%-7s", "%17s", "%11s", "%-10s", "%11s", "%-5s"}, new String[]{"TITLE", "AUTHOR", "DATE", "ISBN", "Borrower Id", "Start Date", "Return Date", "Fees"}, notBorrewedBookList, 166);
                 break;
             case '3':
@@ -50,7 +51,8 @@ public class ReportingMenu extends View {
                 System.out.println("Please enter a customer Id:");
                 String customerId = controller.getScanner().next();
 
-                List<String[]> borrowedBookListFromCustomer = controller.searchThoughtBookCopies(bookCopy -> bookCopy.isBorrowed() && bookCopy.getBorrower().getId().equals(customerId)).stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
+                Customer customer = controller.searchCustomer(c -> c.getId().equals(customerId), Comparator.comparing(Customer::getId)).get(0);
+                List<String[]> borrowedBookListFromCustomer = controller.searchCustomer(c -> c.getId().equals(customerId), Comparator.comparing(Customer::getId)).get(0).getBorrowedList().stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
                 printTable("List of all borrowed book copies for customer n°" + customerId, new String[]{"%-50s", "%-30s", "%-7s", "%17s", "%11s", "%-10s", "%11s", "%-5s"}, new String[]{"TITLE", "AUTHOR", "DATE", "ISBN", "Borrower Id", "Start Date", "Return Date", "Fees"}, borrowedBookListFromCustomer, 166);
                 break;
             default:

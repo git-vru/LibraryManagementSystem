@@ -25,6 +25,7 @@ public class Main {
             controller.getBooks().get(book).add(new BookCopy(book));
         }
 
+        controller.getCustomers().get(0).getBorrowedList().add(controller.getBooks().get(book).get(0));
         controller.getBooks().get(book).get(0).setBorrower(controller.getCustomers().get(0));
         controller.getBooks().get(book).get(0).setBorrowedDate(LocalDate.now());
         controller.getBooks().get(book).get(0).setReturnedDate(LocalDate.now().plusWeeks(2));

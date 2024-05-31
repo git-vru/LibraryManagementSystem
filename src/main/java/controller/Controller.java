@@ -23,27 +23,22 @@ public class Controller {
     }
 
     public Book searchBookViaIsbn(String isbn) {
-        Optional<Book> optionalBook = this.books.keySet().stream().filter(book -> book.getIsbn().equals(isbn)).findFirst();
-        return optionalBook.orElse(null);
-    }
-
-    public List<Book> searchBook(Comparator<Book> comparator) {
-        return this.books.keySet().stream().sorted(comparator).toList();
+        return searchBook(book -> book.getIsbn().equals(isbn), Comparator.comparing(Book::getTitle)).stream().findFirst().orElse(null);
     }
 
     public List<Book> searchBook(Predicate<Book> predicate, Comparator<Book> comparator) {
         return this.books.keySet().stream().filter(predicate).sorted(comparator).toList();
     }
 
-    public List<BookCopy> searchThoughtBookCopies(Predicate<BookCopy> predicate) {
+    public List<BookCopy> searchBookCopy(Predicate<BookCopy> predicate, Comparator<BookCopy> comparator) {
         return this.books.values().stream().reduce((list, bookCopyList) -> {
-            list.addAll(bookCopyList.stream().filter(predicate).toList());
+            list.addAll(bookCopyList.stream().filter(predicate).sorted(comparator).toList());
             return list;
         }).orElse(null);
     }
 
-    public List<BookCopy> borrewedBookList() {
-        return this.books.values().stream().reduce(new ArrayList<>(), (newList, bookCopyList) -> bookCopyList.stream().filter(BookCopy::isBorrowed).toList());
+    public List<Customer> searchCustomer(Predicate<Customer> predicate, Comparator<Customer> comparator) {
+        return this.customers.stream().filter(predicate).sorted(comparator).toList();
     }
 
     public boolean borrowBook(String customerId, String bookId) {
@@ -149,14 +144,6 @@ public class Controller {
 
     public View getMenu() {
         return menu;
-    }
-
-    public Scanner getSc() {
-        return sc;
-    }
-
-    public void setSc(Scanner sc) {
-        this.sc = sc;
     }
 
     public Map<Book, List<BookCopy>> getBooks() {
