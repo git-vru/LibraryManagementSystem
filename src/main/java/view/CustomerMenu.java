@@ -18,6 +18,7 @@ public class CustomerMenu extends View {
         this.options = new ArrayList<>();
         this.options.add("Search for a customer");
         this.options.add("Add a new customer");
+
     }
 
     public void show() {
@@ -25,6 +26,7 @@ public class CustomerMenu extends View {
 
         if (input.charAt(0) == '0') {
             controller.setMenu(new CustomerInfo(controller, this));
+
         }
         else if (input.charAt(0) == '1') {
             System.out.println("A prompt to add a customer will be displayed. " +

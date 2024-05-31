@@ -19,6 +19,9 @@ public class Main {
         for (int i = 0; i < 3; i++) {
             controller.getBooks().get(book).add(new BookCopy(book));
         }
+
         controller.getMenu().show();
+
+
     }
 }

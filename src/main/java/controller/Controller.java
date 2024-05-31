@@ -3,6 +3,7 @@ package controller;
 import model.Book;
 import model.Customer;
 import model.BookCopy;
+import view.BookMenu;
 import view.MainMenu;
 import view.View;
 import exceptions.*;
@@ -30,9 +31,6 @@ public class Controller {
         return false;
     }
 
-    public boolean returnBook(String customerId, String bookId) {
-        return false;
-    }
 
     public void deleteBook(String isbn) throws BorrowingNotNullException {
         Optional<Book> optionalBook = this.books.keySet().stream().filter(book -> book.getIsbn().equals(isbn)).findFirst();
@@ -81,6 +79,11 @@ public class Controller {
                 return  bookCopy;
             }
         }
+        return null;
+    }
+
+    public BookCopy searchbookCopy(String id) {
+
         return null;
     }
 

@@ -16,6 +16,7 @@ public class ReportingMenu extends View {
         this.options = new ArrayList<>();
         this.options.add("Search for a borrowing");
         this.options.add("Add a new borrowing");
+        this.options.add("Return a borrowing");
     }
 
     public void show() {
@@ -25,12 +26,29 @@ public class ReportingMenu extends View {
             controller.setMenu(new ReportingInfo(controller, this));
         }
         else if (input.charAt(0) == '1') {
-            System.out.println("A prompt to add a borrowing will be displayed. " +
-                    "Alternatively a csv file can be imported\n" +
-                    "Ex: Please type : 'create <Book Id>,<Customer Id>,<Start Date>,<End Date>'" +
-                    "or 'import <filepath>");
+            System.out.println("Please enter customer id and book id: ");
+            String customerId = controller.getScanner().next();
+            String bookCopyId = controller.getScanner().next();
 
-            super.promptAndExit("Book with new id XYZ was successfully added!");
+            try {
+                controller.borrowBookCopy(controller.searchCustomer(customerId),controller.searchbookCopy(controller.searchBook("1"),bookCopyId));
+                super.promptAndExit("Book was successfully borrowed!");
+            }   catch (IllegalArgumentException illegalArgumentException) {
+                super.promptAndExit(illegalArgumentException.getMessage());
+            }
+
+            this.show();
+        }
+        else if (input.charAt(0) == '2') {
+            System.out.println("Please enter customer id and book id: ");
+
+            try {
+                controller.returnBookCopy(controller.searchCustomer(controller.getScanner().next()), controller.searchbookCopy(controller.searchBook("1"),controller.getScanner().next()));
+                super.promptAndExit("Book was successfully returned!");
+            }   catch (IllegalArgumentException illegalArgumentException) {
+                super.promptAndExit(illegalArgumentException.getMessage());
+            }
+
             this.show();
         }
         else {
