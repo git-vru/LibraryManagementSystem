@@ -119,7 +119,36 @@ public class Controller {
         this.menu.show();
     }
 
-    public Scanner getScanner() {
+    public void borrowBookCopy(Customer customer, BookCopy bookCopy) {
+        if (bookCopy.getBorrower()==null) {
+            bookCopy.setBorrower(customer);
+            bookCopy.setBorrowedDate(LocalDate.now());
+            bookCopy.setReturnedDate(LocalDate.now().plusWeeks(2));
+            customer.getBorrowedList().add(bookCopy);
+        } else {
+            throw new IllegalArgumentException("BookCopy is already borrowed!");
+        }
+
+    }
+
+    public void returnBookCopy(Customer customer, BookCopy bookCopy) {
+        if (customer.getBorrowedList().contains(bookCopy)){
+            bookCopy.setBorrower(null);
+            bookCopy.setBorrowedDate(null);
+            bookCopy.setReturnedDate(null);
+            customer.getBorrowedList().remove(bookCopy);
+        } else {
+            throw new IllegalArgumentException("BookCopy is not borrowed!");
+        }
+
+
+    }
+
+
+
+
+
+        public Scanner getScanner() {
         return this.sc;
     }
 
