@@ -1,8 +1,6 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Book {
     private String classificationNumber;
@@ -67,7 +65,18 @@ public class Book {
         this.copyCount--;
     }
 
+    //TODO: Title, Authors, ISBN, !ID, !Shelf Location, !Borrowing Status, !Borrow Date
     public String toString() {
-        return String.format("Classification Number:%s\nTitle:%s\nAuthor:%s\nDate of first publication:%s\nNb of physical copies:%d\n---\n", classificationNumber, title, author, publicationDate.toString(), copyCount);
+        return String.format(
+                """
+                Title: %s
+                Author: %s
+                ISBN: %s
+                Classification Number: %s
+                Publication Date: %s
+                # of physical copies: %d
+                """,
+                title, author, isbn, classificationNumber, publicationDate.toString(), copyCount
+        );
     }
 }
