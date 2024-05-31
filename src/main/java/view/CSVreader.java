@@ -1,3 +1,5 @@
+package view;
+
 import controller.Controller;
 import model.Book;
 import model.BookCopy;
@@ -5,6 +7,7 @@ import model.Customer;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,25 +27,24 @@ public class CSVreader {
     public List<Book> makeBooks(String path) throws FileNotFoundException {
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
-            reader.readLine();
+            //reader.readLine();
 
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 5) {
-                    String classificationNumber = parts[0].trim();
-                    String isbn = parts[1].trim();
-                    String title = parts[2].trim();
-                    String author = parts[3].trim();
-                    LocalDate publicationDate = LocalDate.parse(parts[4].trim());
-
-                    Book book = new Book(title, author, isbn, publicationDate, classificationNumber);
+                if (parts.length == 4) {
+                    String isbn = parts[0].trim();
+                    String title = parts[1].trim();
+                    String author = parts[2].trim();
+                    Year year = Year.parse(parts[3].trim());
+                    LocalDate publicationDate = LocalDate.of(year.getValue(), 1,1);
+                    Book book = new Book(title, author, isbn, publicationDate, "SUPA_DIGGA");
                     importedBooks.add(book);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return importedBooks    ;
+        return importedBooks;
     }
     public List<BookCopy> makeBookCopies(String path) throws FileNotFoundException {
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
