@@ -1,8 +1,6 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Book {
     private String classificationNumber;
@@ -69,5 +67,9 @@ public class Book {
 
     public String toString() {
         return String.format("Classification Number:%s\nTitle:%s\nAuthor:%s\nDate of first publication:%s\nNb of physical copies:%d\n---\n", classificationNumber, title, author, publicationDate.toString(), copyCount);
+    }
+
+    public String toCsv() {
+        return String.format("%s;%s;%tm/%tY;%s", title, author, publicationDate, publicationDate, isbn);
     }
 }

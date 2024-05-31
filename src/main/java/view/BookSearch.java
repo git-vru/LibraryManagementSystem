@@ -22,7 +22,7 @@ public class BookSearch extends View {
             String bookISBN = controller.getScanner().next();
             if (bookISBN.equals("q")) break;
 
-            book = controller.searchBook(bookISBN);
+            book = controller.searchBookViaIsbn(bookISBN);
 
             if (book == null) {
                 System.out.println("---\nPlease enter a valid ISBN!\n");

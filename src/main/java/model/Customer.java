@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Customer {
     private final String id;
@@ -56,11 +57,15 @@ public class Customer {
         return subscriptionDate;
     }
 
-    public ArrayList<BookCopy> getBorrowedList() {
+    public List<BookCopy> getBorrowedList() {
         return borrowedList;
     }
 
     public String toString() {
         return String.format("First Name: %s\nLast Name: %s\nDOB: %s\nMember since: %s\n---\nBorrowed Books:\n...\n...", firstName, lastName, dob.toString(), subscriptionDate.toString());
+    }
+
+    public String toCsv() {
+        return String.format("%s;%s;%s;%td/%tm/%tY;%td/%tm/%tY;%d", id, firstName, lastName, dob, dob, dob, subscriptionDate, subscriptionDate, subscriptionDate, borrowedList.size());
     }
 }

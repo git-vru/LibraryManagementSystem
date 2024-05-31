@@ -9,6 +9,7 @@ import exceptions.*;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class Controller {
     private View menu;
@@ -21,9 +22,28 @@ public class Controller {
         this.menu = new MainMenu(this);
     }
 
-    public Book searchBook(String isbn) {
+    public Book searchBookViaIsbn(String isbn) {
         Optional<Book> optionalBook = this.books.keySet().stream().filter(book -> book.getIsbn().equals(isbn)).findFirst();
         return optionalBook.orElse(null);
+    }
+
+    public List<Book> searchBook(Comparator<Book> comparator) {
+        return this.books.keySet().stream().sorted(comparator).toList();
+    }
+
+    public List<Book> searchBook(Predicate<Book> predicate, Comparator<Book> comparator) {
+        return this.books.keySet().stream().filter(predicate).sorted(comparator).toList();
+    }
+
+    public List<BookCopy> searchThoughtBookCopies(Predicate<BookCopy> predicate) {
+        return this.books.values().stream().reduce((list, bookCopyList) -> {
+            list.addAll(bookCopyList.stream().filter(predicate).toList());
+            return list;
+        }).orElse(null);
+    }
+
+    public List<BookCopy> borrewedBookList() {
+        return this.books.values().stream().reduce(new ArrayList<>(), (newList, bookCopyList) -> bookCopyList.stream().filter(BookCopy::isBorrowed).toList());
     }
 
     public boolean borrowBook(String customerId, String bookId) {
