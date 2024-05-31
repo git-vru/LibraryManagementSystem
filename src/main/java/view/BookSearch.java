@@ -37,23 +37,23 @@ public class BookSearch extends View {
             prev.show();
         }
         else if (foundBooks.size() == 1) {
-            System.out.println("Found only 1 book with the author name: " + token);
+            System.out.println("Found only 1 book with the given token: " + token);
             book = foundBooks.get(0);
-            System.out.println(book.getTitle() + " - " + book.getIsbn());
+            System.out.println(book);
         }
         else {
             System.out.println("Select the book you want to operate on.");
-            List<String> foundBookSelectionMenu =
-                    foundBooks.stream()
+            List<String> foundBookSelectionMenu = foundBooks.stream()
                             .map(Book::toString)
                             .toList();
             inputChar = super.promptOptions(foundBookSelectionMenu);
-            book = foundBooks.get(inputChar-'0');
+            if (inputChar == 'q') prev.show();
+            else book = foundBooks.get(inputChar-'0');
         }
 
         List<String> options = List.of(
-                "Delete the book : " + book.getIsbn(),
-                "Delete a copy of this book"
+                "Delete the book : " + book.getTitle() + " - " + book.getIsbn(),
+                "Delete a copy of this book."
         );
 
         inputChar = super.promptOptions(options);
