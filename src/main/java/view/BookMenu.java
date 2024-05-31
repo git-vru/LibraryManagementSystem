@@ -21,18 +21,18 @@ public class BookMenu extends View {
     }
 
     public void show() {
-        String input = super.promptMenu(options);
+        char inputChar = super.promptMenu(options);
 
-        if (input.charAt(0) == '0') {
+        if (inputChar == '0') {
             controller.setMenu(new BookSearch(controller, this));
         }
-        else if (input.charAt(0) == '1') {
+        else if (inputChar == '1') {
             System.out.println("A prompt to add a book will be displayed. " +
                     "Alternatively a csv file can be imported\n" +
                     "Ex: Please type : 'create <Title>,<Author>,<Date of publication>,<classification number>,<nb of copies>'" +
                     "or 'import <filepath>");
 
-            controller.getBooks().put(new Book("Les Fleurs du Mal", "Charles Baudelaire", "isbn", LocalDate.of(1857, 6, 21), "BAU01"), new ArrayList<>());
+            controller.getBookDatabase().put(new Book("Les Fleurs du Mal", "Charles Baudelaire", "isbn", LocalDate.of(1857, 6, 21), "BAU01"), new ArrayList<>());
             super.promptAndExit("Book with new id XYZ was successfully added!");
             this.show();
         }

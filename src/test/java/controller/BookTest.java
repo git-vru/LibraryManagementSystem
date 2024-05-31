@@ -14,8 +14,6 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BookTest {
-
-
         int bookListSize;
         Controller controller = new Controller();
         Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01");
@@ -24,18 +22,17 @@ public class BookTest {
 
         @BeforeEach
         void setUp() {
-            controller.getBooks().put(book, new ArrayList<>());
+            controller.getBookDatabase().put(book, new ArrayList<>());
             controller.getBookCopys(book).add(bookCopy);
             controller.getCustomers().add(customer);
-            bookListSize = controller.getBooks().size();
-
+            bookListSize = controller.getBookDatabase().size();
         }
 
         @Test
         void deleteBookSuccessfully() throws BorrowingNotNullException {
             controller.deleteBook("isbn02");
-            assertEquals(bookListSize - 1, controller.getBooks().size());
-            assertFalse(controller.getBooks().containsKey(book));
+            assertEquals(bookListSize - 1, controller.getBookDatabase().size());
+            assertFalse(controller.getBookDatabase().containsKey(book));
         }
 
         @Test
@@ -43,8 +40,8 @@ public class BookTest {
             assertThrows(NoSuchElementException.class, () -> {
                 controller.deleteBook("wrong isbn");
             });
-            assertEquals(bookListSize, controller.getBooks().size());
-            assertTrue(controller.getBooks().containsKey(book));
+            assertEquals(bookListSize, controller.getBookDatabase().size());
+            assertTrue(controller.getBookDatabase().containsKey(book));
         }
 
         @Test
@@ -54,17 +51,15 @@ public class BookTest {
             assertThrows(BorrowingNotNullException.class, () -> {
                 controller.deleteBook("isbn02");
             });
-            assertEquals(bookListSize, controller.getBooks().size());
-            assertTrue(controller.getBooks().containsKey(book));
+            assertEquals(bookListSize, controller.getBookDatabase().size());
+            assertTrue(controller.getBookDatabase().containsKey(book));
         }
-
-
 
         @Test
         void addBookSuccessfully() {
             assertTrue(controller.addBook("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", "1968-05-01", "DIC01"));
-            assertEquals(bookListSize + 1, controller.getBooks().size());
-            assertTrue(controller.getBooks().containsKey(book));
+            assertEquals(bookListSize + 1, controller.getBookDatabase().size());
+            assertTrue(controller.getBookDatabase().containsKey(book));
 
             assertEquals("Do Androids Dream of Electric Sheep?", book.getTitle());
             assertEquals("Philip K. Dick", book.getAuthor());
@@ -78,32 +73,32 @@ public class BookTest {
             assertThrows(IllegalArgumentException.class, () -> {
                 controller.addBook("", "author","isbn", "2024-05-23", "classificationNumber");
             });
-            assertEquals(bookListSize, controller.getBooks().size());
-            assertTrue(controller.getBooks().containsKey(book));
+            assertEquals(bookListSize, controller.getBookDatabase().size());
+            assertTrue(controller.getBookDatabase().containsKey(book));
 
             assertThrows(IllegalArgumentException.class, () -> {
                 controller.addBook("title", "","isbn", "2024-05-23", "classificationNumber");
             });
-            assertEquals(bookListSize, controller.getBooks().size());
-            assertTrue(controller.getBooks().containsKey(book));
+            assertEquals(bookListSize, controller.getBookDatabase().size());
+            assertTrue(controller.getBookDatabase().containsKey(book));
 
             assertThrows(IllegalArgumentException.class, () -> {
                 controller.addBook("title", "author","", "2024-05-23", "classificationNumber");
             });
-            assertEquals(bookListSize, controller.getBooks().size());
-            assertTrue(controller.getBooks().containsKey(book));
+            assertEquals(bookListSize, controller.getBookDatabase().size());
+            assertTrue(controller.getBookDatabase().containsKey(book));
 
             assertThrows(IllegalArgumentException.class, () -> {
                 controller.addBook("title", "author","isbn", "24-24-24", "classificationNumber");
             });
-            assertEquals(bookListSize, controller.getBooks().size());
-            assertTrue(controller.getBooks().containsKey(book));
+            assertEquals(bookListSize, controller.getBookDatabase().size());
+            assertTrue(controller.getBookDatabase().containsKey(book));
 
             assertThrows(IllegalArgumentException.class, () -> {
                 controller.addBook("title", "author","isbn", "2024-05-23", "");
             });
-            assertEquals(bookListSize, controller.getBooks().size());
-            assertTrue(controller.getBooks().containsKey(book));
+            assertEquals(bookListSize, controller.getBookDatabase().size());
+            assertTrue(controller.getBookDatabase().containsKey(book));
         }
 
         @Test
@@ -136,7 +131,7 @@ public class BookTest {
                 controller.modifyBook(modifiedBook,"a", "b", "c", "");
             });
 
-            assertEquals(bookListSize, controller.getBooks().size());
+            assertEquals(bookListSize, controller.getBookDatabase().size());
             assertEquals(book.getTitle(), modifiedBook.getTitle());
             assertEquals(book.getAuthor(),modifiedBook.getAuthor());
             assertEquals(book.getPublicationDate(), modifiedBook.getPublicationDate());
