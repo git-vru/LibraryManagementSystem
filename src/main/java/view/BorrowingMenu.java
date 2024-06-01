@@ -19,12 +19,12 @@ public class BorrowingMenu extends View {
     }
 
     public void show() {
-        String input = super.promptMenu(options);
+        char input = super.promptMenu(options);
 
-        if (input.charAt(0) == '0') {
+        if (input == '0') {
             controller.setMenu(new BorrowingInfo(controller, this));
         }
-        else if (input.charAt(0) == '1') {
+        else if (input == '1') {
             System.out.println("A prompt to add a borrowing will be displayed. " +
                     "Alternatively a csv file can be imported\n" +
                     "Ex: Please type : 'create <Book Id>,<Customer Id>,<Start Date>,<End Date>'" +

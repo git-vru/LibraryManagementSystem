@@ -26,9 +26,9 @@ public class ReportingMenu extends View {
 
     @Override
     public void show() {
-        String input = super.promptMenu(this.options);
+        char input = super.promptMenu(this.options);
 
-        switch (input.charAt(0)) {
+        switch (input) {
             case '0':
                 List<String[]> bookList = controller.searchBook(book -> true, Comparator.comparing(Book::getTitle)).stream().map(book -> book.toCsv().split(";")).toList();
                 printTable("List of all books", bookList, Book.FORMAT, Book.COLUMN_NAMES );
@@ -52,11 +52,9 @@ public class ReportingMenu extends View {
                 printTable("List of all borrowed book copies for customer n°" + customerId, borrowedBookListFromCustomer, BookCopy.FORMAT, BookCopy.COLUMN_NAMES );
                 break;
             default:
+                prev.show();
                 break;
         }
-
-        super.promptAndExit("");
-        this.show();
     }
 
     public void printTable(String name, List<String[]> rows, String[] format, String[] columnNames) {
@@ -82,5 +80,8 @@ public class ReportingMenu extends View {
         }
 
         System.out.printf("%s%n", "-".repeat(lineSize));
+
+        super.promptAndExit("");
+        this.show();
     }
 }

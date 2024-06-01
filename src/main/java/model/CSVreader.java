@@ -45,7 +45,7 @@ public class CSVreader {
                 boolean isBorrowed = parts[6].trim().equals("1");
         /*todo*/LocalDate borrowDate = LocalDate.of(1,1,1);
                 Book book = new Book(title, author, isbn, publicationDate, classificationNumber);
-                BookCopy bookCopy = new BookCopy(book, id, isBorrowed, borrowDate);
+                BookCopy bookCopy = new BookCopy(book);
                 importedBookCopies.add(bookCopy);
             }
         } catch (IOException ignored) {}

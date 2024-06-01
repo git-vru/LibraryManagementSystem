@@ -31,10 +31,13 @@ public class Controller {
     }
 
     public List<BookCopy> searchBookCopy(Predicate<BookCopy> predicate, Comparator<BookCopy> comparator) {
-        return this.bookDatabase.values().stream().reduce((list, bookCopyList) -> {
-            list.addAll(bookCopyList.stream().filter(predicate).sorted(comparator).toList());
-            return list;
-        }).orElse(null);
+        List<BookCopy> list = new ArrayList<>();
+
+        this.bookDatabase.values().forEach(bookCopyList -> {
+            list.addAll(bookCopyList.stream().filter(predicate).toList());
+        });
+
+        return list.stream().sorted(comparator).toList();
     }
 
     public List<Customer> searchCustomer(Predicate<Customer> predicate, Comparator<Customer> comparator) {
