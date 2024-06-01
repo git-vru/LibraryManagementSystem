@@ -35,12 +35,12 @@ public class BookMenu extends View {
         if (inputChar == '0') {
             controller.setMenu(new BookSearch(controller, this));
         }
-        else if (input.charAt(0) == '1') {
+        else if (inputChar == '1') {
             //controller.setMenu(new ImportBook(controller,this));
-            input = super.promptOptions(options2);
-            if (input.charAt(0) == '0'){
+            inputChar = super.promptOptions(options2);
+            if (inputChar == '0'){
                 addNewBook();
-            } else if (input.charAt(0) == '1') {
+            } else if (inputChar == '1') {
                 importBooksFromCSV();
             }
             else {
@@ -54,6 +54,10 @@ public class BookMenu extends View {
             prev.show();
         }
     }
+
+    //ToDo: Go back to BookMenu when import over (successful)
+    //ToDo: Handle when wrong path given and other errors
+    //ToDo: Create test cases
     private void importBooksFromCSV() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter the path to the CSV file:");

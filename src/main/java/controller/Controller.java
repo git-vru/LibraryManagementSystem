@@ -39,6 +39,7 @@ public class Controller {
 
         List<Book> books = bookDatabase.keySet().stream().toList();
 
+        //? If looking for a book by name or author, shouldn't give all occurrences that contains the given token
         for (Book book : books) {
             if (by == 0) value = book.getIsbn();
             else if (by == 1) value = book.getTitle();

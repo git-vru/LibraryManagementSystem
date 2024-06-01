@@ -54,7 +54,7 @@ public class CSVreader {
                 String[] parts = line.split(",");
                 if (parts.length == 1) {
                     String isbn = parts[0].trim();
-                    BookCopy bookCopy = new BookCopy(controller.searchBook(isbn));
+                    BookCopy bookCopy = new BookCopy(controller.searchBook(1, isbn).get(0));
                     importedBookCopies.add(bookCopy);
                 }
             }
