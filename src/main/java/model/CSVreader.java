@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVreader {
-    public CSVreader() {
-    }
-
     // CSV Format: ISBN, Title, Author, Year, Classification Number
     public static List<Book> makeBooks(String path) throws FileNotFoundException {
         List<Book> importedBooks = new ArrayList<>();
@@ -45,13 +42,12 @@ public class CSVreader {
                 boolean isBorrowed = parts[6].trim().equals("1");
         /*todo*/LocalDate borrowDate = LocalDate.of(1,1,1);
                 Book book = new Book(title, author, isbn, publicationDate, classificationNumber);
-                BookCopy bookCopy = new BookCopy(book);
+                BookCopy bookCopy = new BookCopy(book, id, isBorrowed, borrowDate);
                 importedBookCopies.add(bookCopy);
             }
         } catch (IOException ignored) {}
         return importedBookCopies;
     }
-    //
 
     // CSV Format: ID, FirstName, LastName, Date of Birth, Subscription Date
     public static List<Customer> makeCustomer(String path) throws FileNotFoundException {

@@ -1,8 +1,12 @@
 package model;
 
+import view.View;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Collections.max;
 
 public class Customer {
     public final static String[] FORMAT = new String[]{"%8s", "%-30s", "%-30s", "%20s", "%10s"};
@@ -78,8 +82,24 @@ public class Customer {
         return borrowedList;
     }
 
+
     public String toString() {
-        return String.format("First Name: %s\nLast Name: %s\nDOB: %s\nMember since: %s\n---\nBorrowed Books:\n...\n...", firstName, lastName, dateOfBirth.toString(), subscriptionDate.toString());
+        List<String> data = List.of(id, firstName, lastName, dateOfBirth.toString(), subscriptionDate.toString());
+        String fullName = firstName + " " + lastName;
+        int maxLength = max(data.stream().map(String::length).toList());
+
+        String header = View.addPadding2Text(fullName, 20 + maxLength);
+
+        return String.format(
+                "┌────────────────────" + "─".repeat(maxLength+2) + "┐\n" +
+                        "│ %s│\n" +
+                        "├───────────────────┬" + "─".repeat(maxLength+2) + "┤\n" +
+                        "│ ID                │ %-" + maxLength + "s │\n" +
+                        "│ Date of Birth     │ %-" + maxLength + "s │\n" +
+                        "│ Subscription Date │ %-" + maxLength + "s │\n" +
+                        "└───────────────────┴" + "─".repeat(maxLength+2) + "┘",
+                header, id, dateOfBirth, subscriptionDate
+        );
     }
 
     public String toCsv() {

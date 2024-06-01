@@ -12,13 +12,11 @@ import java.util.Scanner;
 public class BookMenu extends View {
     private final List<String> options1;
     private final List<String> options2;
-    private final CSVreader reader;
 
     public BookMenu(Controller controller, View prev) {
         super(controller, prev);
 
         this.name = "Book Menu";
-        this.reader = new CSVreader();
         this.options1 = List.of("Search for a book", "Add a new book");
         this.options2 = List.of("Add Single Book", "Import Books from CSV file");
     }
@@ -46,7 +44,7 @@ public class BookMenu extends View {
         String filePath = scanner.nextLine().trim();
 
         try {
-            List<Book> importedBooks = reader.makeBooks(filePath);
+            List<Book> importedBooks = CSVreader.makeBooks(filePath);
             if (!importedBooks.isEmpty()) System.out.println("Imported Books:");
             for (Book book : importedBooks) {
                 System.out.println(book);
@@ -56,6 +54,7 @@ public class BookMenu extends View {
             System.err.println("An error occurred while reading the CSV file: " + e.getMessage());
         }
     }
+
     private void addNewBook() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please type : 'create <ISBN>,<Title>,<Author>,<PublicationYear(YYYY-MM-DD)>'");
@@ -71,7 +70,6 @@ public class BookMenu extends View {
                 LocalDate publicationYear = LocalDate.parse(parts[3].trim());
 
                 Book book = new Book(title, author, isbn, publicationYear, "supa_digga");
-                //importedBooks.add(book);
                 System.out.println("Book added successfully:");
                 System.out.println(book);
             } else {
