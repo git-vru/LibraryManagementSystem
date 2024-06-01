@@ -30,9 +30,9 @@ public class BookMenu extends View {
     }
 
     public void show() {
-        String input = super.promptMenu(options);
+        char inputChar = super.promptMenu(options);
 
-        if (input.charAt(0) == '0') {
+        if (inputChar == '0') {
             controller.setMenu(new BookSearch(controller, this));
         }
         else if (input.charAt(0) == '1') {
