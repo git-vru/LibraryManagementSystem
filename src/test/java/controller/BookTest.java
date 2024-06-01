@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BookTest {
 
-
         int bookListSize;
         Controller controller = new Controller();
         Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01");
@@ -57,8 +56,6 @@ public class BookTest {
             assertEquals(bookListSize, controller.getBooks().size());
             assertTrue(controller.getBooks().containsKey(book));
         }
-
-
 
         @Test
         void addBookSuccessfully() {
@@ -142,12 +139,4 @@ public class BookTest {
             assertEquals(book.getPublicationDate(), modifiedBook.getPublicationDate());
             assertEquals(book.getClassificationNumber(),modifiedBook.getClassificationNumber());
         }
-
-
-
-
-
-
-
-
 }

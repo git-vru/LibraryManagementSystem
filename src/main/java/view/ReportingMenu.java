@@ -51,7 +51,6 @@ public class ReportingMenu extends View {
                 System.out.println("Please enter a customer Id:");
                 String customerId = controller.getScanner().next();
 
-                Customer customer = controller.searchCustomer(c -> c.getId().equals(customerId), Comparator.comparing(Customer::getId)).get(0);
                 List<String[]> borrowedBookListFromCustomer = controller.searchCustomer(c -> c.getId().equals(customerId), Comparator.comparing(Customer::getId)).get(0).getBorrowedList().stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
                 printTable("List of all borrowed book copies for customer n°" + customerId, new String[]{"%-50s", "%-30s", "%-7s", "%17s", "%11s", "%-10s", "%11s", "%-5s"}, new String[]{"TITLE", "AUTHOR", "DATE", "ISBN", "Borrower Id", "Start Date", "Return Date", "Fees"}, borrowedBookListFromCustomer, 166);
                 break;

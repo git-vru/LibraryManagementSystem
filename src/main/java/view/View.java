@@ -44,6 +44,7 @@ public abstract class View {
         System.out.println(s);
         System.out.print(PROMPT_TO_EXIT + CURSOR);
         String input = controller.getScanner().next();
+
         while (input.length() != 1 || input.charAt(0) != 'q') {
             System.out.print(PROMPT_TO_EXIT + CURSOR);
             input = controller.getScanner().next();
