@@ -7,6 +7,8 @@ import model.Customer;
 import java.util.List;
 
 public class CustomerInfo extends View {
+    private char inputChar;
+
 
     public CustomerInfo(Controller controller, View prev) {
         super(controller, prev);
@@ -34,9 +36,9 @@ public class CustomerInfo extends View {
 
             List<String> options = List.of("Delete the customer : " + customerId);
 
-            String input = super.promptOptions(options);
+            inputChar = super.promptOptions(options);
 
-            if (input.charAt(0) == '0') {
+            if (inputChar == '0') {
                 try  {
                     controller.deleteCustomer(customerId);
                     System.out.println("Customer with the id : " + customerId + " has been successfully deleted!");
@@ -44,7 +46,7 @@ public class CustomerInfo extends View {
                     System.out.println(e.getMessage());
                 }
             }
-            else if (input.charAt(0) == 'q') {
+            else if (inputChar == 'q') {
                 break;
             }
         }

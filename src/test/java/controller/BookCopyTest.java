@@ -2,8 +2,8 @@ package controller;
 
 import exceptions.BorrowingNotNullException;
 import model.Book;
-import model.Customer;
 import model.BookCopy;
+import model.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ class BookCopyTest {
 
     @BeforeEach
     void setUp() {
-        controller.getBooks().put(book, new ArrayList<>());
+        controller.getBookDatabase().put(book, new ArrayList<>());
         controller.getBookCopys(book).add(bookCopy);
         controller.getCustomers().add(customer);
         bookCopyListSize = controller.getBookCopys(book).size();

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenu extends View{
+    private char inputChar;
+
     private final List<String> options;
 
     public MainMenu(Controller controller) {
@@ -23,9 +25,9 @@ public class MainMenu extends View{
     @Override
     public void show() {
         System.out.println("Welcome to the Library Management System!\nPlease type a number or press enter.");
-        String input = super.promptMenu(this.options);
+        inputChar = super.promptMenu(this.options);
 
-        switch (input.charAt(0)) {
+        switch (inputChar) {
             case '0':
                 controller.setMenu(new BookMenu(controller, this));
                 break;

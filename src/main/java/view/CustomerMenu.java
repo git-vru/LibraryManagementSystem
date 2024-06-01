@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerMenu extends View {
+    private char inputChar;
+
     private final List<String> options;
 
     public CustomerMenu(Controller controller, View prev) {
@@ -21,12 +23,12 @@ public class CustomerMenu extends View {
     }
 
     public void show() {
-        String input = super.promptMenu(options);
+        inputChar = super.promptMenu(options);
 
-        if (input.charAt(0) == '0') {
+        if (inputChar == '0') {
             controller.setMenu(new CustomerInfo(controller, this));
         }
-        else if (input.charAt(0) == '1') {
+        else if (inputChar == '1') {
             System.out.println("A prompt to add a customer will be displayed. " +
                     "Alternatively a csv file can be imported\n" +
                     "Ex: Please type : 'create <FirstName>,<LastName>,<DOB>'" +
