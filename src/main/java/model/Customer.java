@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Customer {
+    public final static String[] FORMAT = new String[]{"%8s", "%-30s", "%-30s", "%20s", "%5s"};
+    public final static String[] COLUMN_NAMES = new String[]{"ID", "FIRST NAME", "LAST NAME", "# OF BORROWED BOOKS", "TOTAL FEES"};
+    public final static int LINE_SIZE = 109;
+    public final static int MAX_CELL_SIZE = 50;
+
     private final String id;
     private String firstName;
     private String lastName;
@@ -66,6 +71,6 @@ public class Customer {
     }
 
     public String toCsv() {
-        return String.format("%s;%s;%s;%td/%tm/%tY;%td/%tm/%tY;%d", id, firstName, lastName, dob, dob, dob, subscriptionDate, subscriptionDate, subscriptionDate, borrowedList.size());
+        return String.format("%s;%s;%s;%d;%.2f", id, firstName, lastName, borrowedList.size(), borrowedList.stream().mapToDouble(BookCopy::getFee).sum());
     }
 }

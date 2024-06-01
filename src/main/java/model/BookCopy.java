@@ -3,8 +3,16 @@ package model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
 public class BookCopy {
+    public final static String[] FORMAT = new String[] {"%-30s", "%-30s", "%-4s", "%17s", "%-12s", "%-14s", "%11s", "%-10s", "%11s"};
+    public final static String[] COLUMN_NAMES = new String[]{"TITLE", "AUTHOR", "YEAR", "ISBN", "BOOK COPY ID", "SHELF LOCATION", "BORROWER ID", "START DATE", "RETURN DATE"};
+    public final static int LINE_SIZE = Book.LINE_SIZE + 75;
+    public final static int MAX_CELL_SIZE = 30;
+
     private final String id;
     private final Book book;
     private Customer borrower;
@@ -68,6 +76,6 @@ public class BookCopy {
     }
 
     public String toCsv() {
-        return String.format("%s;%s;%s;%s;%.2f", book.toCsv(), borrower == null ? "---" : borrower.getId(), borrowedDate == null ? "--/--/----" : borrowedDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)),  returnedDate == null ? "--/--/----" : returnedDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)), fee);
+        return String.format("%s;%s;%s;%s;%s;%s", book.toCsv(), id, book.getClassificationNumber(), borrower == null ? "---" : borrower.getId(), borrowedDate == null ? "--/--/----" : borrowedDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)),  returnedDate == null ? "--/--/----" : returnedDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
     }
 }

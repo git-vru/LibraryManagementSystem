@@ -3,6 +3,11 @@ package model;
 import java.time.LocalDate;
 
 public class Book {
+    public final static String[] FORMAT = new String[]{"%-50s", "%-50s", "%-4s", "%17s"};
+    public final static String[] COLUMN_NAMES = new String[]{"TITLE", "AUTHOR", "YEAR", "ISBN"};
+    public final static int LINE_SIZE = 114;
+    public final static int MAX_CELL_SIZE = 50;
+
     private String classificationNumber;
     private final String isbn;
     private final String title;
@@ -70,6 +75,6 @@ public class Book {
     }
 
     public String toCsv() {
-        return String.format("%s;%s;%tm/%tY;%s", title, author, publicationDate, publicationDate, isbn);
+        return String.format("%s;%s;%tY;%s", title, author, publicationDate, isbn);
     }
 }
