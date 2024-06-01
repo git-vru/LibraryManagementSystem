@@ -37,5 +37,7 @@ public class MainMenu extends View {
                 this.show();
             }
         }
+
+        System.out.println("See you next time ! GoodBye !");
     }
 }

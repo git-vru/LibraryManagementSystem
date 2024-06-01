@@ -6,6 +6,7 @@ import model.CSVreader;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -47,6 +48,7 @@ public class BookMenu extends View {
 
         try {
             List<Book> importedBooks = reader.makeBooks(filePath);
+            importedBooks.forEach(book -> controller.getBookDatabase().put(book, new ArrayList<>()));
             if (!importedBooks.isEmpty()) System.out.println("Imported Books:");
             for (Book book : importedBooks) {
                 System.out.println(book);
@@ -56,6 +58,7 @@ public class BookMenu extends View {
             System.err.println("An error occurred while reading the CSV file: " + e.getMessage());
         }
     }
+
     private void addNewBook() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please type : 'create <ISBN>,<Title>,<Author>,<PublicationYear(YYYY-MM-DD)>'");
