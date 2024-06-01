@@ -67,7 +67,7 @@ class CustomerTest {
         Customer newCustomer = controller.getCustomers().get(controller.getCustomers().size() - 1);
         assertEquals("Samuel", newCustomer.getFirstName());
         assertEquals("Kemmler", newCustomer.getLastName());
-        assertEquals(LocalDate.of(2005, 8, 28), newCustomer.getDob());
+        assertEquals(LocalDate.of(2005, 8, 28), newCustomer.getDateOfBirth());
         assertEquals(LocalDate.now(), newCustomer.getSubscriptionDate());
         assertEquals(0, newCustomer.getBorrowedList().size());
     }
@@ -100,7 +100,7 @@ class CustomerTest {
 
         assertEquals("Unga",customer.getFirstName());
         assertEquals("Bunga",customer.getLastName());
-        assertEquals(LocalDate.of(2001,1,1),customer.getDob());
+        assertEquals(LocalDate.of(2001,1,1),customer.getDateOfBirth());
     }
 
     @Test
@@ -121,7 +121,7 @@ class CustomerTest {
         assertEquals(customerListSize, controller.getCustomers().size());
         assertEquals(customer.getFirstName(), modifiedCustomer.getFirstName());
         assertEquals(customer.getLastName(), modifiedCustomer.getLastName());
-        assertEquals(customer.getDob(), modifiedCustomer.getDob());
+        assertEquals(customer.getDateOfBirth(), modifiedCustomer.getDateOfBirth());
     }
 
 

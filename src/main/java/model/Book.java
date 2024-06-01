@@ -7,6 +7,7 @@ import java.util.List;
 
 import static java.util.Collections.max;
 
+// Book Data: Title, Authors, ISBN, Year
 public class Book {
     private String classificationNumber;
     private final String isbn;
@@ -70,14 +71,6 @@ public class Book {
         this.copyCount--;
     }
 
-    /**
-     * STYLES
-     ┌─────┬─────┐      +-----+-----+      ═════════════      ╒═════╤═════╕      ╔═════╦═════╗
-     │rc 11│rc 12│      |rc 11|rc 12|       rc 11 rc 12       │rc 11│rc 12│      ║rc 11║rc 12║
-     ├─────┼─────┤      +-----+-----+      ═════════════      ╞═════╪═════╡      ╠═════╬═════╣
-     │rc 21│rc 22│      |rc 21|rc 22|       rc 21 rc 22       │rc 21│rc 22│      ║rc 21║rc 22║
-     └─────┴─────┘      +-----+-----+      ═════════════      ╘═════╧═════╛      ╚═════╩═════╝
-     */
     //TODO: Title, Authors, ISBN, !ID, !Shelf Location, !Borrowing Status, !Borrow Date
     public String toString() {
         List<String> data = List.of(title, author, isbn, classificationNumber, publicationDate.toString());

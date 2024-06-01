@@ -2,20 +2,39 @@ package model;
 
 import java.time.LocalDate;
 
+// Book Copy Data: [Book Data] + ID, Shelf Location, Borrowing Status, Borrow Date
 public class BookCopy {
-    private final String id;
     private final Book book;
-    private Customer borrower;
-
+    private final String id;
+    private final String shelfLocation;
+    private boolean isBorrowed;
     private LocalDate borrowedDate;
     private LocalDate returnedDate;
-    private float fee;
+
+    private Customer borrower;
+
+    // preset static fee
+    private static float fee;
 
     public BookCopy(Book book) {
         this.book = book;
+        this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
+        this.shelfLocation = book.getClassificationNumber();
         this.borrower = null;
         book.increaseCopyCount();
-        this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
+    }
+
+    public BookCopy(Book book,
+                    String id,
+                    boolean isBorrowed,
+                    LocalDate borrowedDate) {
+        this.book = book;
+        this.id = id;
+        this.shelfLocation = book.getClassificationNumber();
+        this.isBorrowed = isBorrowed;
+        this.borrowedDate = borrowedDate;
+        this.returnedDate = null;
+        this.borrower = null;
     }
 
     public LocalDate getBorrowedDate() {

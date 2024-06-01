@@ -2,25 +2,40 @@ package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Customer {
     private final String id;
     private String firstName;
     private String lastName;
-    private LocalDate dob;
+    private LocalDate dateOfBirth;
+    private int paymentStatus;
+    private final List<BookCopy> borrowedList;
+
     private final LocalDate subscriptionDate;
-    private final ArrayList<BookCopy> borrowedList;
 
     private static int ID_GENERATOR = 0;
 
-    public Customer(String firstName, String lastName, LocalDate dob) {
+    public Customer(String firstName, String lastName, LocalDate dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.dob = dob;
+        this.dateOfBirth = dateOfBirth;
 
         ID_GENERATOR += 1;
         this.id = String.valueOf(ID_GENERATOR);
         this.subscriptionDate = java.time.LocalDate.now();
+        this.borrowedList = new ArrayList<>();
+    }
+
+    // For parsing from CSV
+    // Customer CSV Data: ID, FirstName, LastName, Date of Birth, Subscription Date
+    public Customer(String id, String firstName, String lastName, LocalDate dateOfBirth, LocalDate subscriptionDate) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.subscriptionDate = subscriptionDate;
+
         this.borrowedList = new ArrayList<>();
     }
 
@@ -44,23 +59,23 @@ public class Customer {
         this.lastName = lastName;
     }
 
-    public LocalDate getDob() {
-        return dob;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public LocalDate getSubscriptionDate() {
         return subscriptionDate;
     }
 
-    public ArrayList<BookCopy> getBorrowedList() {
+    public List<BookCopy> getBorrowedList() {
         return borrowedList;
     }
 
     public String toString() {
-        return String.format("First Name: %s\nLast Name: %s\nDOB: %s\nMember since: %s\n---\nBorrowed Books:\n...\n...", firstName, lastName, dob.toString(), subscriptionDate.toString());
+        return String.format("First Name: %s\nLast Name: %s\nDOB: %s\nMember since: %s\n---\nBorrowed Books:\n...\n...", firstName, lastName, dateOfBirth.toString(), subscriptionDate.toString());
     }
 }
