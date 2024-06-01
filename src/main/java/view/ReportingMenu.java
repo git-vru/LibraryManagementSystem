@@ -31,25 +31,25 @@ public class ReportingMenu extends View {
         switch (input) {
             case '0':
                 List<String[]> bookList = controller.searchBook(book -> true, Comparator.comparing(Book::getTitle)).stream().map(book -> book.toCsv().split(";")).toList();
-                printTable("List of all books", bookList, Book.FORMAT, Book.COLUMN_NAMES );
+                printTable("List of all books", bookList, Book.FORMAT, Book.COLUMN_NAMES);
                 break;
             case '1':
-                List<String[]> borrewedBookList = controller.searchBookCopy(BookCopy::isBorrowed, Comparator.comparing(bookCopy -> bookCopy.getBorrower().getId())).stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
-                printTable("List of all borrowed book copies", borrewedBookList, BookCopy.FORMAT, BookCopy.COLUMN_NAMES );
+                List<String[]> borrewedBookList = controller.searchBookCopy(BookCopy::isBorrowed, Comparator.comparing(BookCopy::getId)).stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
+                printTable("List of all borrowed book copies", borrewedBookList, BookCopy.FORMAT, BookCopy.COLUMN_NAMES);
                 break;
             case '2':
                 List<String[]> notBorrewedBookList = controller.searchBookCopy(Predicate.not(BookCopy::isBorrowed), Comparator.comparing(BookCopy::getId)).stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
-                printTable("List of all available book copies", notBorrewedBookList, BookCopy.FORMAT, BookCopy.COLUMN_NAMES );
+                printTable("List of all available book copies", notBorrewedBookList, BookCopy.FORMAT, BookCopy.COLUMN_NAMES);
                 break;
             case '3':
-                printTable("List of all customers", controller.getCustomers().stream().map(customer -> customer.toCsv().split(";")).toList(), Customer.FORMAT, Customer.COLUMN_NAMES );
+                printTable("List of all customers", controller.getCustomers().stream().map(customer -> customer.toCsv().split(";")).toList(), Customer.FORMAT, Customer.COLUMN_NAMES);
                 break;
             case '4':
                 System.out.println("Please enter a customer Id:");
                 String customerId = controller.getScanner().next();
 
                 List<String[]> borrowedBookListFromCustomer = controller.searchCustomer(c -> c.getId().equals(customerId), Comparator.comparing(Customer::getId)).get(0).getBorrowedList().stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
-                printTable("List of all borrowed book copies for customer n°" + customerId, borrowedBookListFromCustomer, BookCopy.FORMAT, BookCopy.COLUMN_NAMES );
+                printTable("List of all borrowed book copies for customer n°" + customerId, borrowedBookListFromCustomer, BookCopy.FORMAT, BookCopy.COLUMN_NAMES);
                 break;
             default:
                 prev.show();

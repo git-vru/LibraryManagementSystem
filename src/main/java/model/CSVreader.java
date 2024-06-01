@@ -67,5 +67,4 @@ public class CSVreader {
         } catch (IOException ignored) {}
         return importedCustomers;
     }
-
 }

@@ -87,7 +87,7 @@ public class Controller {
         }
 
         if (this.bookDatabase.get(optionalBook.get()).stream()
-                .anyMatch(bookCopy -> bookCopy.getBorrower() != null)) {
+                .anyMatch(BookCopy::isBorrowed)) {
             throw new BorrowingNotNullException("A physical copy of this book is still borrowed by someone.");
         }
 
@@ -136,7 +136,7 @@ public class Controller {
             throw new NoSuchElementException();
         }
 
-        if (optionalBook.get().getBorrower() != null) {
+        if (optionalBook.get().isBorrowed()) {
             throw new BorrowingNotNullException("This copy is still borrowed by someone.");
         }
 

@@ -47,7 +47,7 @@ class BookCopyTest {
 
     @Test
     void deleteBookCopyWhenBorrowingNotNull() {
-        bookCopy.setBorrower(customer);
+        bookCopy.setIsBorrowed(true);
         assertThrows(BorrowingNotNullException.class, () -> {
             controller.deleteBookCopy("VOL01_1");
         });
