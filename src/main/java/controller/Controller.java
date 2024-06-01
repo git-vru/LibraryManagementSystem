@@ -9,6 +9,7 @@ import view.View;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class Controller {
     private View menu;
@@ -19,6 +20,28 @@ public class Controller {
     public Controller() {
         sc = new Scanner(System.in);
         this.menu = new MainMenu(this);
+    }
+
+    public Book searchBookViaIsbn(String isbn) {
+        return searchBook(book -> book.getIsbn().equals(isbn), Comparator.comparing(Book::getTitle)).stream().findFirst().orElse(null);
+    }
+
+    public List<Book> searchBook(Predicate<Book> predicate, Comparator<Book> comparator) {
+        return this.bookDatabase.keySet().stream().filter(predicate).sorted(comparator).toList();
+    }
+
+    public List<BookCopy> searchBookCopy(Predicate<BookCopy> predicate, Comparator<BookCopy> comparator) {
+        List<BookCopy> list = new ArrayList<>();
+
+        this.bookDatabase.values().forEach(bookCopyList -> {
+            list.addAll(bookCopyList.stream().filter(predicate).toList());
+        });
+
+        return list.stream().sorted(comparator).toList();
+    }
+
+    public List<Customer> searchCustomer(Predicate<Customer> predicate, Comparator<Customer> comparator) {
+        return this.customers.stream().filter(predicate).sorted(comparator).toList();
     }
 
     /**
@@ -151,14 +174,6 @@ public class Controller {
 
     public View getMenu() {
         return menu;
-    }
-
-    public Scanner getSc() {
-        return sc;
-    }
-
-    public void setSc(Scanner sc) {
-        this.sc = sc;
     }
 
     public Map<Book, List<BookCopy>> getBookDatabase() {

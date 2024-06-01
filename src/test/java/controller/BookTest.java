@@ -137,12 +137,4 @@ public class BookTest {
             assertEquals(book.getPublicationDate(), modifiedBook.getPublicationDate());
             assertEquals(book.getClassificationNumber(),modifiedBook.getClassificationNumber());
         }
-
-
-
-
-
-
-
-
 }

@@ -18,6 +18,7 @@ public class MainMenu extends View {
         this.options = new ArrayList<>();
         this.options.add("Book Menu");
         this.options.add("Customer Menu");
+        this.options.add("Borrowing Menu");
         this.options.add("Reporting Menu");
         this.options.add("Settings");
 
@@ -29,8 +30,9 @@ public class MainMenu extends View {
         switch (inputChar) {
             case '0' -> controller.setMenu(new BookMenu(controller, this));
             case '1' -> controller.setMenu(new CustomerMenu(controller, this));
-            case '2' -> controller.setMenu(new ReportingMenu(controller, this));
-            case '3' -> {
+            case '2' -> controller.setMenu(new BorrowingInfo(controller, this));
+            case '3' -> controller.setMenu(new ReportingMenu(controller, this));
+            case '4' -> {
                 super.promptAndExit("A setting menu will be displayed");
                 this.show();
             }

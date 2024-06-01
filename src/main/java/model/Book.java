@@ -9,6 +9,9 @@ import static java.util.Collections.max;
 
 // Book Data: Title, Authors, ISBN, Year
 public class Book {
+    public final static String[] FORMAT = new String[]{"%-50s", "%-50s", "%4s", "%17s"};
+    public final static String[] COLUMN_NAMES = new String[]{"TITLE", "AUTHOR", "YEAR", "ISBN"};
+
     private String classificationNumber;
     private final String isbn;
     private final String title;
@@ -90,5 +93,9 @@ public class Book {
                 "└───────────────────────┴" + "─".repeat(maxLength+2) + "┘",
                 header, author, isbn, classificationNumber, publicationDate, copyCount
         );
+    }
+
+    public String toCsv() {
+        return String.format("%s;%s;%tY;%s", title, author, publicationDate, isbn);
     }
 }
