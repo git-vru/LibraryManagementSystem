@@ -31,46 +31,52 @@ public class ReportingMenu extends View {
         switch (input.charAt(0)) {
             case '0':
                 List<String[]> bookList = controller.searchBook(book -> true, Comparator.comparing(Book::getTitle)).stream().map(book -> book.toCsv().split(";")).toList();
-                printTable("List of all books", Book.FORMAT, Book.COLUMN_NAMES, bookList, Book.LINE_SIZE, Book.MAX_CELL_SIZE);
+                printTable("List of all books", bookList, Book.FORMAT, Book.COLUMN_NAMES );
                 break;
             case '1':
-                System.out.println(Arrays.toString(BookCopy.FORMAT));
                 List<String[]> borrewedBookList = controller.searchBookCopy(BookCopy::isBorrowed, Comparator.comparing(bookCopy -> bookCopy.getBorrower().getId())).stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
-                printTable("List of all borrowed book copies", BookCopy.FORMAT, BookCopy.COLUMN_NAMES, borrewedBookList, BookCopy.LINE_SIZE, BookCopy.MAX_CELL_SIZE);
+                printTable("List of all borrowed book copies", borrewedBookList, BookCopy.FORMAT, BookCopy.COLUMN_NAMES );
                 break;
             case '2':
-                List<String[]> notBorrewedBookList = controller.searchBookCopy(bookCopy -> !bookCopy.isBorrowed(), Comparator.comparing(bookCopy -> bookCopy.getBook().getTitle())).stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
-                printTable("List of all available book copies", BookCopy.FORMAT, BookCopy.COLUMN_NAMES, notBorrewedBookList, BookCopy.LINE_SIZE, BookCopy.MAX_CELL_SIZE);
+                List<String[]> notBorrewedBookList = controller.searchBookCopy(Predicate.not(BookCopy::isBorrowed), Comparator.comparing(BookCopy::getId)).stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
+                printTable("List of all available book copies", notBorrewedBookList, BookCopy.FORMAT, BookCopy.COLUMN_NAMES );
                 break;
             case '3':
-                printTable("List of all customers", Customer.FORMAT, Customer.COLUMN_NAMES, controller.getCustomers().stream().map(customer -> customer.toCsv().split(";")).toList(), Customer.LINE_SIZE, Customer.MAX_CELL_SIZE);
+                printTable("List of all customers", controller.getCustomers().stream().map(customer -> customer.toCsv().split(";")).toList(), Customer.FORMAT, Customer.COLUMN_NAMES );
                 break;
             case '4':
                 System.out.println("Please enter a customer Id:");
                 String customerId = controller.getScanner().next();
 
                 List<String[]> borrowedBookListFromCustomer = controller.searchCustomer(c -> c.getId().equals(customerId), Comparator.comparing(Customer::getId)).get(0).getBorrowedList().stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
-                printTable("List of all borrowed book copies for customer n°" + customerId, BookCopy.FORMAT, BookCopy.COLUMN_NAMES, borrowedBookListFromCustomer, BookCopy.LINE_SIZE, BookCopy.MAX_CELL_SIZE);
+                printTable("List of all borrowed book copies for customer n°" + customerId, borrowedBookListFromCustomer, BookCopy.FORMAT, BookCopy.COLUMN_NAMES );
                 break;
             default:
                 break;
         }
+
+        super.promptAndExit("");
+        this.show();
     }
 
-    public void printTable(String name, String[] format, String[] columnNames, List<String[]> columns, int lineSize, int maxCellSize) {
+    public void printTable(String name, List<String[]> rows, String[] format, String[] columnNames) {
+        int lineSize = Arrays.stream(format).mapToInt(s -> Integer.parseInt(s.replaceAll("%-?([0-9]{1,2})s", "$1"))).sum() + format.length*3 + 1;
         String spaces = " ".repeat((lineSize - name.length()) / 2);
+
         System.out.printf("%s%s%s%n", spaces, name, spaces);
         System.out.printf("%s%n| ", "-".repeat(lineSize));
 
-        for (int i = 0; i < format.length; i++) {
-            System.out.printf(format[i] + " | ", columnNames[i]);
+        for (int i = 0; i < columnNames.length; i++) {
+            System.out.printf(format[i].isEmpty() ? "%-s" : format[i].replaceAll("%-?([0-9]{1,2})s", "%-$1s") + " | ", columnNames[i]);
         }
         System.out.printf("%n%s%n", "-".repeat(lineSize));
 
-        for (String[] column : columns) {
+        for (String[] row : rows) {
             System.out.print("| ");
-            for (int i = 0; i < format.length; i++) {
-                System.out.printf(format[i] + " | ", column[i].substring(0, Math.min(column[i].length(), maxCellSize)) + (Math.min(column[i].length(), maxCellSize) == maxCellSize ? "..." : ""));
+
+            for (int i = 0; i < row.length; i++) {
+                int cellSize = Integer.parseInt(format[i].replaceAll("%-?([0-9]{1,2})s", "$1"));
+                System.out.printf(format[i] + " | ", row[i].substring(0, Math.min(row[i].length(), cellSize)) + (Math.max(row[i].length(), cellSize) > cellSize ? "..." : ""));
             }
             System.out.print("\n");
         }
