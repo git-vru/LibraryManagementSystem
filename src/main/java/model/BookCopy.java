@@ -35,6 +35,22 @@ public class BookCopy {
         this.borrowedDate = borrowedDate;
         this.returnedDate = null;
     }
+    //
+    public BookCopy(Book book, boolean isBorrowed){
+        this.book = book;
+        this.isBorrowed = isBorrowed;
+        book.increaseCopyCount();
+        this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
+    }
+    public BookCopy(Book book, boolean isBorrowed, LocalDate borrowedDate, LocalDate returnedDate){
+        this.book = book;
+        this.isBorrowed = isBorrowed;
+        book.increaseCopyCount();
+        this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
+        this.returnedDate = returnedDate;
+        this.borrowedDate = borrowedDate;
+    }
+
 
     public boolean isBorrowed() {
         return this.isBorrowed;

@@ -1,13 +1,18 @@
-package model;
+package utilities;
+
+import controller.Controller;
+import model.Book;
+import model.BookCopy;
+import model.Customer;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
-
+//Please dont move this out of utilities
+//It messes up other class
 public class CSVreader {
-    // CSV Format: ISBN, Title, Author, Year, Classification Number
     public static List<Book> makeBooks(String path) throws FileNotFoundException {
         List<Book> importedBooks = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
@@ -25,31 +30,28 @@ public class CSVreader {
         } catch (IOException ignored) {}
         return importedBooks;
     }
-
-    // CSV Format: [Book Data] + ID, Shelf Location (classification number), Borrowing Status, Borrow Date
     public static List<BookCopy> makeBookCopies(String path) throws FileNotFoundException {
         List<BookCopy> importedBookCopies = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
+            Controller controller = new Controller();
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 String isbn = parts[0].trim();
-                String title = parts[1].trim();
-                String author = parts[2].trim();
-                LocalDate publicationDate = LocalDate.of(Year.parse(parts[3].trim()).getValue(), 1,1);
-                String classificationNumber = parts[4].trim();
-                String id = parts[5].trim();
-                boolean isBorrowed = parts[6].trim().equals("1");
-        /*todo*/LocalDate borrowDate = LocalDate.of(1,1,1);
-                Book book = new Book(title, author, isbn, publicationDate, classificationNumber);
-                BookCopy bookCopy = new BookCopy(book, id, isBorrowed, borrowDate);
+                Book book = controller.searchBookViaIsbn(isbn);
+                boolean status = parts[1].equals("1");
+                if (parts.length == 4){
+                    LocalDate borrowedDate = LocalDate.parse(parts[2].trim());
+                    LocalDate returnDate = LocalDate.parse(parts[3].trim());
+                    BookCopy bookCopy = new BookCopy(book,status,borrowedDate,returnDate);
+                    importedBookCopies.add(bookCopy);
+                }
+                BookCopy bookCopy = new BookCopy(book,status);
                 importedBookCopies.add(bookCopy);
             }
         } catch (IOException ignored) {}
         return importedBookCopies;
     }
-
-    // CSV Format: ID, FirstName, LastName, Date of Birth, Subscription Date
     public static List<Customer> makeCustomer(String path) throws FileNotFoundException {
         List<Customer> importedCustomers = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
