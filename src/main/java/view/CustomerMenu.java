@@ -1,8 +1,7 @@
 package view;
 
 import controller.Controller;
-import model.Book;
-import model.CSVreader;
+import utilities.CSVreader;
 import model.Customer;
 
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CustomerMenu extends View {
-    //private CSVreader reader;
+    //private utilities.CSVreader reader;
     private char inputChar;
 
     private final List<String> options;
@@ -48,12 +47,12 @@ public class CustomerMenu extends View {
 
     private void addNewCustomer() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please type : 'create <First Name,<Last Name>,<Date Of Birth(YYYY-MM-DD)>'");
+        System.out.println("Please type : 'create <First Name>,<Last Name>,<Date Of Birth(YYYY-MM-DD)>'");
 
         String input = scanner.nextLine().trim();
         if (input.startsWith("create ")) {
             String CustomerDetails = input.substring(7).trim();
-            String[] parts = CustomerDetails.split(",", 4);
+            String[] parts = CustomerDetails.split(",", 3);
             if (parts.length == 3) {
                 String FName = parts[0].trim();
                 String LName = parts[1].trim();
@@ -80,7 +79,7 @@ public class CustomerMenu extends View {
         else if (inputChar == '1') {
             inputChar = super.promptOptions(options2);
             if (inputChar == '0'){
-                System.out.println("Ex: Please type : 'create <FirstName>,<LastName>,<DOB>'");
+                //System.out.println("Ex: Please type : 'create <FirstName>,<LastName>,<DOB>'");
                 addNewCustomer();
             } else if (inputChar == '1') {
                 importCustomersFromCSV();
