@@ -88,44 +88,49 @@ public class BookSearch extends View {
                         controller.deleteBookCopy(bookCopyID);
                         System.out.println("Book copy with the ID : " + bookCopyID + " has been successfully deleted!");
                         break;
-                    } catch (BorrowingNotNullException e) {
+                    }
+                    catch (BorrowingNotNullException e) {
                         System.out.println(e.getMessage());
                     }
                 }
-            } else if (input.charAt(0) == '2') {
-                System.out.println("Please enter a new title: ");
-                controller.getScanner().nextLine();
-
-                controller.modifyBook(book, controller.getScanner().nextLine(), book.getAuthor(), book.getPublicationDate().toString(), book.getClassificationNumber());
-                super.promptAndExit("Title was successfully changed!");
-
-                this.show();
-            } else if (input.charAt(0) == '3') {
-                System.out.println("Please enter a new author: ");
-                controller.getScanner().nextLine();
-                controller.modifyBook(book, book.getTitle(), controller.getScanner().nextLine(), book.getPublicationDate().toString(), book.getClassificationNumber());
-                super.promptAndExit("Title was successfully changed!");
-
-                this.show();
-            } else if (input.charAt(0) == '4') {
-                System.out.println("Please enter a new publication date <YYYY-MM-DD>: ");
-                try {
-                    controller.modifyBook(book, book.getTitle(), book.getAuthor(), controller.getScanner().next(), book.getClassificationNumber());
-                    super.promptAndExit("Publication date was successfully changed!");
-                } catch (DateTimeParseException dateTimeParseException) {
-                    super.promptAndExit("Please pass a valid value!");
-                }
-
-
-                this.show();
-            } else if (input.charAt(0) == '5') {
-                System.out.println("Please enter a new classification number: ");
-
-                controller.modifyBook(book, book.getTitle(), book.getAuthor(), book.getPublicationDate().toString(), controller.getScanner().next());
-                super.promptAndExit("Classification number was successfully changed!");
-
-                this.show();
             }
+        }
+        else if (inputChar == '2') {
+            System.out.println("Please enter a new title: ");
+            controller.getScanner().nextLine();
+
+            controller.modifyBook(book, controller.getScanner().nextLine(), book.getAuthor(), book.getPublicationDate().toString(), book.getClassificationNumber());
+            super.promptAndExit("Title was successfully changed!");
+
+            this.show();
+        }
+        else if (inputChar == '3') {
+            System.out.println("Please enter a new author: ");
+            controller.getScanner().nextLine();
+            controller.modifyBook(book, book.getTitle(), controller.getScanner().nextLine(), book.getPublicationDate().toString(), book.getClassificationNumber());
+            super.promptAndExit("Title was successfully changed!");
+
+            this.show();
+        }
+        else if (inputChar == '4') {
+            System.out.println("Please enter a new publication date <YYYY-MM-DD>: ");
+            try {
+                controller.modifyBook(book, book.getTitle(), book.getAuthor(), controller.getScanner().next(), book.getClassificationNumber());
+                super.promptAndExit("Publication date was successfully changed!");
+            } catch (DateTimeParseException dateTimeParseException) {
+                super.promptAndExit("Please pass a valid value!");
+            }
+
+
+            this.show();
+        }
+        else if (inputChar == '5') {
+            System.out.println("Please enter a new classification number: ");
+
+            controller.modifyBook(book, book.getTitle(), book.getAuthor(), book.getPublicationDate().toString(), controller.getScanner().next());
+            super.promptAndExit("Classification number was successfully changed!");
+
+            this.show();
         }
         prev.show();
     }

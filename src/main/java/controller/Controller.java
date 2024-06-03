@@ -161,14 +161,11 @@ public class Controller {
 
     public boolean modifyCustomer(Customer customer, String FirstName, String LastName, String dob){
         customer.setFirstName(FirstName);
-        customer.setDob(LocalDate.parse(dob));
+        customer.setDateOfBirth(LocalDate.parse(dob));
         customer.setLastName(LastName);
 
         return true;
     }
-
-
-
 
     public boolean addBookCopy(String isbn){
         return true;
@@ -180,8 +177,8 @@ public class Controller {
     }
 
     public void borrowBookCopy(Customer customer, BookCopy bookCopy) {
-        if (bookCopy.getBorrower()==null) {
-            bookCopy.setBorrower(customer);
+        if (!bookCopy.isBorrowed()) {
+            bookCopy.setIsBorrowed(true);
             bookCopy.setBorrowedDate(LocalDate.now());
             bookCopy.setReturnedDate(LocalDate.now().plusWeeks(2));
             customer.getBorrowedList().add(bookCopy);
@@ -193,22 +190,17 @@ public class Controller {
 
     public void returnBookCopy(Customer customer, BookCopy bookCopy) {
         if (customer.getBorrowedList().contains(bookCopy)){
-            bookCopy.setBorrower(null);
+            bookCopy.setIsBorrowed(false);
             bookCopy.setBorrowedDate(null);
             bookCopy.setReturnedDate(null);
             customer.getBorrowedList().remove(bookCopy);
-        } else {
+        }
+        else {
             throw new IllegalArgumentException("BookCopy is not borrowed!");
         }
-
-
     }
 
-
-
-
-
-        public Scanner getScanner() {
+    public Scanner getScanner() {
         return this.sc;
     }
 

@@ -46,7 +46,7 @@ public class CustomerInfo extends View {
                 } catch (BorrowingNotNullException e) {
                     System.out.println(e.getMessage());
                 }
-            } else if (input.charAt(0) == '1') {
+            } else if (inputChar == '1') {
                 System.out.println("Please enter book id: ");
 
                 try {
@@ -59,7 +59,7 @@ public class CustomerInfo extends View {
                 this.show();
 
 
-            } else if (input.charAt(0) == '2') {
+            } else if (inputChar == '2') {
                 System.out.println("Please enter book id: ");
 
                 try {
@@ -70,21 +70,24 @@ public class CustomerInfo extends View {
                 }
 
                 this.show();
-            } else if (input.charAt(0) == '3') {
+            }
+            else if (inputChar == '3') {
                 System.out.println("Please enter a new first name: ");
 
-                    controller.modifyCustomer(customer, controller.getScanner().next(), customer.getLastName(), customer.getDob().toString());
-                    super.promptAndExit("First name was successfully changed!");
+                controller.modifyCustomer(customer, controller.getScanner().next(), customer.getLastName(), customer.getDateOfBirth().toString());
+                super.promptAndExit("First name was successfully changed!");
 
                 this.show();
-            } else if (input.charAt(0) == '4') {
+            }
+            else if (inputChar == '4') {
                 System.out.println("Please enter a new last name: ");
 
-                controller.modifyCustomer(customer, customer.getFirstName(), controller.getScanner().next(), customer.getDob().toString());
+                controller.modifyCustomer(customer, customer.getFirstName(), controller.getScanner().next(), customer.getDateOfBirth().toString());
                 super.promptAndExit("Last name was successfully changed!");
 
                 this.show();
-            } else if (input.charAt(0) == '5') {
+            }
+            else if (inputChar == '5') {
                 System.out.println("Please enter dob <YYYY-MM-DD>: ");
                 try {
                     controller.modifyCustomer(customer, customer.getFirstName(), customer.getLastName(), controller.getScanner().next());
@@ -95,7 +98,7 @@ public class CustomerInfo extends View {
 
 
                 this.show();
-            } else if (input.charAt(0) == 'q') {
+            } else if (inputChar == 'q') {
                 break;
             }
         }

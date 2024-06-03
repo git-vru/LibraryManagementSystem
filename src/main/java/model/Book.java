@@ -94,9 +94,9 @@ public class Book {
         String header = View.addPadding2Text(title, 24 + maxLength);
 
         return String.format(
-                "┌────────────────────────" + "─".repeat(maxLength+2) + "┐\n" +
-                "│ %s│\n" +
-                "├───────────────────────┬" + "─".repeat(maxLength+2) + "┤\n" +
+                "-------------------------" + "─".repeat(maxLength+2) + "-\n" +
+                "| %s│\n" +
+                "|------------------------" + "─".repeat(maxLength+2) + "┤\n" +
                 "│ Author                │ %-" + maxLength + "s │\n" +
                 "│ ISBN                  │ %-" + maxLength + "s │\n" +
                 "│ Classification Number │ %-" + maxLength + "s │\n" +
