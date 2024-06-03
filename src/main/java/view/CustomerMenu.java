@@ -75,6 +75,7 @@ public class CustomerMenu extends View {
 
         if (inputChar == '0') {
             controller.setMenu(new CustomerInfo(controller, this));
+
         }
         else if (inputChar == '1') {
             inputChar = super.promptOptions(options2);

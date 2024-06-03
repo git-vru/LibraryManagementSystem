@@ -14,9 +14,9 @@ public class Book {
 
     private String classificationNumber;
     private final String isbn;
-    private final String title;
-    private final String author;
-    private final LocalDate publicationDate;
+    private String title;
+    private String author;
+    private LocalDate publicationDate;
 
     private int copyCount;
 
@@ -54,6 +54,18 @@ public class Book {
         return classificationNumber;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setPublicationDate(LocalDate publicationDate) {
+        this.publicationDate = publicationDate;
+    }
+
     public void setClassificationNumber(String classificationNumber) {
         this.classificationNumber = classificationNumber;
     }
@@ -82,9 +94,9 @@ public class Book {
         String header = View.addPadding2Text(title, 24 + maxLength);
 
         return String.format(
-                "┌────────────────────────" + "─".repeat(maxLength+2) + "┐\n" +
-                "│ %s│\n" +
-                "├───────────────────────┬" + "─".repeat(maxLength+2) + "┤\n" +
+                "-------------------------" + "─".repeat(maxLength+2) + "-\n" +
+                "| %s│\n" +
+                "|------------------------" + "─".repeat(maxLength+2) + "┤\n" +
                 "│ Author                │ %-" + maxLength + "s │\n" +
                 "│ ISBN                  │ %-" + maxLength + "s │\n" +
                 "│ Classification Number │ %-" + maxLength + "s │\n" +
