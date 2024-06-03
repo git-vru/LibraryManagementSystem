@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BookCopyTest {
     int bookCopyListSize;
-    int testBookCopyListSize;
     Controller controller = new Controller();
     Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01");
     Book testBook = new Book("Candfide", "Voltafeire","isbn03", LocalDate.of(1800, 2, 2), "BOL01");
@@ -33,7 +32,6 @@ class BookCopyTest {
         controller.getBookCopies(book).add(bookCopy);
         controller.getCustomers().add(customer);
         bookCopyListSize = controller.getBookCopies(book).size();
-        testBookCopyListSize = controller.getBookCopies(testBook).size();
     }
 
 
@@ -62,10 +60,6 @@ class BookCopyTest {
         assertEquals(bookCopyListSize, controller.getBookCopies(book).size());
         assertTrue(controller.getBookCopies(book).contains(bookCopy));
     }
-
-
-
-
 
     @Test
     void addBookCopySuccessfully() {

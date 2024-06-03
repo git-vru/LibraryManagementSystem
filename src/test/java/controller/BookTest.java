@@ -20,6 +20,7 @@ public class BookTest {
     int bookListSize;
     Controller controller = new Controller();
     Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01");
+    Book bladeRunner = new Book("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", LocalDate.of(1968,5,1), "DIC01");
     BookCopy bookCopy = new BookCopy(book);
     Customer customer = new Customer("Vrushabh", "Jain", LocalDate.of(2004, 10, 30));
 
@@ -60,15 +61,16 @@ public class BookTest {
 
     @Test
     void addBookSuccessfully() {
-        controller.addBook("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", "1968-05-01", "DIC01");
+        Book book = controller.addBook("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", "1968-05-01", "DIC01");
         assertEquals(bookListSize + 1, controller.getBookDatabase().size());
-        assertTrue(controller.getBookDatabase().containsKey(controller.searchBookViaIsbn("0-345-40447-5")));
+        assertTrue(controller.getBookDatabase().containsKey(book));
 
-        assertEquals("Do Androids Dream of Electric Sheep?", controller.searchBookViaIsbn("0-345-40447-5").getTitle());
-        assertEquals("Philip K. Dick", controller.searchBookViaIsbn("0-345-40447-5").getAuthor());
-        assertEquals("0-345-40447-5", controller.searchBookViaIsbn("0-345-40447-5").getIsbn());
-        assertEquals(LocalDate.of(1968, 5, 1), controller.searchBookViaIsbn("0-345-40447-5").getPublicationDate());
-        assertEquals("DIC01", controller.searchBookViaIsbn("0-345-40447-5").getClassificationNumber());
+        assertEquals("0-345-40447-5", book.getIsbn());
+        assertEquals("Do Androids Dream of Electric Sheep?", book.getTitle());
+        assertEquals("Philip K. Dick", book.getAuthor());
+        assertEquals("0-345-40447-5", book.getIsbn());
+        assertEquals(LocalDate.of(1968, 5, 1), book.getPublicationDate());
+        assertEquals("DIC01", book.getClassificationNumber());
     }
 
     @Test

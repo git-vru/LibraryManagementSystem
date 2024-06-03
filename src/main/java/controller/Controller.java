@@ -107,18 +107,15 @@ public class Controller {
         return optionalCustomer.map(customer -> this.customers.get(this.customers.indexOf(customer))).orElse(null);
     }
 
-    public boolean addCustomer(String firstName, String lastName, String date) {
+    public Customer addCustomer(String firstName, String lastName, String date) {
         if (!firstName.isEmpty() && !lastName.isEmpty()) {
             LocalDate dob = LocalDate.parse(date);
-            Customer customer = new Customer(firstName, lastName, dob);
-
-            return this.customers.add(customer);
-        } else {
+            return new Customer(firstName, lastName, dob);
+        }
+        else {
             throw new IllegalArgumentException();
         }
     }
-
-
 
     public void deleteCustomer(String id) throws BorrowingNotNullException {
         Optional<Customer> optionalCustomer = this.customers.stream().filter(customer -> customer.getId().equals(id)).findFirst();
@@ -194,7 +191,7 @@ public class Controller {
         }
     }
 
-    public BookCopy addBookCopy(String isbn){
+    public BookCopy addBookCopy(String isbn, String isBorrowed, String borrowedDate, String returnDate){
 
         if (!isbn.isEmpty()) {
             try {
@@ -210,7 +207,6 @@ public class Controller {
         } else {
             throw new IllegalArgumentException();
         }
-
     }
 
     public void setMenu(View menu) {
