@@ -8,6 +8,8 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public class CustomerInfo extends View {
+    private char inputChar;
+
 
     public CustomerInfo(Controller controller, View prev) {
         super(controller, prev);
@@ -18,7 +20,7 @@ public class CustomerInfo extends View {
     public void show() {
         Customer customer = null;
         while (customer == null) {
-            System.out.print("Please enter a customer id:");
+            System.out.print("Please enter a customer id: ");
             String customerId = controller.getScanner().next();
 
             customer = controller.searchCustomer(customerId);
@@ -30,18 +32,17 @@ public class CustomerInfo extends View {
 
             this.name = "Customer Id: " + customerId;
 
-            System.out.printf("\t** %s **\n", customerId);
             System.out.println(customer);
 
             List<String> options = List.of("Delete the customer : " + customerId, "Borrow a book for customer : "+customerId, "Return a book for customer : " + customerId, "Modify the first name of customer: "+ customerId, "Modify the last name of customer: "+ customerId, "Modify the Date of Birth of customer: "+ customerId);
 
 
-            String input = super.promptOptions(options);
+            inputChar = super.promptOptions(options);
 
-            if (input.charAt(0) == '0') {
+            if (inputChar == '0') {
                 try  {
                     controller.deleteCustomer(customerId);
-                    System.out.println("Customer with the id : " + customerId + " has been successfully deleted!");
+                    System.out.println("Customer with the id: " + customerId + " has been successfully deleted!");
                 } catch (BorrowingNotNullException e) {
                     System.out.println(e.getMessage());
                 }

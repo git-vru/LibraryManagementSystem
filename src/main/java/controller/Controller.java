@@ -1,30 +1,75 @@
 package controller;
 
+import exceptions.BorrowingNotNullException;
 import model.Book;
-import model.Customer;
 import model.BookCopy;
 import view.BookMenu;
+import model.Customer;
 import view.MainMenu;
 import view.View;
-import exceptions.*;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class Controller {
     private View menu;
     private Scanner sc;
     private final List<Customer> customers = new ArrayList<>();
-    private final Map<Book, List<BookCopy>> books = new HashMap<>();
+    private final Map<Book, List<BookCopy>> bookDatabase = new HashMap<>();
 
     public Controller() {
         sc = new Scanner(System.in);
         this.menu = new MainMenu(this);
     }
 
-    public Book searchBook(String isbn) {
-        Optional<Book> optionalBook = this.books.keySet().stream().filter(book -> book.getIsbn().equals(isbn)).findFirst();
-        return optionalBook.orElse(null);
+    public Book searchBookViaIsbn(String isbn) {
+        return searchBook(book -> book.getIsbn().equals(isbn), Comparator.comparing(Book::getTitle)).stream().findFirst().orElse(null);
+    }
+
+    public List<Book> searchBook(Predicate<Book> predicate, Comparator<Book> comparator) {
+        return this.bookDatabase.keySet().stream().filter(predicate).sorted(comparator).toList();
+    }
+
+    public List<BookCopy> searchBookCopy(Predicate<BookCopy> predicate, Comparator<BookCopy> comparator) {
+        List<BookCopy> list = new ArrayList<>();
+
+        this.bookDatabase.values().forEach(bookCopyList -> {
+            list.addAll(bookCopyList.stream().filter(predicate).toList());
+        });
+
+        return list.stream().sorted(comparator).toList();
+    }
+
+    public List<Customer> searchCustomer(Predicate<Customer> predicate, Comparator<Customer> comparator) {
+        return this.customers.stream().filter(predicate).sorted(comparator).toList();
+    }
+
+    /**
+     * Returns book on specified type of search and key.
+     * @param by Style of the search.
+     *           0 - ISBN
+     *           1 - Book Name
+     *           2 - Author Name
+     * @param token Token for search.
+     * @return Returns a book list of found books.
+     */
+    public List<Book> searchBook(int by, String token) {
+        List<Book> foundBooks = new ArrayList<>();
+
+        if (0 > by || by > 2) return foundBooks;
+
+        String value = null;
+
+        List<Book> books = bookDatabase.keySet().stream().toList();
+
+        for (Book book : books) {
+            if (by == 0) value = book.getIsbn();
+            else if (by == 1) value = book.getTitle();
+            else if (by == 2) value = book.getAuthor();
+            if (value.equals(token)) foundBooks.add(book);
+        }
+        return foundBooks;
     }
 
     public boolean borrowBook(String customerId, String bookId) {
@@ -33,18 +78,18 @@ public class Controller {
 
 
     public void deleteBook(String isbn) throws BorrowingNotNullException {
-        Optional<Book> optionalBook = this.books.keySet().stream().filter(book -> book.getIsbn().equals(isbn)).findFirst();
+        Optional<Book> optionalBook = this.bookDatabase.keySet().stream().filter(book -> book.getIsbn().equals(isbn)).findFirst();
 
         if (optionalBook.isEmpty()) {
             throw new NoSuchElementException();
         }
 
-        if (this.books.get(optionalBook.get()).stream()
-                .anyMatch(bookCopy -> bookCopy.getBorrower() != null)) {
+        if (this.bookDatabase.get(optionalBook.get()).stream()
+                .anyMatch(BookCopy::isBorrowed)) {
             throw new BorrowingNotNullException("A physical copy of this book is still borrowed by someone.");
         }
 
-        this.books.remove(optionalBook.get());
+        this.bookDatabase.remove(optionalBook.get());
     }
 
     public Customer searchCustomer(String id) {
@@ -73,8 +118,8 @@ public class Controller {
         this.customers.remove(optionalCustomer.get());
     }
 
-    public BookCopy searchbookCopy(Book book, String id){
-        for (BookCopy bookCopy : books.get(book)) {
+    public BookCopy searchBookCopy(Book book, String id){
+        for (BookCopy bookCopy : bookDatabase.get(book)) {
             if (bookCopy.getId().equals(id)) {
                 return  bookCopy;
             }
@@ -88,18 +133,18 @@ public class Controller {
     }
 
     public void deleteBookCopy(String id) throws BorrowingNotNullException {
-        Optional<BookCopy> optionalBook = this.books.values().stream().flatMap(Collection::stream).filter(bookCopy -> bookCopy.getId().equals(id)).findFirst();
+        Optional<BookCopy> optionalBook = this.bookDatabase.values().stream().flatMap(Collection::stream).filter(bookCopy -> bookCopy.getId().equals(id)).findFirst();
 
         if (optionalBook.isEmpty()) {
             throw new NoSuchElementException();
         }
 
-        if (optionalBook.get().getBorrower() != null) {
+        if (optionalBook.get().isBorrowed()) {
             throw new BorrowingNotNullException("This copy is still borrowed by someone.");
         }
 
         optionalBook.get().getBook().decreaseCopyCount();
-        this.books.get(optionalBook.get().getBook()).remove(optionalBook.get());
+        this.bookDatabase.get(optionalBook.get().getBook()).remove(optionalBook.get());
     }
 
     public boolean addBook(String title, String author, String isbn, String dateOfFirstPublication, String classificationNumber){
@@ -113,10 +158,12 @@ public class Controller {
         book.setClassificationNumber(classificationNumber);
         return true;
     }
+
     public boolean modifyCustomer(Customer customer, String FirstName, String LastName, String dob){
         customer.setFirstName(FirstName);
         customer.setDob(LocalDate.parse(dob));
         customer.setLastName(LastName);
+
         return true;
     }
 
@@ -173,19 +220,11 @@ public class Controller {
         return menu;
     }
 
-    public Scanner getSc() {
-        return sc;
+    public Map<Book, List<BookCopy>> getBookDatabase() {
+        return bookDatabase;
     }
 
-    public void setSc(Scanner sc) {
-        this.sc = sc;
-    }
-
-    public Map<Book, List<BookCopy>> getBooks() {
-        return books;
-    }
-
-    public List<BookCopy> getBookCopys(Book book) {
-        return books.get(book);
+    public List<BookCopy> getBookCopies(Book book) {
+        return bookDatabase.get(book);
     }
 }

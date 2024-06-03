@@ -3,8 +3,8 @@ package controller;
 
 import exceptions.BorrowingNotNullException;
 import model.Book;
-import model.Customer;
 import model.BookCopy;
+import model.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +25,8 @@ class CustomerTest {
 
     @BeforeEach
     void setUp() {
-        controller.getBooks().put(book, new ArrayList<>());
-        controller.getBookCopys(book).add(bookCopy);
+        controller.getBookDatabase().put(book, new ArrayList<>());
+        controller.getBookCopies(book).add(bookCopy);
         controller.getCustomers().add(customer);
         customerListSize = controller.getCustomers().size();
     }
@@ -67,7 +67,7 @@ class CustomerTest {
         Customer newCustomer = controller.getCustomers().get(controller.getCustomers().size() - 1);
         assertEquals("Samuel", newCustomer.getFirstName());
         assertEquals("Kemmler", newCustomer.getLastName());
-        assertEquals(LocalDate.of(2005, 8, 28), newCustomer.getDob());
+        assertEquals(LocalDate.of(2005, 8, 28), newCustomer.getDateOfBirth());
         assertEquals(LocalDate.now(), newCustomer.getSubscriptionDate());
         assertEquals(0, newCustomer.getBorrowedList().size());
     }
@@ -100,7 +100,7 @@ class CustomerTest {
 
         assertEquals("Unga",customer.getFirstName());
         assertEquals("Bunga",customer.getLastName());
-        assertEquals(LocalDate.of(2001,1,1),customer.getDob());
+        assertEquals(LocalDate.of(2001,1,1),customer.getDateOfBirth());
     }
 
     @Test
@@ -121,10 +121,16 @@ class CustomerTest {
         assertEquals(customerListSize, controller.getCustomers().size());
         assertEquals(customer.getFirstName(), modifiedCustomer.getFirstName());
         assertEquals(customer.getLastName(), modifiedCustomer.getLastName());
-        assertEquals(customer.getDob(), modifiedCustomer.getDob());
+        assertEquals(customer.getDateOfBirth(), modifiedCustomer.getDateOfBirth());
     }
 
+    @Test
+    void searchCustomerSuccessful() {
+        fail();
+    }
 
-
-
+    @Test
+    void searchCustomerWithWrongArgument() {
+        fail();
+    }
 }

@@ -2,8 +2,8 @@ package controller;
 
 import exceptions.BorrowingNotNullException;
 import model.Book;
-import model.Customer;
 import model.BookCopy;
+import model.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,18 +22,18 @@ class BookCopyTest {
 
     @BeforeEach
     void setUp() {
-        controller.getBooks().put(book, new ArrayList<>());
-        controller.getBookCopys(book).add(bookCopy);
+        controller.getBookDatabase().put(book, new ArrayList<>());
+        controller.getBookCopies(book).add(bookCopy);
         controller.getCustomers().add(customer);
-        bookCopyListSize = controller.getBookCopys(book).size();
+        bookCopyListSize = controller.getBookCopies(book).size();
     }
 
 
     @Test
     void deleteBookCopySuccessfully() throws BorrowingNotNullException {
         controller.deleteBookCopy("VOL01_1");
-        assertEquals(bookCopyListSize - 1, controller.getBookCopys(book).size());
-        assertFalse(controller.getBookCopys(book).contains(bookCopy));
+        assertEquals(bookCopyListSize - 1, controller.getBookCopies(book).size());
+        assertFalse(controller.getBookCopies(book).contains(bookCopy));
     }
 
     @Test
@@ -41,34 +41,45 @@ class BookCopyTest {
         assertThrows(NoSuchElementException.class, () -> {
             controller.deleteBookCopy("wrong id");
         });
-        assertEquals(bookCopyListSize, controller.getBookCopys(book).size());
-        assertTrue(controller.getBookCopys(book).contains(bookCopy));
+        assertEquals(bookCopyListSize, controller.getBookCopies(book).size());
+        assertTrue(controller.getBookCopies(book).contains(bookCopy));
     }
 
     @Test
     void deleteBookCopyWhenBorrowingNotNull() {
-        bookCopy.setBorrower(customer);
+        bookCopy.setIsBorrowed(true);
         assertThrows(BorrowingNotNullException.class, () -> {
             controller.deleteBookCopy("VOL01_1");
         });
-        assertEquals(bookCopyListSize, controller.getBookCopys(book).size());
-        assertTrue(controller.getBookCopys(book).contains(bookCopy));
+        assertEquals(bookCopyListSize, controller.getBookCopies(book).size());
+        assertTrue(controller.getBookCopies(book).contains(bookCopy));
     }
-
 
     @Test
     void addBookCopySuccessfully() {
         assertTrue(controller.addBookCopy("123456"));
-        assertEquals(bookCopyListSize + 1, controller.getBookCopys(book).size());
-        assertTrue(controller.getBookCopys(book).contains(bookCopy));
+        assertEquals(bookCopyListSize + 1, controller.getBookCopies(book).size());
+        assertTrue(controller.getBookCopies(book).contains(bookCopy));
     }
 
     @Test
     void addBookCopyUnsuccessful() {
         assertFalse(controller.addBookCopy("wrong"));
-        assertEquals(bookCopyListSize , controller.getBookCopys(book).size());
+        assertEquals(bookCopyListSize , controller.getBookCopies(book).size());
     }
 
+    @Test
+    void searchBookCopySuccessful() {
+        fail();
+    }
 
+    @Test
+    void searchBookCopyWithWrongArgument() {
+        fail();
+    }
 
+    @Test
+    void searchBookCopyById() {
+        fail();
+    }
 }
