@@ -106,13 +106,6 @@ public class Controller {
         return optionalCustomer.map(customer -> this.customers.get(this.customers.indexOf(customer))).orElse(null);
     }
 
-    public boolean addCustomer(String firstName, String lastName, String date) {
-        LocalDate dob = LocalDate.parse(date);
-        Customer customer = new Customer(firstName, lastName, dob);
-
-        return this.customers.add(customer);
-    }
-
     public void deleteCustomer(String id) throws BorrowingNotNullException {
         Optional<Customer> optionalCustomer = this.customers.stream().filter(customer -> customer.getId().equals(id)).findFirst();
 
@@ -142,8 +135,20 @@ public class Controller {
         this.bookDatabase.get(optionalBook.get().getBook()).remove(optionalBook.get());
     }
 
-    public boolean addBook(String title, String author, String isbn, String dateOfFirstPublication, String classificationNumber){
-        return true;
+    public Book addBook(String title, String author, String isbn, String dateOfFirstPublication, String classificationNumber){
+        return null;
+    }
+
+    public BookCopy addBookCopy(String isbn, String isBorrowed, String borrowedDate, String returnDate){
+        return null;
+    }
+
+    public Customer addCustomer(String firstName, String lastName, String date) {
+        LocalDate dob = LocalDate.parse(date);
+        Customer customer = new Customer(firstName, lastName, dob);
+        this.customers.add(customer);
+
+        return customer;
     }
 
     public boolean modifyBook(Book book, String title, String author, String dateOfFirstPublication, String classificationNumber){
@@ -159,10 +164,6 @@ public class Controller {
         customer.setDateOfBirth(LocalDate.parse(dob));
         customer.setLastName(LastName);
 
-        return true;
-    }
-
-    public boolean addBookCopy(String isbn){
         return true;
     }
 

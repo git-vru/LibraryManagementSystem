@@ -1,6 +1,7 @@
 package view;
 
 import controller.Controller;
+import model.Book;
 import utilities.CSVreader;
 import model.Customer;
 
@@ -28,44 +29,51 @@ public class CustomerMenu extends View {
         this.options2.add("Add Single Customer");
         this.options2.add("Import Customers from CSV file");
     }
+
     private void importCustomersFromCSV() {
+        int importedCustomerCount = 0;
         Scanner scanner = new Scanner(System.in);
         System.out.print("Please enter the path to the CSV file: ");
         String filePath = scanner.nextLine().trim();
 
-        try {
-            List<Customer> importedCustomers = CSVreader.makeCustomer(filePath);
-            if (!importedCustomers.isEmpty()) System.out.println("Imported Customers:");
-            for (Customer customer : importedCustomers) {
+        List<String[]> importedCustomer = CSVreader.parseFile(filePath);
+
+        if (!importedCustomer.isEmpty()) System.out.println("Imported Customer:");
+
+        for (String[] data : importedCustomer) {
+            Customer customer = controller.addCustomer(data[0].trim(), data[1].trim(), data[2].trim());
+            if (customer != null) {
                 System.out.println(customer);
+                importedCustomerCount++;
             }
-            System.out.printf("Total %d Customers imported.%n", importedCustomers.size());
-        } catch (IOException e) {
-            System.err.println("An error occurred while reading the CSV file: " + e.getMessage());
+        }
+
+        if (importedCustomerCount == 0) {
+            System.out.printf("Total %d customer imported.%n", importedCustomerCount);
+        }
+        else {
+            System.out.println("No customer was imported !");
         }
     }
 
     private void addNewCustomer() {
+        Customer customer = null;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please type : 'create <First Name>,<Last Name>,<Date Of Birth(YYYY-MM-DD)>'");
+        System.out.println("Please type : <First Name>,<Last Name>,<Date Of Birth(YYYY-MM-DD)>'");
 
         String input = scanner.nextLine().trim();
-        if (input.startsWith("create ")) {
-            String CustomerDetails = input.substring(7).trim();
-            String[] parts = CustomerDetails.split(",", 3);
-            if (parts.length == 3) {
-                String FName = parts[0].trim();
-                String LName = parts[1].trim();
-                LocalDate dob = LocalDate.parse(parts[2].trim());
+        String[] parts = input.split(",", 3);
 
-                Customer customer = new Customer(FName,LName,dob);
-                System.out.println("Customer added successfully:");
-                System.out.println(customer);
-            } else {
-                System.out.println("Invalid input format. Please try again.");
-            }
-        } else {
-            System.out.println("Invalid command. Please use the 'create' command.");
+        if (parts.length == 3) {
+            customer = controller.addCustomer(parts[0].trim(), parts[1].trim(), parts[2].trim());
+        }
+        else {
+            System.out.println("Invalid input format. Please try again.");
+        }
+
+        if (customer != null) {
+            System.out.println("Customer added successfully!");
+            System.out.println(customer);
         }
     }
 
@@ -81,7 +89,8 @@ public class CustomerMenu extends View {
             if (inputChar == '0'){
                 //System.out.println("Ex: Please type : 'create <FirstName>,<LastName>,<DOB>'");
                 addNewCustomer();
-            } else if (inputChar == '1') {
+            }
+            else if (inputChar == '1') {
                 importCustomersFromCSV();
             }
             else {
