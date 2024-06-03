@@ -60,10 +60,11 @@ public class BookTest {
 
     @Test
     void addBookSuccessfully() {
-        assertEquals(bladeRunner, controller.addBook("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", "1968-05-01", "DIC01"));
+        Book book = controller.addBook("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", "1968-05-01", "DIC01");
         assertEquals(bookListSize + 1, controller.getBookDatabase().size());
         assertTrue(controller.getBookDatabase().containsKey(book));
 
+        assertEquals("0-345-40447-5", book.getIsbn());
         assertEquals("Do Androids Dream of Electric Sheep?", book.getTitle());
         assertEquals("Philip K. Dick", book.getAuthor());
         assertEquals("0-345-40447-5", book.getIsbn());
