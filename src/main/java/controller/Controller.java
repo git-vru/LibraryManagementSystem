@@ -72,6 +72,15 @@ public class Controller {
         return foundBooks;
     }
 
+    public BookCopy searchBookCopyById(Book book, String id){
+        for (BookCopy bookCopy : bookDatabase.get(book)) {
+            if (bookCopy.getId().equals(id)) {
+                return  bookCopy;
+            }
+        }
+        return null;
+    }
+
     public boolean borrowBook(String customerId, String bookId) {
         return false;
     }
@@ -116,20 +125,6 @@ public class Controller {
         }
 
         this.customers.remove(optionalCustomer.get());
-    }
-
-    public BookCopy searchBookCopy(Book book, String id){
-        for (BookCopy bookCopy : bookDatabase.get(book)) {
-            if (bookCopy.getId().equals(id)) {
-                return  bookCopy;
-            }
-        }
-        return null;
-    }
-
-    public BookCopy searchbookCopy(String id) {
-
-        return null;
     }
 
     public void deleteBookCopy(String id) throws BorrowingNotNullException {
