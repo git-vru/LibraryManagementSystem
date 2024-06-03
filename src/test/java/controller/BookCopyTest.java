@@ -70,12 +70,13 @@ class BookCopyTest {
 
     @Test
     void searchBookCopySuccessful() {
-        fail();
+        assertEquals("VOL01_1",controller.searchBookCopy(book, bookCopy.getId()).getId());
     }
 
     @Test
     void searchBookCopyWithWrongArgument() {
-        fail();
+        assertEquals(null,controller.searchBookCopy(book, "abc"));
+
     }
 
     @Test

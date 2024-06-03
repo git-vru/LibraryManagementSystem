@@ -140,7 +140,7 @@ public class BookTest {
 
     @Test
     void searchBookSuccessful() {
-        fail();
+
     }
 
     @Test

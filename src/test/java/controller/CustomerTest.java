@@ -126,11 +126,13 @@ class CustomerTest {
 
     @Test
     void searchCustomerSuccessful() {
-        fail();
+        assertEquals(customer.getId(),controller.searchCustomer(customer.getId()));
     }
 
     @Test
     void searchCustomerWithWrongArgument() {
-        fail();
+        assertThrows(NoSuchElementException.class, ()->{
+            controller.searchCustomer("id_not_found");
+        });
     }
 }
