@@ -64,7 +64,7 @@ class BookCopyTest {
     @Test
     void addBookCopySuccessfully() {
         controller.getBookCopies(testBook).clear();
-        controller.addBookCopy("isbn03");
+        controller.addBookCopy("isbn03", "false", "", "");
         assertEquals(1, controller.getBookCopies(testBook).size());
         assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("isbn03")).contains(controller.getBookCopies(testBook).get(0)));
     }
@@ -72,7 +72,7 @@ class BookCopyTest {
     @Test
     void addBookCopyUnsuccessful() {
         controller.getBookCopies(testBook).clear();
-        controller.addBookCopy("isbndtfzghjbknl03");
+        controller.addBookCopy("isbndtfzghjbknl03", "false", "", "");
         assertEquals(bookCopyListSize , controller.getBookCopies(book).size());
         assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("isbn03")).isEmpty());
     }

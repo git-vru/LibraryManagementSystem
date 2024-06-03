@@ -110,7 +110,9 @@ public class Controller {
     public Customer addCustomer(String firstName, String lastName, String date) {
         if (!firstName.isEmpty() && !lastName.isEmpty()) {
             LocalDate dob = LocalDate.parse(date);
-            return new Customer(firstName, lastName, dob);
+            Customer customer = new Customer(firstName, lastName, dob);
+            this.getCustomers().add(customer);
+            return customer;
         }
         else {
             throw new IllegalArgumentException();
