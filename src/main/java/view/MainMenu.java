@@ -30,7 +30,7 @@ public class MainMenu extends View {
         switch (inputChar) {
             case '0' -> controller.setMenu(new BookMenu(controller, this));
             case '1' -> controller.setMenu(new CustomerMenu(controller, this));
-            case '2' -> controller.setMenu(new BorrowingInfo(controller, this));
+            case '2' -> controller.setMenu(new BorrowingMenu(controller, this));
             case '3' -> controller.setMenu(new ReportingMenu(controller, this));
             case '4' -> {
                 super.promptAndExit("A setting menu will be displayed");
