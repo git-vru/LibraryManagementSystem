@@ -3,6 +3,7 @@ package controller;
 import exceptions.BorrowingNotNullException;
 import model.Book;
 import model.BookCopy;
+import view.BookMenu;
 import model.Customer;
 import view.MainMenu;
 import view.View;
@@ -75,9 +76,6 @@ public class Controller {
         return false;
     }
 
-    public boolean returnBook(String customerId, String bookId) {
-        return false;
-    }
 
     public void deleteBook(String isbn) throws BorrowingNotNullException {
         Optional<Book> optionalBook = this.bookDatabase.keySet().stream().filter(book -> book.getIsbn().equals(isbn)).findFirst();
@@ -129,6 +127,11 @@ public class Controller {
         return null;
     }
 
+    public BookCopy searchbookCopy(String id) {
+
+        return null;
+    }
+
     public void deleteBookCopy(String id) throws BorrowingNotNullException {
         Optional<BookCopy> optionalBook = this.bookDatabase.values().stream().flatMap(Collection::stream).filter(bookCopy -> bookCopy.getId().equals(id)).findFirst();
 
@@ -149,10 +152,18 @@ public class Controller {
     }
 
     public boolean modifyBook(Book book, String title, String author, String dateOfFirstPublication, String classificationNumber){
+        book.setTitle(title);
+        book.setAuthor(author);
+        book.setPublicationDate(LocalDate.parse(dateOfFirstPublication));
+        book.setClassificationNumber(classificationNumber);
         return true;
     }
 
-    public boolean modifyCustomer(Customer customer, String Fname, String Lname, String dob){
+    public boolean modifyCustomer(Customer customer, String FirstName, String LastName, String dob){
+        customer.setFirstName(FirstName);
+        customer.setDateOfBirth(LocalDate.parse(dob));
+        customer.setLastName(LastName);
+
         return true;
     }
 
@@ -163,6 +174,30 @@ public class Controller {
     public void setMenu(View menu) {
         this.menu = menu;
         this.menu.show();
+    }
+
+    public void borrowBookCopy(Customer customer, BookCopy bookCopy) {
+        if (!bookCopy.isBorrowed()) {
+            bookCopy.setIsBorrowed(true);
+            bookCopy.setBorrowedDate(LocalDate.now());
+            bookCopy.setReturnedDate(LocalDate.now().plusWeeks(2));
+            customer.getBorrowedList().add(bookCopy);
+        } else {
+            throw new IllegalArgumentException("BookCopy is already borrowed!");
+        }
+
+    }
+
+    public void returnBookCopy(Customer customer, BookCopy bookCopy) {
+        if (customer.getBorrowedList().contains(bookCopy)){
+            bookCopy.setIsBorrowed(false);
+            bookCopy.setBorrowedDate(null);
+            bookCopy.setReturnedDate(null);
+            customer.getBorrowedList().remove(bookCopy);
+        }
+        else {
+            throw new IllegalArgumentException("BookCopy is not borrowed!");
+        }
     }
 
     public Scanner getScanner() {

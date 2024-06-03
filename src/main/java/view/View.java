@@ -36,15 +36,15 @@ public abstract class View {
         int maxOptionLength = max(options.stream().map(String::length).toList()) + 2; // 2 for spaces
         int maxPipeLength = maxOptionLength + 4;
 
-        String leftAlignFormat = "│ %-1d │ %-" + (maxOptionLength-2) + "s │%n";
+        String leftAlignFormat = "| %-1d | %-" + (maxOptionLength-2) + "s |%n";
 
-        System.out.format("┌" + "─".repeat(maxPipeLength) + "┐%n");
-        System.out.format("│%-" + maxOptionLength + "s│%n", addPadding2Text(this.name, maxPipeLength));
-        System.out.format("├───┬" + "─".repeat(maxOptionLength) + "┤%n");
+        System.out.format("|" + "-".repeat(maxPipeLength) + "|%n");
+        System.out.format("|%-" + maxOptionLength + "s|%n", addPadding2Text(this.name, maxPipeLength));
+        System.out.format("|---|" + "-".repeat(maxOptionLength) + "|%n");
         for (int i = 0; i < options.size(); i++) {
             System.out.format(leftAlignFormat, i, options.get(i));
         }
-        System.out.format("└───┴" + "─".repeat(maxOptionLength) + "┘%n");
+        System.out.format("|---|" + "-".repeat(maxOptionLength) + "|%n");
 
         if (isError) {
             System.out.println("Please only enter a number from 0 to " + (options.size() - 1));

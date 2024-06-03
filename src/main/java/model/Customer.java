@@ -91,14 +91,14 @@ public class Customer {
         String header = View.addPadding2Text(fullName, 20 + maxLength);
 
         return String.format(
-                "┌────────────────────" + "─".repeat(maxLength+2) + "┐\n" +
-                        "│ %s│\n" +
-                        "├───────────────────┬" + "─".repeat(maxLength+2) + "┤\n" +
-                        "│ ID                │ %-" + maxLength + "s │\n" +
-                        "│ Date of Birth     │ %-" + maxLength + "s │\n" +
-                        "│ Subscription Date │ %-" + maxLength + "s │\n" +
-                        "└───────────────────┴" + "─".repeat(maxLength+2) + "┘",
-                header, id, dateOfBirth, subscriptionDate
+            "|--------------------" + "-".repeat(maxLength+2) + "|\n" +
+            "| %s│\n" +
+            "|-------------------|" + "-".repeat(maxLength+2) + "|\n" +
+            "| ID                | %-" + maxLength + "s |\n" +
+            "| Date of Birth     | %-" + maxLength + "s |\n" +
+            "| Subscription Date | %-" + maxLength + "s |\n" +
+            "|-------------------|" + "-".repeat(maxLength+2) + "|",
+            header, id, dateOfBirth, subscriptionDate
         );
     }
 
