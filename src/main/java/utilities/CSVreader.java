@@ -44,6 +44,8 @@ public class CSVreader {
             String line;
             Controller controller = new Controller();
             while ((line = reader.readLine()) != null) {
+                try {
+
                 String[] parts = line.split(",");
                 String isbn = parts[0].trim();
                 Book book = controller.searchBookViaIsbn(isbn);
@@ -56,6 +58,13 @@ public class CSVreader {
                 }
                 BookCopy bookCopy = new BookCopy(book,status);
                 importedBookCopies.add(bookCopy);
+                } catch (DateTimeParseException a) {
+                    System.out.println("Error while parsing the date");
+                } catch (ArrayIndexOutOfBoundsException a) {
+                    System.out.println("Error because of missing data");
+                } catch (NullPointerException a) {
+                    System.out.println("Error because of not existing isbn");
+                }
             }
         } catch (IOException ignored) {}
         return importedBookCopies;

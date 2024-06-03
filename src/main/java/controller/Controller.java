@@ -9,6 +9,7 @@ import view.MainMenu;
 import view.View;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -98,11 +99,17 @@ public class Controller {
     }
 
     public boolean addCustomer(String firstName, String lastName, String date) {
-        LocalDate dob = LocalDate.parse(date);
-        Customer customer = new Customer(firstName, lastName, dob);
+        if (!firstName.isEmpty() && !lastName.isEmpty()) {
+            LocalDate dob = LocalDate.parse(date);
+            Customer customer = new Customer(firstName, lastName, dob);
 
-        return this.customers.add(customer);
+            return this.customers.add(customer);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
+
+
 
     public void deleteCustomer(String id) throws BorrowingNotNullException {
         Optional<Customer> optionalCustomer = this.customers.stream().filter(customer -> customer.getId().equals(id)).findFirst();
@@ -147,28 +154,63 @@ public class Controller {
         this.bookDatabase.get(optionalBook.get().getBook()).remove(optionalBook.get());
     }
 
-    public boolean addBook(String title, String author, String isbn, String dateOfFirstPublication, String classificationNumber){
-        return true;
+    public Book addBook(String title, String author, String isbn, String dateOfFirstPublication, String classificationNumber){
+
+        if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty() && !classificationNumber.isEmpty()) {
+            try {
+                LocalDate dob = LocalDate.parse(dateOfFirstPublication);
+                Book book = new Book(title, author, isbn, dob, classificationNumber);
+                bookDatabase.put(book, new ArrayList<>());
+                return book;
+            } catch (DateTimeParseException a) {
+                System.out.println("Error at passing the date!");
+            }
+
+        } else {
+            throw new IllegalArgumentException();
+
+        }
+        return null;
+
     }
 
     public boolean modifyBook(Book book, String title, String author, String dateOfFirstPublication, String classificationNumber){
-        book.setTitle(title);
-        book.setAuthor(author);
-        book.setPublicationDate(LocalDate.parse(dateOfFirstPublication));
-        book.setClassificationNumber(classificationNumber);
-        return true;
+        if (!title.isEmpty() && !author.isEmpty() && !classificationNumber.isEmpty()) {
+            book.setTitle(title);
+            book.setAuthor(author);
+            book.setPublicationDate(LocalDate.parse(dateOfFirstPublication));
+            book.setClassificationNumber(classificationNumber);
+            return true;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
-    public boolean modifyCustomer(Customer customer, String FirstName, String LastName, String dob){
-        customer.setFirstName(FirstName);
-        customer.setDateOfBirth(LocalDate.parse(dob));
-        customer.setLastName(LastName);
+    public boolean modifyCustomer(Customer customer, String firstName, String lastName, String dob){
+        if (!firstName.isEmpty() && !lastName.isEmpty()) {
+            customer.setFirstName(firstName);
+            customer.setDateOfBirth(LocalDate.parse(dob));
+            customer.setLastName(lastName);
+            return true;
 
-        return true;
+        } else {
+            throw new NoSuchElementException();
+
+        }
     }
 
-    public boolean addBookCopy(String isbn){
-        return true;
+    public BookCopy addBookCopy(String isbn){
+
+        if (!isbn.isEmpty()) {
+
+            BookCopy bookCopy = new BookCopy(searchBookViaIsbn(isbn), false);
+            getBookCopies(searchBookViaIsbn(isbn)).add(bookCopy);
+            return bookCopy;
+
+        } else {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     public void setMenu(View menu) {
