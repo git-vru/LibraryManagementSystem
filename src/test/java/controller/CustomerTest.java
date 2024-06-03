@@ -26,7 +26,7 @@ class CustomerTest {
     @BeforeEach
     void setUp() {
         controller.getBookDatabase().put(book, new ArrayList<>());
-        controller.getBookCopys(book).add(bookCopy);
+        controller.getBookCopies(book).add(bookCopy);
         controller.getCustomers().add(customer);
         customerListSize = controller.getCustomers().size();
     }
@@ -124,7 +124,13 @@ class CustomerTest {
         assertEquals(customer.getDateOfBirth(), modifiedCustomer.getDateOfBirth());
     }
 
+    @Test
+    void searchCustomerSuccessful() {
+        fail();
+    }
 
-
-
+    @Test
+    void searchCustomerWithWrongArgument() {
+        fail();
+    }
 }

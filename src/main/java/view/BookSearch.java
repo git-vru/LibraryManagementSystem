@@ -75,7 +75,7 @@ public class BookSearch extends View {
                 String bookCopyID = controller.getScanner().next();
                 if (bookCopyID.equals("q")) break;
 
-                bookCopy = controller.searchbookCopy(book, bookCopyID);
+                bookCopy = controller.searchBookCopy(book, bookCopyID);
                 if (bookCopy == null) {
                     System.out.println("---\nPlease enter a valid ID!\n");
                 }

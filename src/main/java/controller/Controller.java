@@ -120,7 +120,7 @@ public class Controller {
         this.customers.remove(optionalCustomer.get());
     }
 
-    public BookCopy searchbookCopy(Book book, String id){
+    public BookCopy searchBookCopy(Book book, String id){
         for (BookCopy bookCopy : bookDatabase.get(book)) {
             if (bookCopy.getId().equals(id)) {
                 return  bookCopy;
@@ -151,6 +151,7 @@ public class Controller {
     public boolean modifyBook(Book book, String title, String author, String dateOfFirstPublication, String classificationNumber){
         return true;
     }
+
     public boolean modifyCustomer(Customer customer, String Fname, String Lname, String dob){
         return true;
     }
@@ -180,7 +181,7 @@ public class Controller {
         return bookDatabase;
     }
 
-    public List<BookCopy> getBookCopys(Book book) {
+    public List<BookCopy> getBookCopies(Book book) {
         return bookDatabase.get(book);
     }
 }
