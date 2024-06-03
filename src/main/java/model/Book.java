@@ -7,9 +7,9 @@ import java.util.List;
 public class Book {
     private String classificationNumber;
     private final String isbn;
-    private final String title;
-    private final String author;
-    private final LocalDate publicationDate;
+    private String title;
+    private String author;
+    private LocalDate publicationDate;
 
     private int copyCount;
 
@@ -45,6 +45,18 @@ public class Book {
 
     public String getClassificationNumber() {
         return classificationNumber;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setPublicationDate(LocalDate publicationDate) {
+        this.publicationDate = publicationDate;
     }
 
     public void setClassificationNumber(String classificationNumber) {

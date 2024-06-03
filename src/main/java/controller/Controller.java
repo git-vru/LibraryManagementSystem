@@ -107,11 +107,21 @@ public class Controller {
     }
 
     public boolean modifyBook(Book book, String title, String author, String dateOfFirstPublication, String classificationNumber){
+        book.setTitle(title);
+        book.setAuthor(author);
+        book.setPublicationDate(LocalDate.parse(dateOfFirstPublication));
+        book.setClassificationNumber(classificationNumber);
         return true;
     }
-    public boolean modifyCustomer(Customer customer, String Fname, String Lname, String dob){
+    public boolean modifyCustomer(Customer customer, String FirstName, String LastName, String dob){
+        customer.setFirstName(FirstName);
+        customer.setDob(LocalDate.parse(dob));
+        customer.setLastName(LastName);
         return true;
     }
+
+
+
 
     public boolean addBookCopy(String isbn){
         return true;
