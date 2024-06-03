@@ -3,6 +3,7 @@ package model;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ public class CSVreader {
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = reader.readLine()) != null) {
+                try {
+
                 String[] parts = line.split(",");
                 String isbn = parts[0].trim();
                 String title = parts[1].trim();
@@ -21,6 +24,11 @@ public class CSVreader {
                 String classificationNumber = parts[4].trim();
                 Book book = new Book(title, author, isbn, publicationDate, classificationNumber);
                 importedBooks.add(book);
+                } catch (DateTimeParseException a) {
+                    System.out.println("Error while parsing the date");
+                } catch (ArrayIndexOutOfBoundsException a) {
+                    System.out.println("Error because of missing data");
+                }
             }
         } catch (IOException ignored) {}
         return importedBooks;
@@ -52,19 +60,28 @@ public class CSVreader {
     // CSV Format: ID, FirstName, LastName, Date of Birth, Subscription Date
     public static List<Customer> makeCustomer(String path) throws FileNotFoundException {
         List<Customer> importedCustomers = new ArrayList<>();
+        String line;
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String line;
+
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                String id = parts[0].trim();
-                String firstName = parts[1].trim();
-                String lastName = parts[2].trim();
-                LocalDate dateOfBirth = LocalDate.parse(parts[3].trim());
-                LocalDate subscriptionDate = LocalDate.parse(parts[4].trim());
-                Customer customer = new Customer(id, firstName, lastName, dateOfBirth, subscriptionDate);
-                importedCustomers.add(customer);
+                try {
+                    String[] parts = line.split(",");
+                    String id = parts[0].trim();
+                    String firstName = parts[1].trim();
+                    String lastName = parts[2].trim();
+                    LocalDate dateOfBirth = LocalDate.parse(parts[3].trim());
+                    LocalDate subscriptionDate = LocalDate.parse(parts[4].trim());
+                    Customer customer = new Customer(id, firstName, lastName, dateOfBirth, subscriptionDate);
+                    importedCustomers.add(customer);
+                } catch (DateTimeParseException a) {
+                    System.out.println("Error while parsing the date");
+                } catch (ArrayIndexOutOfBoundsException a) {
+                    System.out.println("Error because of missing data");
+                }
             }
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+
+        }
         return importedCustomers;
     }
 }
