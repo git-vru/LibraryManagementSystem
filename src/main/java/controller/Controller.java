@@ -197,10 +197,15 @@ public class Controller {
     public BookCopy addBookCopy(String isbn){
 
         if (!isbn.isEmpty()) {
+            try {
+                BookCopy bookCopy = new BookCopy(searchBookViaIsbn(isbn), false);
+                getBookCopies(searchBookViaIsbn(isbn)).add(bookCopy);
+                return bookCopy;
+            } catch (NullPointerException a) {
+                System.out.println("There is no book with such isbn!");
+                return null;
+            }
 
-            BookCopy bookCopy = new BookCopy(searchBookViaIsbn(isbn), false);
-            getBookCopies(searchBookViaIsbn(isbn)).add(bookCopy);
-            return bookCopy;
 
         } else {
             throw new IllegalArgumentException();

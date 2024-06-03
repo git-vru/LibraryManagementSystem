@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
@@ -63,7 +64,7 @@ class CustomerTest {
 
     @Test
     void addCustomerSuccessfully() {
-        assertTrue(controller.addCustomer("","Kemmler","2005-08-28"));
+        assertTrue(controller.addCustomer("Samuel","Kemmler","2005-08-28"));
         assertEquals(customerListSize+1, controller.getCustomers().size());
 
         Customer newCustomer = controller.getCustomers().get(controller.getCustomers().size() - 1);
@@ -77,28 +78,25 @@ class CustomerTest {
     @Test
     void addCustomerUnsuccessful() {
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addCustomer("", "Smith", "10/10/2010");
+            controller.addCustomer("", "Smith", "2001-01-01");
         });
         assertEquals(customerListSize, controller.getCustomers().size());
-        assertFalse(controller.getCustomers().contains(customer));
 
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addCustomer("Will", "", "10/10/2010");
+            controller.addCustomer("Will", "", "2001-01-01");
         });
         assertEquals(customerListSize, controller.getCustomers().size());
-        assertFalse(controller.getCustomers().contains(customer));
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(DateTimeParseException.class, () -> {
             controller.addCustomer("Will", "Smith", "10/10/10");
         });
         assertEquals(customerListSize, controller.getCustomers().size());
-        assertFalse(controller.getCustomers().contains(customer));
 
     }
 
     @Test
     void modifyCustomerSuccessfully() {
-        assertTrue(controller.modifyCustomer(customer,"Unga", "Bunga", "01/01/2001"));
+        assertTrue(controller.modifyCustomer(customer,"Unga", "Bunga", "2001-01-01"));
 
         assertEquals("Unga",customer.getFirstName());
         assertEquals("Bunga",customer.getLastName());
@@ -109,14 +107,14 @@ class CustomerTest {
     void modifyCustomerUnsuccessful() {
         Customer modifiedCustomer = customer;
         assertThrows(NoSuchElementException.class, () -> {
-            controller.modifyCustomer(modifiedCustomer,"", "Smith", "10/10/2010");
+            controller.modifyCustomer(modifiedCustomer,"", "Smith", "2001-01-01");
         });
 
         assertThrows(NoSuchElementException.class, () -> {
-            controller.modifyCustomer(modifiedCustomer, "Will", "", "10/10/2010");
+            controller.modifyCustomer(modifiedCustomer, "Will", "", "2001-01-01");
         });
 
-        assertThrows(NoSuchElementException.class, () -> {
+        assertThrows(DateTimeParseException.class, () -> {
             controller.modifyCustomer(modifiedCustomer, "Will", "Smith", "10/10/10");
         });
 

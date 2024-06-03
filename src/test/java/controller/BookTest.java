@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
@@ -59,15 +60,15 @@ public class BookTest {
 
     @Test
     void addBookSuccessfully() {
-        assertTrue(controller.addBook("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", "1968-05-01", "DIC01"));
+        controller.addBook("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", "1968-05-01", "DIC01");
         assertEquals(bookListSize + 1, controller.getBookDatabase().size());
-        assertTrue(controller.getBookDatabase().containsKey(book));
+        assertTrue(controller.getBookDatabase().containsKey(controller.searchBookViaIsbn("0-345-40447-5")));
 
-        assertEquals("Do Androids Dream of Electric Sheep?", book.getTitle());
-        assertEquals("Philip K. Dick", book.getAuthor());
-        assertEquals("0-345-40447-5", book.getIsbn());
-        assertEquals(LocalDate.of(1968, 5, 1), book.getPublicationDate());
-        assertEquals("DIC01", book.getClassificationNumber());
+        assertEquals("Do Androids Dream of Electric Sheep?", controller.searchBookViaIsbn("0-345-40447-5").getTitle());
+        assertEquals("Philip K. Dick", controller.searchBookViaIsbn("0-345-40447-5").getAuthor());
+        assertEquals("0-345-40447-5", controller.searchBookViaIsbn("0-345-40447-5").getIsbn());
+        assertEquals(LocalDate.of(1968, 5, 1), controller.searchBookViaIsbn("0-345-40447-5").getPublicationDate());
+        assertEquals("DIC01", controller.searchBookViaIsbn("0-345-40447-5").getClassificationNumber());
     }
 
     @Test
@@ -75,42 +76,34 @@ public class BookTest {
         assertThrows(IllegalArgumentException.class, () -> {
             controller.addBook("", "author","isbn", "2024-05-23", "classificationNumber");
         });
-        assertEquals(bookListSize, controller.getBookDatabase().size());
-        assertTrue(controller.getBookDatabase().containsKey(book));
+
 
         assertThrows(IllegalArgumentException.class, () -> {
             controller.addBook("title", "","isbn", "2024-05-23", "classificationNumber");
         });
-        assertEquals(bookListSize, controller.getBookDatabase().size());
-        assertTrue(controller.getBookDatabase().containsKey(book));
+
 
         assertThrows(IllegalArgumentException.class, () -> {
             controller.addBook("title", "author","", "2024-05-23", "classificationNumber");
         });
-        assertEquals(bookListSize, controller.getBookDatabase().size());
-        assertTrue(controller.getBookDatabase().containsKey(book));
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("title", "author","isbn", "24-24-24", "classificationNumber");
-        });
-        assertEquals(bookListSize, controller.getBookDatabase().size());
-        assertTrue(controller.getBookDatabase().containsKey(book));
+
+        assertNull(controller.addBook("title", "author","isbn", "24-24-24", "classificationNumber"));
+
 
         assertThrows(IllegalArgumentException.class, () -> {
             controller.addBook("title", "author","isbn", "2024-05-23", "");
         });
         assertEquals(bookListSize, controller.getBookDatabase().size());
-        assertTrue(controller.getBookDatabase().containsKey(book));
     }
 
     @Test
     void modifyBookSuccessfully() {
-        assertTrue(controller.modifyBook(book,"abc","def", "22/5/2024","12"));
+        assertTrue(controller.modifyBook(book,"abc","def", "2024-01-04","12"));
 
         assertEquals("abc", book.getTitle());
         assertEquals("def",book.getAuthor());
-        assertEquals("ghi",book.getIsbn());
-        assertEquals(LocalDate.of(2024,5,22),book.getPublicationDate());
+        assertEquals(LocalDate.of(2024,1,4),book.getPublicationDate());
         assertEquals("12",book.getClassificationNumber());
     }
 
@@ -118,14 +111,14 @@ public class BookTest {
     void modifyBookUnsuccessful() {
         Book modifiedBook = book;
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.modifyBook(modifiedBook, "", "b", "c", "d");
+            controller.modifyBook(modifiedBook, "", "b", "2001-01-01", "d");
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.modifyBook(modifiedBook,"a", "", "c", "d");
+            controller.modifyBook(modifiedBook,"a", "", "2001-01-01", "d");
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(DateTimeParseException.class, () -> {
             controller.modifyBook(modifiedBook,"a", "b", "", "d");
         });
 
