@@ -2,14 +2,15 @@ package view;
 
 import controller.Controller;
 import exceptions.BorrowingNotNullException;
+import model.BookCopy;
 import model.Customer;
 
 import java.time.format.DateTimeParseException;
+import java.util.Comparator;
 import java.util.List;
 
 public class CustomerInfo extends View {
     private char inputChar;
-
 
     public CustomerInfo(Controller controller, View prev) {
         super(controller, prev);
@@ -50,7 +51,7 @@ public class CustomerInfo extends View {
                 System.out.println("Please enter book id: ");
 
                 try {
-                    controller.borrowBookCopy(customer, controller.searchbookCopy(controller.getScanner().next()));
+                    controller.borrowBookCopy(customer, controller.searchBookCopy(copy -> copy.getId().equals(controller.getScanner().next()), Comparator.comparing(BookCopy::getId)).get(0));
                     super.promptAndExit("Book was successfully borrowed!");
                 }   catch (IllegalArgumentException illegalArgumentException) {
                     super.promptAndExit(illegalArgumentException.getMessage());
@@ -63,7 +64,7 @@ public class CustomerInfo extends View {
                 System.out.println("Please enter book id: ");
 
                 try {
-                    controller.returnBookCopy(customer, controller.searchbookCopy(controller.getScanner().next()));
+                    controller.returnBookCopy(customer, controller.searchBookCopy(copy -> copy.getId().equals(controller.getScanner().next()), Comparator.comparing(BookCopy::getId)).get(0));
                     super.promptAndExit("Book was successfully returned!");
                 }   catch (IllegalArgumentException illegalArgumentException) {
                     super.promptAndExit(illegalArgumentException.getMessage());
@@ -95,7 +96,6 @@ public class CustomerInfo extends View {
                 } catch (DateTimeParseException dateTimeParseException) {
                     super.promptAndExit("Please pass a valid value!");
                 }
-
 
                 this.show();
             } else if (inputChar == 'q') {
