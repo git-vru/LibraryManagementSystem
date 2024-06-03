@@ -19,6 +19,7 @@ public class BookTest {
     int bookListSize;
     Controller controller = new Controller();
     Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01");
+    Book bladeRunner = new Book("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", LocalDate.of(1968,5,1), "DIC01");
     BookCopy bookCopy = new BookCopy(book);
     Customer customer = new Customer("Vrushabh", "Jain", LocalDate.of(2004, 10, 30));
 
@@ -59,7 +60,7 @@ public class BookTest {
 
     @Test
     void addBookSuccessfully() {
-        assertTrue(controller.addBook("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", "1968-05-01", "DIC01"));
+        assertEquals(bladeRunner, controller.addBook("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", "1968-05-01", "DIC01"));
         assertEquals(bookListSize + 1, controller.getBookDatabase().size());
         assertTrue(controller.getBookDatabase().containsKey(book));
 

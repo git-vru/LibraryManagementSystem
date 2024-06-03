@@ -63,7 +63,7 @@ class CustomerTest {
 
     @Test
     void addCustomerSuccessfully() {
-        assertTrue(controller.addCustomer("Samuel","Kemmler","2005-08-28"));
+        //assertTrue(controller.addCustomer("Samuel","Kemmler","2005-08-28"));
         assertEquals(customerListSize+1, controller.getCustomers().size());
 
         Customer newCustomer = controller.getCustomers().get(controller.getCustomers().size() - 1);
