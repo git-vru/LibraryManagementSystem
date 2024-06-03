@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -70,17 +72,23 @@ class BookCopyTest {
 
     @Test
     void searchBookCopySuccessful() {
-        assertEquals("VOL01_1",controller.searchBookCopy(book, bookCopy.getId()).getId());
+        Predicate<BookCopy> predicate1= book->bookCopy.getId().equals("VOL01_1");
+        Comparator<BookCopy> comparator=Comparator.comparing(BookCopy::getId);
+        assertEquals(1,controller.searchBookCopy(predicate1,comparator).size());
+        assertEquals("VOL01_1",controller.searchBookCopy(predicate1,comparator).get(0).getId());
     }
 
     @Test
     void searchBookCopyWithWrongArgument() {
-        assertEquals(null,controller.searchBookCopy(book, "abc"));
-
+        Predicate<BookCopy> predicate1= book->bookCopy.getId().equals("abc");
+        Comparator<BookCopy> comparator=Comparator.comparing(BookCopy::getId);
+        assertThrows(NoSuchElementException.class,()->{
+            controller.searchBookCopy(predicate1,comparator);
+        });
     }
 
     @Test
     void searchBookCopyById() {
-        fail();
+        assertEquals(bookCopy,controller.searchBookCopyById(book, bookCopy.getId()).getId());
     }
 }

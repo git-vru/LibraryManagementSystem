@@ -10,7 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -126,13 +128,18 @@ class CustomerTest {
 
     @Test
     void searchCustomerSuccessful() {
-        assertEquals(customer.getId(),controller.searchCustomer(customer.getId()));
+        Predicate<Customer> predicate = customer -> customer.getFirstName().equals("Vrushabh");
+        Comparator<Customer> comparator = Comparator.comparing(Customer::getFirstName);
+        assertEquals(1, controller.searchCustomer(predicate, comparator).size());
+        assertEquals("Vrushabh", controller.searchCustomer(predicate, comparator).get(0).getFirstName());
     }
 
     @Test
     void searchCustomerWithWrongArgument() {
+        Predicate<Customer> predicate = customer -> customer.getFirstName().equals("Vrushabh");
+        Comparator<Customer> comparator = Comparator.comparing(Customer::getFirstName);
         assertThrows(NoSuchElementException.class, ()->{
-            controller.searchCustomer("id_not_found");
+            controller.searchCustomer(predicate,comparator);
         });
     }
 }

@@ -59,7 +59,7 @@ public class BorrowingMenu extends View {
                     // Assuming you want to add a new book copy with status false by default
                     BookCopy bookCopy = new BookCopy(book, false);
                     // Add the book copy to your collection here
-                    controller.getBookCopys(book).add(bookCopy);
+                    controller.getBookCopies(book).add(bookCopy);
                     System.out.println("Book copy added successfully:");
                     System.out.println(bookCopy);
                 } else {
