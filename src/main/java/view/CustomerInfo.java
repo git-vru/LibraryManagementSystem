@@ -45,42 +45,35 @@ public class CustomerInfo extends View {
 
         if (inputChar == 'q') {
             prev.show();
-        }
-        else if (inputChar == '0') {
+        } else if (inputChar == '0') {
             try {
                 controller.deleteCustomer(customerId);
                 System.out.println("Customer with the id: " + customerId + " has been successfully deleted!");
-            }
-            catch (BorrowingNotNullException e) {
+            } catch (BorrowingNotNullException e) {
                 System.out.println(e.getMessage());
             }
-        }
-        else if (inputChar == '1') {
+        } else if (inputChar == '1') {
             System.out.println("Please enter book copy id: ");
             String input = controller.getScanner().next();
             try {
                 controller.borrowBookCopy(customer, controller.searchBookCopy(copy -> copy.getId().equals(input), Comparator.comparing(BookCopy::getId)).get(0));
                 super.promptAndExit("Book was successfully borrowed!");
-            }
-            catch (IllegalArgumentException illegalArgumentException) {
+            } catch (IllegalArgumentException illegalArgumentException) {
                 super.promptAndExit(illegalArgumentException.getMessage());
             }
-        }
-        else if (inputChar == '2') {
+        } else if (inputChar == '2') {
             System.out.println("Please enter book copy id: ");
             String input = controller.getScanner().next();
             try {
                 controller.returnBookCopy(customer, controller.searchBookCopy(copy -> copy.getId().equals(input), Comparator.comparing(BookCopy::getId)).get(0));
                 super.promptAndExit("Book was successfully returned!");
-            }
-            catch (IllegalArgumentException illegalArgumentException) {
+            } catch (IllegalArgumentException illegalArgumentException) {
                 super.promptAndExit(illegalArgumentException.getMessage());
             }
-        }
-        else if (inputChar == '3') {
+        } else if (inputChar == '3') {
             System.out.println("Please enter a new first name: ");
             if (inputChar == '0') {
-                try  {
+                try {
                     controller.deleteCustomer(customerId);
                     System.out.println("Customer with the id: " + customerId + " has been successfully deleted!");
                 } catch (BorrowingNotNullException e) {
@@ -92,7 +85,7 @@ public class CustomerInfo extends View {
                 try {
                     controller.borrowBookCopy(customer, controller.searchBookCopy(copy -> copy.getId().equals(controller.getScanner().next()), Comparator.comparing(BookCopy::getId)).get(0));
                     super.promptAndExit("Book was successfully borrowed!");
-                }   catch (IllegalArgumentException illegalArgumentException) {
+                } catch (IllegalArgumentException illegalArgumentException) {
                     System.out.println((illegalArgumentException.getMessage()));
                 }
 
@@ -105,17 +98,16 @@ public class CustomerInfo extends View {
                 try {
                     controller.returnBookCopy(customer, controller.searchBookCopy(copy -> copy.getId().equals(controller.getScanner().next()), Comparator.comparing(BookCopy::getId)).get(0));
                     super.promptAndExit("Book was successfully returned!");
-                }   catch (IllegalArgumentException illegalArgumentException) {
+                } catch (IllegalArgumentException illegalArgumentException) {
                     System.out.println((illegalArgumentException.getMessage()));
                 }
 
                 this.show();
-            }
-            else if (inputChar == '3') {
+            } else if (inputChar == '3') {
                 System.out.println("Please enter a new first name: ");
 
-            controller.modifyCustomer(customer, controller.getScanner().next(), customer.getLastName(), customer.getDateOfBirth().toString());
-            super.promptAndExit("First name was successfully changed!");
+                controller.modifyCustomer(customer, controller.getScanner().next(), customer.getLastName(), customer.getDateOfBirth().toString());
+                super.promptAndExit("First name was successfully changed!");
                 try {
                     controller.modifyCustomer(customer, controller.getScanner().next(), customer.getLastName(), customer.getDateOfBirth().toString());
                     super.promptAndExit("First name was successfully changed!");
@@ -125,29 +117,27 @@ public class CustomerInfo extends View {
                 }
 
 
-            this.show();
-        }
-        else if (inputChar == '4') {
-            System.out.println("Please enter a new last name: ");
+                this.show();
+            } else if (inputChar == '4') {
+                System.out.println("Please enter a new last name: ");
 
-            controller.modifyCustomer(customer, customer.getFirstName(), controller.getScanner().next(), customer.getDateOfBirth().toString());
-            super.promptAndExit("Last name was successfully changed!");
+                controller.modifyCustomer(customer, customer.getFirstName(), controller.getScanner().next(), customer.getDateOfBirth().toString());
+                super.promptAndExit("Last name was successfully changed!");
 
-            this.show();
-        }
-        else if (inputChar == '5') {
-            System.out.println("Please enter dob <YYYY-MM-DD>: ");
-            try {
-                controller.modifyCustomer(customer, customer.getFirstName(), customer.getLastName(), controller.getScanner().next());
-                super.promptAndExit("Dob was successfully changed!");
+                this.show();
+            } else if (inputChar == '5') {
+                System.out.println("Please enter dob <YYYY-MM-DD>: ");
+                try {
+                    controller.modifyCustomer(customer, customer.getFirstName(), customer.getLastName(), controller.getScanner().next());
+                    super.promptAndExit("Dob was successfully changed!");
+                } catch (DateTimeParseException dateTimeParseException) {
+                    super.promptAndExit("Please pass a valid value!");
+                }
+
+                this.show();
             }
-            catch (DateTimeParseException dateTimeParseException) {
-                super.promptAndExit("Please pass a valid value!");
-            }
 
-            this.show();
+            prev.show();
         }
-
-        prev.show();
     }
 }
