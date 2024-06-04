@@ -134,7 +134,7 @@ class CustomerTest {
 
         //Sorting test
         List<Customer> results = controller.searchCustomer(customer -> true, Comparator.comparing(Customer::getLastName));
-        assertEquals(controller.getCustomers().size(), controller.searchCustomer(predicate, comparator).size());
+        assertEquals(controller.getCustomers().size(), results.size());
         assertEquals("Jain", results.get(0).getLastName());
         assertEquals("Kem", results.get(1).getLastName());
     }

@@ -62,7 +62,7 @@ public class BookTest {
 
     @Test
     void addBookSuccessfully() {
-        Book book = controller.addBook("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", "1968-05-01", "DIC01");
+        Book book = controller.addBook("0-345-40447-5", "Do Androids Dream of Electric Sheep?", "Philip K. Dick", "1968-05-01", "DIC01");
         assertEquals(bookListSize + 1, controller.getBookDatabase().size());
         assertTrue(controller.getBookDatabase().containsKey(book));
 
