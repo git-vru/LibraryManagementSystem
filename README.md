@@ -93,12 +93,16 @@ Search for a customer `0`. Select delete book `0`.
 ### Borrowing
 
 #### 1. Borrow a book
+Open borrowing menu `2`, then create a new borrowing `0`, then enter a `customer id` and a `book copy id`.
 
 #### 2. Return a book
+Open borrowing menu `2`, then return a book `1`, then pass the `book copy id`.
 
 #### 3. Borrow a book (via customer)
+Open the customer menu `1`, search for the cutomer `0` and select Borrow a book for cutomer: (cutomer) `1` Then enter the `book copy id`.
 
 #### 4. Return a book (via customer)
+Open customer menu `1`, search for the cutomer `0` and select Return a book for cutomer: (customer) `2`. Then enter the `book copy id`.
 
 ## Objects Example
 
