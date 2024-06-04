@@ -35,9 +35,16 @@ In the book menu, enter `0`. Then enter `0` to search via ISBN, `1` to search vi
 
 #### 2. Add a book:
 In the book menu, enter `1` and then enter `0` to add a single book in the command line or `1` to import a csv file.
-The csv file must respect the following format: `<isbn>,<title>,<author>,<date (YYYY-MM-DD)>`
+The csv file must respect the following format: `<isbn>,<title>,<author>,<publication date (YYYY-MM-DD)>`
 
 #### 3. Modify a book:
+Search for a book `0`.
+To modify the title, enter `3`.
+To modify the author, enter `4`.
+To modify the publication test, enter `5`.
+To modify the classification number/shelf location, enter `6`.
+
+The data entered cannot be empty.
 
 #### 4. Delete a book:
 Search for a book `0`. Select delete book `0`.
@@ -46,24 +53,42 @@ Search for a book `0`. Select delete book `0`.
 Navigate to the book menu `0`
 
 #### 1. Search for a book copy:
+In the book menu, enter `0`. Then enter `1` and then enter a book copy id.
 
 #### 2. Add a book copy:
-In the book menu, enter `1` and then enter `0` to add a single book in the command line or `1` to import a csv file.
-The csv file must respect the following format: `<isbn>,<title>,<author>,<date (YYYY-MM-DD)>`
+To add a book copy for a spesific book:
+In the book menu, search for any book `0` and enter `1` to add a book copy.
 
-#### 3. Delete a book copy (via ID)
-Navigate to the book menu `0`, then search for a book `0`. After entering the correct ISBN, select delete a copy of this book `1`. Then enter a valid ID to delete the book copy.
+To add a book copy from a csv file:
+In the book menu, enter `3` and enter the path to the csv file.
+The csv file must respect the following format: `<book_isbn>,<0/1 (not borrowed/borrowed)>,<borrowed_date>,<return_date>`
+
+The dates can only be null, if the book copy is not borrowed (0).
+
+#### 3. Delete a book copy:
+Navigate to the book menu `0`, then search for a book `0`.
+Enter `2` to delete a copy of this book. Then enter a valid book copy ID to delete the book copy.
 
 ### Customer
+Navigate to the customer menu `1`
 
-#### 1. Search for a customer
+#### 1. Search for a customer:
+In the customer menu, enter `0`. Then enter `0` and then enter a customer id.
 
-#### 2. Add a customer
+#### 2. Add a customer:
+In the customer menu, enter `1` and then enter `0` to add a single customer in the command line or `1` to import a csv file.
+The csv file must respect the following format: `<first name>,<last name>,<date of birth (YYYY-MM-DD)>`
 
-#### 3. Modify a customer
+#### 3. Modify a customer:
+Search for a customer `0`.
+To modify the first name, enter `3`.
+To modify the last name, enter `4`.
+To modify the birth date, enter `5`.
 
-#### 4. Delete a customer (via ID)
-Navigate to the customer menu `1`, then search for a customer `0`. After entering the correct ID, select delete the customer `0`. 
+The data entered cannot be empty.
+
+#### 4. Delete a customer:
+Search for a customer `0`. Select delete book `0`. 
 
 ### Borrowing
 
