@@ -55,15 +55,30 @@ public class CustomerInfo extends View {
         } else if (inputChar == '1') {
             System.out.println("Please enter book copy id: ");
             String input = controller.getScanner().next();
+            List<BookCopy> bookCopyList = controller.searchBookCopy(bc -> bc.getId().equals(input), Comparator.comparing(BookCopy::getId));
+
+            if (bookCopyList.isEmpty() || bookCopyList.get(0) == null) {
+                System.out.println("---\nNo book with this is has been found!\n");
+                prev.show();
+            }
+
             try {
                 controller.borrowBookCopy(customer, controller.searchBookCopy(copy -> copy.getId().equals(input), Comparator.comparing(BookCopy::getId)).get(0));
                 super.promptAndExit("Book was successfully borrowed!");
-            } catch (IllegalArgumentException illegalArgumentException) {
+            }
+            catch (IllegalArgumentException illegalArgumentException) {
                 super.promptAndExit(illegalArgumentException.getMessage());
             }
         } else if (inputChar == '2') {
             System.out.println("Please enter book copy id: ");
             String input = controller.getScanner().next();
+            List<BookCopy> bookCopyList = controller.searchBookCopy(bc -> bc.getId().equals(input), Comparator.comparing(BookCopy::getId));
+
+            if (bookCopyList.isEmpty() || bookCopyList.get(0) == null) {
+                System.out.println("---\nNo book with this is has been found!\n");
+                prev.show();
+            }
+
             try {
                 controller.returnBookCopy(customer, controller.searchBookCopy(copy -> copy.getId().equals(input), Comparator.comparing(BookCopy::getId)).get(0));
                 super.promptAndExit("Book was successfully returned!");
