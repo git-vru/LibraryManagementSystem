@@ -78,7 +78,7 @@ public class CustomerMenu extends View {
     }
 
     public void show() {
-        inputChar = super.promptMenu(options);
+        inputChar = super.promptMenu(name, options);
 
         if (inputChar == '0') {
             controller.setMenu(new CustomerInfo(controller, this));
@@ -87,7 +87,6 @@ public class CustomerMenu extends View {
         else if (inputChar == '1') {
             inputChar = super.promptOptions(options2);
             if (inputChar == '0'){
-                //System.out.println("Ex: Please type : 'create <FirstName>,<LastName>,<DOB>'");
                 addNewCustomer();
             }
             else if (inputChar == '1') {

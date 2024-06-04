@@ -11,6 +11,7 @@ import java.util.List;
 
 public class CustomerInfo extends View {
     private char inputChar;
+    private Customer customer = null;
 
     public CustomerInfo(Controller controller, View prev) {
         super(controller, prev);
@@ -19,12 +20,11 @@ public class CustomerInfo extends View {
     }
 
     public void show() {
-        Customer customer = null;
         while (customer == null) {
             System.out.print("Please enter a customer id: ");
             String customerId = controller.getScanner().next();
 
-            customer = controller.searchCustomer(customerId);
+            customer = controller.searchCustomer(c -> c.getId().equals(customerId), Comparator.comparing(Customer::getLastName)).get(0);
 
             if (customer == null) {
                 System.out.println("---\nPlease enter a valid customer ID!\n");
@@ -36,7 +36,6 @@ public class CustomerInfo extends View {
             System.out.println(customer);
 
             List<String> options = List.of("Delete the customer : " + customerId, "Borrow a book for customer : "+customerId, "Return a book for customer : " + customerId, "Modify the first name of customer: "+ customerId, "Modify the last name of customer: "+ customerId, "Modify the Date of Birth of customer: "+ customerId);
-
 
             inputChar = super.promptOptions(options);
 

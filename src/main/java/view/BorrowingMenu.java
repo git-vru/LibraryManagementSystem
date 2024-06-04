@@ -23,7 +23,7 @@ public class BorrowingMenu extends View {
     }
 
     public void show() {
-        char inputChar = super.promptMenu(options1);
+        char inputChar = super.promptMenu(name, options1);
 
         if (inputChar == '0') {
 

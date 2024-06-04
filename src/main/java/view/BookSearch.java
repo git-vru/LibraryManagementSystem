@@ -6,6 +6,7 @@ import model.Book;
 import model.BookCopy;
 
 import java.time.format.DateTimeParseException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -35,7 +36,7 @@ public class BookSearch extends View {
 
         if (foundBooks.isEmpty()) {
             System.out.println("Couldn't find the book you were searching for.");
-            prev.show();
+            this.show();
         }
         else if (foundBooks.size() == 1) {
             System.out.println("Found only 1 book with the given token: " + token);
@@ -53,13 +54,13 @@ public class BookSearch extends View {
         }
 
             List<String> options = List.of(
-                    "Delete the book : " + book.getClassificationNumber(),
+                    "Delete the book",
                     "Add a copy of this book",
                     "Delete a copy of this book",
-                    "Modify the title of book: "+ book.getClassificationNumber(),
-                    "Modify the author of book: "+ book.getClassificationNumber(),
-                    "Modify the publication date of book: "+ book.getClassificationNumber(),
-                    "Modify the classification number of book: "+ book.getClassificationNumber());
+                    "Modify the title of book",
+                    "Modify the author of book",
+                    "Modify the publication date of book",
+                    "Modify the classification number of book");
 
         inputChar = super.promptOptions(options);
         String bookISBN = book.getIsbn();
@@ -74,7 +75,11 @@ public class BookSearch extends View {
             }
         }
         else if (inputChar == '1') {
+            BookCopy bc = controller.addBookCopy(bookISBN, "0", "", "");
 
+            if (bc != null) {
+                System.out.println("The book copy :" + bc.getId() + " has been successfully added!");
+            }
         }
         else if (inputChar == '2') {
             BookCopy bookCopy = null;
@@ -83,7 +88,7 @@ public class BookSearch extends View {
                 String bookCopyID = controller.getScanner().next();
                 if (bookCopyID.equals("q")) break;
 
-                bookCopy = controller.searchBookCopyById(book, bookCopyID);
+                bookCopy = controller.searchBookCopy(copy -> copy.getId().equals(bookCopyID), Comparator.comparing(BookCopy::getId)).get(0);
                 if (bookCopy == null) {
                     System.out.println("---\nPlease enter a valid ID!\n");
                 }

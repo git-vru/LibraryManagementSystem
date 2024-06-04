@@ -32,19 +32,37 @@ public abstract class View {
         return centeredName;
     }
 
-    private void printOptions(List<String> options, boolean isError) {
+    private void printMenu(String name, List<String> options, boolean isError) {
         int maxOptionLength = max(options.stream().map(String::length).toList()) + 2; // 2 for spaces
         int maxPipeLength = maxOptionLength + 4;
 
         String leftAlignFormat = "| %-1d | %-" + (maxOptionLength-2) + "s |%n";
 
-        System.out.format("|" + "-".repeat(maxPipeLength) + "|%n");
-        System.out.format("|%-" + maxOptionLength + "s|%n", addPadding2Text(this.name, maxPipeLength));
-        System.out.format("|---|" + "-".repeat(maxOptionLength) + "|%n");
+        System.out.format("-" + "-".repeat(maxPipeLength) + "-%n");
+        System.out.format("|%-" + maxOptionLength + "s|%n", addPadding2Text(name, maxPipeLength));
+        System.out.format("|----" + "-".repeat(maxOptionLength) + "|%n");
         for (int i = 0; i < options.size(); i++) {
             System.out.format(leftAlignFormat, i, options.get(i));
         }
-        System.out.format("|---|" + "-".repeat(maxOptionLength) + "|%n");
+        System.out.format("-----" + "-".repeat(maxOptionLength) + "%n");
+
+        if (isError) {
+            System.out.println("Please only enter a number from 0 to " + (options.size() - 1));
+        }
+        System.out.print(PROMPT_TO_EXIT + CURSOR);
+    }
+
+    private void printOptions(List<String> options, boolean isError) {
+        int maxOptionLength = max(options.stream().map(String::length).toList()) + 2; // 2 for spaces
+        int maxPipeLength = maxOptionLength + 4;
+
+        String leftAlignFormat = " %-1d - %-" + (maxOptionLength-2) + "s %n";
+
+        System.out.print("\n");
+        for (int i = 0; i < options.size(); i++) {
+            System.out.format(leftAlignFormat, i, options.get(i));
+        }
+        System.out.print("\n");
 
         if (isError) {
             System.out.println("Please only enter a number from 0 to " + (options.size() - 1));
@@ -68,8 +86,20 @@ public abstract class View {
         return input.charAt(0);
     }
 
-    public char promptMenu(List<String> options) {
-        return promptOptions(options);
+    public char promptMenu(String name, List<String> options) {
+        List<Character> validInputs = new ArrayList<>(List.of('q'));
+        for (char c = '0'; c < '0' + options.size(); c++) {
+            validInputs.add(c);
+        }
+
+        printMenu(name, options, false);
+
+        String input = controller.getScanner().next();
+        while (input.length() != 1 || !validInputs.contains(input.charAt(0))) {
+            printMenu(name, options, true);
+            input = controller.getScanner().next();
+        }
+        return input.charAt(0);
     }
 
     public void promptAndExit(String s) {

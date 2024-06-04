@@ -22,11 +22,11 @@ public class MainMenu extends View {
         this.options.add("Reporting Menu");
         this.options.add("Settings");
 
-        System.out.println("Welcome to the Library Management System!\nPlease type a number or press enter.");
+        System.out.println("Welcome to the Library Management System!\nPlease type a number or press enter.\n");
     }
 
     @Override
-    public void show() {inputChar = super.promptMenu(this.options);
+    public void show() {inputChar = super.promptMenu(name, this.options);
         switch (inputChar) {
             case '0' -> controller.setMenu(new BookMenu(controller, this));
             case '1' -> controller.setMenu(new CustomerMenu(controller, this));

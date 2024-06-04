@@ -94,15 +94,15 @@ public class Book {
         String header = View.addPadding2Text(title, 24 + maxLength);
 
         return String.format(
-                "-------------------------" + "─".repeat(maxLength+2) + "-\n" +
-                "| %s│\n" +
-                "|------------------------" + "─".repeat(maxLength+2) + "┤\n" +
-                "│ Author                │ %-" + maxLength + "s │\n" +
-                "│ ISBN                  │ %-" + maxLength + "s │\n" +
-                "│ Classification Number │ %-" + maxLength + "s │\n" +
-                "│ Publication Date:     │ %-" + maxLength + "s │\n" +
-                "│ # of physical copies  │ %-" + maxLength + "d │\n" +
-                "└───────────────────────┴" + "─".repeat(maxLength+2) + "┘",
+                "-------------------------" + "-".repeat(maxLength+2) + "-\n" +
+                "| %s|\n" +
+                "|------------------------" + "-".repeat(maxLength+2) + "|\n" +
+                "| Author                | %-" + maxLength + "s |\n" +
+                "| ISBN                  | %-" + maxLength + "s |\n" +
+                "| Classification Number | %-" + maxLength + "s |\n" +
+                "| Publication Date:     | %-" + maxLength + "s |\n" +
+                "| # of physical copies  | %-" + maxLength + "d |\n" +
+                "-------------------------" + "-".repeat(maxLength+2) + "-",
                 header, author, isbn, classificationNumber, publicationDate, copyCount
         );
     }

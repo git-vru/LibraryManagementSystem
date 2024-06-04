@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
@@ -125,18 +126,24 @@ class CustomerTest {
 
     @Test
     void searchCustomerSuccessful() {
+        controller.getCustomers().add(new Customer("Samu", "Kem", LocalDate.of(2024, 06, 03)));
         Predicate<Customer> predicate = customer -> customer.getFirstName().equals("Vrushabh");
         Comparator<Customer> comparator = Comparator.comparing(Customer::getFirstName);
         assertEquals(1, controller.searchCustomer(predicate, comparator).size());
         assertEquals("Vrushabh", controller.searchCustomer(predicate, comparator).get(0).getFirstName());
+
+        //Sorting test
+        List<Customer> results = controller.searchCustomer(customer -> true, Comparator.comparing(Customer::getLastName));
+        assertEquals(controller.getCustomers().size(), controller.searchCustomer(predicate, comparator).size());
+        assertEquals("Jain", results.get(0).getLastName());
+        assertEquals("Kem", results.get(1).getLastName());
     }
 
     @Test
     void searchCustomerWithWrongArgument() {
-        Predicate<Customer> predicate = customer -> customer.getFirstName().equals("Vrushabh");
+        Predicate<Customer> predicate = customer -> customer.getFirstName().equals("");
         Comparator<Customer> comparator = Comparator.comparing(Customer::getFirstName);
-        assertThrows(NoSuchElementException.class, ()->{
-            controller.searchCustomer(predicate,comparator);
-        });
+
+        assertEquals(0, controller.searchCustomer(predicate, comparator).size());
     }
 }

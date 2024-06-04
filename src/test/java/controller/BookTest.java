@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
@@ -137,28 +138,58 @@ public class BookTest {
 
     @Test
     void searchBookSuccessful() {
-        Predicate<Book> predicate= book->book.getAuthor().equals("Candide");
-        Comparator<Book> comparator=Comparator.comparing(Book::getAuthor);
-        assertEquals(1,controller.searchBook(predicate,comparator).size());
-        assertEquals("Candide",controller.searchBook(predicate,comparator).get(0).getAuthor());
+        Comparator<Book> comparator = Comparator.comparing(Book::getTitle);
+        Book book1 = new Book("Book One", "Author A", "1234567890", LocalDate.of(2000, 1, 1), "001");
+        Book book2 = new Book("Book Two", "Author B", "1234567891", LocalDate.of(2001, 2, 2), "002");
+        Book book3 = new Book("Book Three", "Author A", "1234567892", LocalDate.of(2002, 3, 3), "003");
+        Book book4 = new Book("Book Four", "Author C", "1234567893", LocalDate.of(2003, 4, 4), "004");
+        Book book5 = new Book("Book Five", "Author B", "1234567894", LocalDate.of(2004, 5, 5), "005");
+        controller.getBookDatabase().put(book1, new ArrayList<>());
+        controller.getBookDatabase().put(book2, new ArrayList<>());
+        controller.getBookDatabase().put(book3, new ArrayList<>());
+        controller.getBookDatabase().put(book4, new ArrayList<>());
+        controller.getBookDatabase().put(book5, new ArrayList<>());
+
+        //Search by Isbn
+        List<Book> results = controller.searchBook(book -> book.getIsbn().equals("isbn02"),comparator);
+        assertEquals(1,results.size());
+        assertEquals(book,results.get(0));
+
+        //Search by Author
+        results = controller.searchBook(book -> book.getAuthor().equals("Voltaire"),comparator);
+        assertEquals(1,results.size());
+        assertEquals(book,results.get(0));
+
+        //Search by Title
+        results = controller.searchBook(book -> book.getTitle().contains("Book"),comparator);
+        assertEquals(5,results.size());
+
+        //Sorting Test
+        results = controller.searchBook(book -> true, Comparator.comparing(Book::getTitle));
+        assertEquals(controller.getBookDatabase().size(), results.size());
+        assertEquals("Book Five", results.get(0).getTitle());
+        assertEquals("Candide", results.get(results.size() - 1).getTitle());
+
+        results = controller.searchBook(book -> true, Comparator.comparing(Book::getAuthor));
+        assertEquals(controller.getBookDatabase().size(), results.size());
+        assertEquals("Author C", results.get(4).getAuthor());
+        assertEquals("Voltaire", results.get(results.size() - 1).getAuthor());
     }
 
     @Test
     void searchBookWithWrongArgument() {
         Predicate<Book> predicate= book->book.getAuthor().equals("Candide");
-        Comparator<Book> comparator=Comparator.comparing(Book::getAuthor);
-        assertThrows(NoSuchElementException.class, ()->{
-            controller.searchBook(predicate,comparator);
-        });
+        Comparator<Book> comparator=Comparator.comparing(Book::getTitle);
+        assertEquals(0, controller.searchBook(predicate, comparator).size());
     }
 
     @Test
     void searchBookViaIsbn() {
-        assertEquals(book,controller.searchBookViaIsbn("isbn02").getIsbn());
+        assertEquals(book,controller.searchBookViaIsbn("isbn02"));
     }
 
     @Test
     void searchBookViaIsbnWithWrongArgument() {
-        assertEquals(null,controller.searchBookViaIsbn("abc").getIsbn());
+        assertNull(controller.searchBookViaIsbn("abc"));
     }
 }
