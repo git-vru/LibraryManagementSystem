@@ -51,10 +51,8 @@ public class ReportingMenu extends View {
                 List<String[]> borrowedBookListFromCustomer = controller.searchCustomer(c -> c.getId().equals(customerId), Comparator.comparing(Customer::getId)).get(0).getBorrowedList().stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
                 printTable("List of all borrowed book copies for customer n°" + customerId, borrowedBookListFromCustomer, BookCopy.FORMAT, BookCopy.COLUMN_NAMES);
                 break;
-            default:
-                prev.show();
-                break;
         }
+        prev.show();
     }
 
     public void printTable(String name, List<String[]> rows, String[] format, String[] columnNames) {

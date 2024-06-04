@@ -42,7 +42,7 @@ public class BookMenu extends View {
             List<BookCopy> bookCopyList = controller.searchBookCopy(bc -> bc.getId().equals(bookCopyId), Comparator.comparing(BookCopy::getId));
 
             if (bookCopyList.isEmpty() || bookCopyList.get(0) == null) {
-                System.out.println("---\nNo book cpy with this is has been found!\n");
+                System.out.println("---\nNo book with this is has been found!\n");
                 this.show();
             }
 

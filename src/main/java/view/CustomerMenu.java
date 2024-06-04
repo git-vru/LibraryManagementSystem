@@ -92,12 +92,7 @@ public class CustomerMenu extends View {
             else if (inputChar == '1') {
                 importCustomersFromCSV();
             }
-            else {
-                prev.show();
-            }
 
-            controller.getCustomers().add(new Customer("Add", "Add", LocalDate.now()));
-            super.promptAndExit("Customer with new id XYZ was successfully added!");
             this.show();
         }
         else {

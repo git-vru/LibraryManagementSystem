@@ -39,5 +39,6 @@ public class MainMenu extends View {
         }
 
         System.out.println("See you next time ! GoodBye !");
+        System.exit(0);
     }
 }
