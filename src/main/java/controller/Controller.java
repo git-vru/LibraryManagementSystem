@@ -225,15 +225,16 @@ public class Controller {
     }
 
     public void returnBookCopy(Customer customer, BookCopy bookCopy) {
-        if (customer.getBorrowedList().contains(bookCopy)){
+
+        if (customer.getBorrowedList().contains(bookCopy)) {
             bookCopy.setIsBorrowed(false);
             bookCopy.setBorrowedDate(null);
             bookCopy.setReturnedDate(null);
             customer.getBorrowedList().remove(bookCopy);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("BookCopy is not borrowed!");
         }
+
     }
 
 
