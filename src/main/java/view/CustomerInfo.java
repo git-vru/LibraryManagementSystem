@@ -152,7 +152,7 @@ public class CustomerInfo extends View {
                 this.show();
             }
 
-            prev.show();
+            this.show();
         }
     }
 }
