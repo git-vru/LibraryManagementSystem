@@ -43,7 +43,5 @@ public class Main {
         controller.getBookDatabase().get(book).get(0).setBorrowedDate(LocalDate.now());
         controller.getBookDatabase().get(book).get(0).setReturnedDate(LocalDate.now().plusWeeks(2));
         controller.getMenu().show();
-
-
     }
 }

@@ -91,6 +91,7 @@ public class BookCopy {
         this.isBorrowed = isBorrowed;
     }
 
+    //ToDo change to string
     public String toString() {
         return String.format("%s", book);
     }

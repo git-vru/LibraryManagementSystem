@@ -97,7 +97,7 @@ public class Customer {
             "| ID                | %-" + maxLength + "s |\n" +
             "| Date of Birth     | %-" + maxLength + "s |\n" +
             "| Subscription Date | %-" + maxLength + "s |\n" +
-            "|-------------------|" + "-".repeat(maxLength+2) + "|",
+            "|-------------------|" + "-".repeat(maxLength+2) + "|\n",
             header, id, dateOfBirth, subscriptionDate
         );
     }

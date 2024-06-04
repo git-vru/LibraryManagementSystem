@@ -1,20 +1,24 @@
 package view;
 
 import controller.Controller;
+import exceptions.BorrowingNotNullException;
 import model.Book;
 import model.BookCopy;
+import model.Customer;
 import utilities.CSVreader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
 public class BookMenu extends View {
     private final List<String> options1;
     private final List<String> options2;
+    private final List<String> options3;
 
     public BookMenu(Controller controller, View prev) {
         super(controller, prev);
@@ -22,19 +26,42 @@ public class BookMenu extends View {
         this.name = "Book Menu";
         this.options1 = List.of("Search for a book", "Search for a book copy", "Add a new book", "Import Book Copies from CSV file");
         this.options2 = List.of("Add Single Book", "Import Books from CSV file");
+        this.options3 = List.of("Delete this book copy");
     }
 
     public void show() {
-        char inputChar = super.promptMenu(options1);
+        char inputChar = super.promptMenu(name, options1);
+        BookCopy bookCopy = null;
 
         if (inputChar == '0') {
             controller.setMenu(new BookSearch(controller, this));
         }
         else if (inputChar == '1') {
+            System.out.print("Please enter a book copy id: ");
+            String bookCopyId = controller.getScanner().next();
+            List<BookCopy> bookCopyList = controller.searchBookCopy(bc -> bc.getId().equals(bookCopyId), Comparator.comparing(BookCopy::getId));
 
+            if (bookCopyList.isEmpty() || bookCopyList.get(0) == null) {
+                System.out.println("---\nNo book with this is has been found!\n");
+                this.show();
+            }
+
+            System.out.println(bookCopyList.get(0));
+            inputChar = super.promptOptions(options3);
+
+            if (inputChar == '0') {
+                try {
+                    controller.deleteBookCopy(bookCopyList.get(0).getId());
+                    System.out.println("Book copy with the ID : " + bookCopyList.get(0).getId() + " has been successfully deleted!");
+                }
+                catch (BorrowingNotNullException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            this.show();
         }
         else if (inputChar == '2') {
-            inputChar = super.promptOptions(options2);
+            inputChar = super.promptMenu("Add a book", options2);
             if (inputChar == '0'){
                 addNewBook();
             } else if (inputChar == '1') {
@@ -82,7 +109,12 @@ public class BookMenu extends View {
         String[] parts = input.split(",", 5);
 
         if (parts.length == 5) {
-            book = controller.addBook(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim(), parts[4].trim());
+            try {
+                book = controller.addBook(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim(), parts[4].trim());
+            }
+            catch (IllegalArgumentException a) {
+                System.out.println("Book could not be added due to wrong argument");
+            }
         }
         else {
             System.out.println("Invalid input format. Please try again.");
@@ -102,10 +134,19 @@ public class BookMenu extends View {
 
         List<String[]> importedBookCopies = CSVreader.parseFile(filePath);
 
-        if (!importedBookCopies.isEmpty()) System.out.println("Imported Books:");
+        if (!importedBookCopies.isEmpty()) System.out.println("Imported Book Copies:");
 
+        BookCopy bookCopy = null;
         for (String[] data : importedBookCopies) {
-            BookCopy bookCopy = controller.addBookCopy(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim());
+            if (data.length == 2) {
+                bookCopy = controller.addBookCopy(data[0].trim(), data[1].trim(), "", "");
+            }
+            else if (data.length == 4) {
+                bookCopy = controller.addBookCopy(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim());
+            }
+            else {
+                System.out.println("Error while parsing data. Bad Arguments number");
+            }
 
             if (bookCopy != null) {
                 System.out.println(bookCopy);
@@ -118,35 +159,6 @@ public class BookMenu extends View {
         }
         else {
             System.out.println("No book was imported !");
-        }
-    }
-    // if book copies book doesnt exist
-    //if book copy is already borowwed by a customer
-
-    private void addNewBookCopy() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Please type: '<ISBN>'");
-
-        String input = scanner.nextLine().trim();
-
-        if (!input.isEmpty()) {
-            Controller controller = new Controller();
-            Book book = controller.searchBookViaIsbn(input);
-
-            if (book != null) {
-                // Assuming you want to add a new book copy with status false by default
-                BookCopy bookCopy = new BookCopy(book, false);
-                // Add the book copy to your collection here
-                controller.getBookCopies(book).add(bookCopy);
-                System.out.println("Book copy added successfully:");
-                System.out.println(bookCopy);
-            }
-            else {
-                System.out.println("Book not found for ISBN: " + input);
-            }
-        }
-        else {
-            System.out.println("ISBN cannot be empty. Please try again.");
         }
     }
 }
