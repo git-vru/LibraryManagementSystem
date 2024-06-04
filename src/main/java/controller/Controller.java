@@ -1,64 +1,153 @@
 package controller;
 
+import exceptions.BorrowingNotNullException;
 import model.Book;
-import model.Customer;
 import model.BookCopy;
+import model.Customer;
 import view.MainMenu;
 import view.View;
-import exceptions.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class Controller {
     private View menu;
     private Scanner sc;
     private final List<Customer> customers = new ArrayList<>();
-    private final Map<Book, List<BookCopy>> books = new HashMap<>();
+    private final Map<Book, List<BookCopy>> bookDatabase = new HashMap<>();
 
     public Controller() {
         sc = new Scanner(System.in);
         this.menu = new MainMenu(this);
     }
 
-    public Book searchBook(String isbn) {
-        Optional<Book> optionalBook = this.books.keySet().stream().filter(book -> book.getIsbn().equals(isbn)).findFirst();
-        return optionalBook.orElse(null);
+    //Search methods
+    public Book searchBookViaIsbn(String isbn) {
+        return searchBook(book -> book.getIsbn().equals(isbn), Comparator.comparing(Book::getTitle)).stream().findFirst().orElse(null);
     }
 
-    public boolean borrowBook(String customerId, String bookId) {
-        return false;
+    public List<Book> searchBook(Predicate<Book> predicate, Comparator<Book> comparator) {
+        return this.bookDatabase.keySet().stream().filter(predicate).sorted(comparator).toList();
     }
 
-    public boolean returnBook(String customerId, String bookId) {
-        return false;
+    public List<BookCopy> searchBookCopy(Predicate<BookCopy> predicate, Comparator<BookCopy> comparator) {
+        List<BookCopy> list = new ArrayList<>();
+
+        this.bookDatabase.values().forEach(bookCopyList -> {
+            list.addAll(bookCopyList.stream().filter(predicate).toList());
+        });
+
+        return list.stream().sorted(comparator).toList();
+    }
+
+    public List<Customer> searchCustomer(Predicate<Customer> predicate, Comparator<Customer> comparator) {
+        return this.customers.stream().filter(predicate).sorted(comparator).toList();
+    }
+
+    /**
+     * Returns book on specified type of search and key.
+     * @param by Style of the search.
+     *           0 - ISBN
+     *           1 - Book Name
+     *           2 - Author Name
+     * @param token Token for search.
+     * @return Returns a book list of found books.
+     */
+    public List<Book> searchBook(int by, String token) {
+        List<Book> foundBooks = new ArrayList<>();
+
+        if (0 > by || by > 2) return foundBooks;
+
+        String value = null;
+
+        List<Book> books = bookDatabase.keySet().stream().toList();
+
+        for (Book book : books) {
+            if (by == 0) value = book.getIsbn();
+            else if (by == 1) value = book.getTitle();
+            else if (by == 2) value = book.getAuthor();
+            if (value.equals(token)) foundBooks.add(book);
+        }
+        return foundBooks;
+    }
+
+
+    //Book Methods
+    public Book addBook(String isbn, String title, String author , String dateOfFirstPublication, String classificationNumber){
+
+        if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty() && !classificationNumber.isEmpty()) {
+            try {
+                LocalDate dob = LocalDate.parse(dateOfFirstPublication);
+                Book book = new Book(title, author, isbn, dob, classificationNumber);
+                bookDatabase.put(book, new ArrayList<>());
+                return book;
+            }
+            catch (DateTimeParseException a) {
+                System.out.println("Error at passing the date!");
+            }
+
+        }
+        else {
+            throw new IllegalArgumentException();
+
+        }
+        return null;
+    }
+
+    public boolean modifyBook(Book book, String title, String author, String dateOfFirstPublication, String classificationNumber){
+        if (!title.isEmpty() && !author.isEmpty() && !classificationNumber.isEmpty()) {
+            book.setTitle(title);
+            book.setAuthor(author);
+            book.setPublicationDate(LocalDate.parse(dateOfFirstPublication));
+            book.setClassificationNumber(classificationNumber);
+            return true;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public void deleteBook(String isbn) throws BorrowingNotNullException {
-        Optional<Book> optionalBook = this.books.keySet().stream().filter(book -> book.getIsbn().equals(isbn)).findFirst();
+        Optional<Book> optionalBook = this.bookDatabase.keySet().stream().filter(book -> book.getIsbn().equals(isbn)).findFirst();
 
         if (optionalBook.isEmpty()) {
             throw new NoSuchElementException();
         }
 
-        if (this.books.get(optionalBook.get()).stream()
-                .anyMatch(bookCopy -> bookCopy.getBorrower() != null)) {
+        if (this.bookDatabase.get(optionalBook.get()).stream()
+                .anyMatch(BookCopy::isBorrowed)) {
             throw new BorrowingNotNullException("A physical copy of this book is still borrowed by someone.");
         }
 
-        this.books.remove(optionalBook.get());
+        this.bookDatabase.remove(optionalBook.get());
     }
 
-    public Customer searchCustomer(String id) {
-        Optional<Customer> optionalCustomer = this.customers.stream().filter(customer -> customer.getId().equals(id)).findFirst();
-        return optionalCustomer.map(customer -> this.customers.get(this.customers.indexOf(customer))).orElse(null);
+
+    //Customer Methods
+    public Customer addCustomer(String firstName, String lastName, String date) {
+        if (!firstName.isEmpty() && !lastName.isEmpty()) {
+            LocalDate dob = LocalDate.parse(date);
+            Customer customer = new Customer(firstName, lastName, dob);
+            this.getCustomers().add(customer);
+            return customer;
+        }
+        else {
+            throw new IllegalArgumentException();
+        }
     }
 
-    public boolean addCustomer(String firstName, String lastName, String date) {
-        LocalDate dob = LocalDate.parse(date);
-        Customer customer = new Customer(firstName, lastName, dob);
+    public boolean modifyCustomer(Customer customer, String firstName, String lastName, String dob){
+        if (!firstName.isEmpty() && !lastName.isEmpty()) {
+            customer.setFirstName(firstName);
+            customer.setDateOfBirth(LocalDate.parse(dob));
+            customer.setLastName(lastName);
+            return true;
 
-        return this.customers.add(customer);
+        } else {
+            throw new NoSuchElementException();
+
+        }
     }
 
     public void deleteCustomer(String id) throws BorrowingNotNullException {
@@ -75,50 +164,81 @@ public class Controller {
         this.customers.remove(optionalCustomer.get());
     }
 
-    public BookCopy searchbookCopy(Book book, String id){
-        for (BookCopy bookCopy : books.get(book)) {
-            if (bookCopy.getId().equals(id)) {
-                return  bookCopy;
+
+    //BookCopy Methods
+    public BookCopy addBookCopy(String isbn, String isBorrowed, String borrowedDate, String returnDate){
+
+        BookCopy bookCopy = null;
+        if (!isbn.isEmpty() && (isBorrowed.equals("0") || (!borrowedDate.isEmpty() && !returnDate.isEmpty()))) {
+            try {
+                if (isBorrowed.equals("0")) {
+                    bookCopy = new BookCopy(searchBookViaIsbn(isbn), false);
+                }
+                else {
+                    bookCopy = new BookCopy(searchBookViaIsbn(isbn), true, LocalDate.parse(borrowedDate), LocalDate.parse(returnDate));
+                }
+                getBookCopies(searchBookViaIsbn(isbn)).add(bookCopy);
+
+            }
+            catch (DateTimeParseException a) {
+                System.out.println("Error at passing the date!");
+            }
+            catch (NullPointerException a) {
+                System.out.println("There is no book with such isbn!");
+                return null;
             }
         }
-        return null;
+        else {
+            throw new IllegalArgumentException();
+        }
+
+        return bookCopy;
     }
 
     public void deleteBookCopy(String id) throws BorrowingNotNullException {
-        Optional<BookCopy> optionalBook = this.books.values().stream().flatMap(Collection::stream).filter(bookCopy -> bookCopy.getId().equals(id)).findFirst();
+        Optional<BookCopy> optionalBook = this.bookDatabase.values().stream().flatMap(Collection::stream).filter(bookCopy -> bookCopy.getId().equals(id)).findFirst();
 
         if (optionalBook.isEmpty()) {
             throw new NoSuchElementException();
         }
 
-        if (optionalBook.get().getBorrower() != null) {
+        if (optionalBook.get().isBorrowed()) {
             throw new BorrowingNotNullException("This copy is still borrowed by someone.");
         }
 
         optionalBook.get().getBook().decreaseCopyCount();
-        this.books.get(optionalBook.get().getBook()).remove(optionalBook.get());
+        this.bookDatabase.get(optionalBook.get().getBook()).remove(optionalBook.get());
     }
 
-    public boolean addBook(String title, String author, String isbn, String dateOfFirstPublication, String classificationNumber){
-        return true;
+
+    //Borrowing Methods
+    public void borrowBookCopy(Customer customer, BookCopy bookCopy) {
+        if (!bookCopy.isBorrowed()) {
+            bookCopy.setIsBorrowed(true);
+            bookCopy.setBorrowedDate(LocalDate.now());
+            bookCopy.setReturnedDate(LocalDate.now().plusWeeks(2));
+            customer.getBorrowedList().add(bookCopy);
+        } else {
+            throw new IllegalArgumentException("BookCopy is already borrowed!");
+        }
+
     }
 
-    public boolean modifyBook(Book book, String title, String author, String dateOfFirstPublication, String classificationNumber){
-        return true;
-    }
-    public boolean modifyCustomer(Customer customer, String Fname, String Lname, String dob){
-        return true;
+    public void returnBookCopy(Customer customer, BookCopy bookCopy) {
+
+        if (customer.getBorrowedList().contains(bookCopy)) {
+            bookCopy.setIsBorrowed(false);
+            bookCopy.setBorrowedDate(null);
+            bookCopy.setReturnedDate(null);
+            customer.getBorrowedList().remove(bookCopy);
+        } else {
+            throw new IllegalArgumentException("BookCopy is not borrowed!");
+        }
+
     }
 
-    public boolean addBookCopy(String isbn){
-        return true;
-    }
 
-    public void setMenu(View menu) {
-        this.menu = menu;
-        this.menu.show();
-    }
-
+    //Getters
     public Scanner getScanner() {
         return this.sc;
     }
@@ -131,19 +251,18 @@ public class Controller {
         return menu;
     }
 
-    public Scanner getSc() {
-        return sc;
+    public Map<Book, List<BookCopy>> getBookDatabase() {
+        return bookDatabase;
     }
 
-    public void setSc(Scanner sc) {
-        this.sc = sc;
+    public List<BookCopy> getBookCopies(Book book) {
+        return bookDatabase.get(book);
     }
 
-    public Map<Book, List<BookCopy>> getBooks() {
-        return books;
-    }
 
-    public List<BookCopy> getBookCopys(Book book) {
-        return books.get(book);
+    //Setters
+    public void setMenu(View menu) {
+        this.menu = menu;
+        this.menu.show();
     }
 }

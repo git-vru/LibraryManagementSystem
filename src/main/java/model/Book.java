@@ -1,15 +1,22 @@
 package model;
 
+import view.View;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.max;
+
+// Book Data: Title, Authors, ISBN, Year
 public class Book {
+    public final static String[] FORMAT = new String[]{"%-50s", "%-50s", "%4s", "%17s"};
+    public final static String[] COLUMN_NAMES = new String[]{"TITLE", "AUTHOR", "YEAR", "ISBN"};
+
     private String classificationNumber;
     private final String isbn;
-    private final String title;
-    private final String author;
-    private final LocalDate publicationDate;
+    private String title;
+    private String author;
+    private LocalDate publicationDate;
 
     private int copyCount;
 
@@ -47,6 +54,18 @@ public class Book {
         return classificationNumber;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setPublicationDate(LocalDate publicationDate) {
+        this.publicationDate = publicationDate;
+    }
+
     public void setClassificationNumber(String classificationNumber) {
         this.classificationNumber = classificationNumber;
     }
@@ -67,7 +86,28 @@ public class Book {
         this.copyCount--;
     }
 
+    //TODO: Title, Authors, ISBN, !ID, !Shelf Location, !Borrowing Status, !Borrow Date
     public String toString() {
-        return String.format("Classification Number:%s\nTitle:%s\nAuthor:%s\nDate of first publication:%s\nNb of physical copies:%d\n---\n", classificationNumber, title, author, publicationDate.toString(), copyCount);
+        List<String> data = List.of(title, author, isbn, classificationNumber, publicationDate.toString());
+        int maxLength = max(data.stream().map(String::length).toList());
+
+        String header = View.addPadding2Text(title, 24 + maxLength);
+
+        return String.format(
+                "-------------------------" + "-".repeat(maxLength+2) + "-\n" +
+                "| %s|\n" +
+                "|------------------------" + "-".repeat(maxLength+2) + "|\n" +
+                "| Author                | %-" + maxLength + "s |\n" +
+                "| ISBN                  | %-" + maxLength + "s |\n" +
+                "| Classification Number | %-" + maxLength + "s |\n" +
+                "| Publication Date:     | %-" + maxLength + "s |\n" +
+                "| # of physical copies  | %-" + maxLength + "d |\n" +
+                "-------------------------" + "-".repeat(maxLength+2) + "-",
+                header, author, isbn, classificationNumber, publicationDate, copyCount
+        );
+    }
+
+    public String toCsv() {
+        return String.format("%s;%s;%tY;%s", title, author, publicationDate, isbn);
     }
 }
