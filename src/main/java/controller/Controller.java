@@ -82,10 +82,6 @@ public class Controller {
         return null;
     }
 
-    public boolean borrowBook(String customerId, String bookId) {
-        return false;
-    }
-
 
     public void deleteBook(String isbn) throws BorrowingNotNullException {
         Optional<Book> optionalBook = this.bookDatabase.keySet().stream().filter(book -> book.getIsbn().equals(isbn)).findFirst();
@@ -229,15 +225,16 @@ public class Controller {
     }
 
     public void returnBookCopy(Customer customer, BookCopy bookCopy) {
-        if (customer.getBorrowedList().contains(bookCopy)){
+
+        if (customer.getBorrowedList().contains(bookCopy)) {
             bookCopy.setIsBorrowed(false);
             bookCopy.setBorrowedDate(null);
             bookCopy.setReturnedDate(null);
             customer.getBorrowedList().remove(bookCopy);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("BookCopy is not borrowed!");
         }
+
     }
 
     public Scanner getScanner() {

@@ -54,7 +54,7 @@ public class CustomerInfo extends View {
                     controller.borrowBookCopy(customer, controller.searchBookCopy(copy -> copy.getId().equals(controller.getScanner().next()), Comparator.comparing(BookCopy::getId)).get(0));
                     super.promptAndExit("Book was successfully borrowed!");
                 }   catch (IllegalArgumentException illegalArgumentException) {
-                    super.promptAndExit(illegalArgumentException.getMessage());
+                    System.out.println((illegalArgumentException.getMessage()));
                 }
 
                 this.show();
@@ -67,7 +67,7 @@ public class CustomerInfo extends View {
                     controller.returnBookCopy(customer, controller.searchBookCopy(copy -> copy.getId().equals(controller.getScanner().next()), Comparator.comparing(BookCopy::getId)).get(0));
                     super.promptAndExit("Book was successfully returned!");
                 }   catch (IllegalArgumentException illegalArgumentException) {
-                    super.promptAndExit(illegalArgumentException.getMessage());
+                    System.out.println((illegalArgumentException.getMessage()));
                 }
 
                 this.show();
@@ -75,8 +75,14 @@ public class CustomerInfo extends View {
             else if (inputChar == '3') {
                 System.out.println("Please enter a new first name: ");
 
-                controller.modifyCustomer(customer, controller.getScanner().next(), customer.getLastName(), customer.getDateOfBirth().toString());
-                super.promptAndExit("First name was successfully changed!");
+                try {
+                    controller.modifyCustomer(customer, controller.getScanner().next(), customer.getLastName(), customer.getDateOfBirth().toString());
+                    super.promptAndExit("First name was successfully changed!");
+                } catch (IllegalArgumentException a) {
+                    System.out.println((a.getMessage()));
+
+                }
+
 
                 this.show();
             }
