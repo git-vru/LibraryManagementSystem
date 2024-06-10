@@ -12,7 +12,7 @@ public class BookCopy {
 
     private final String id;
     private final Book book;
-    private boolean isBorrowed;
+    private String customerId;
 
     private LocalDate borrowedDate;
     private LocalDate returnedDate;
@@ -20,40 +20,32 @@ public class BookCopy {
 
     public BookCopy(Book book) {
         this.book = book;
-        this.isBorrowed = false;
+        this.customerId = "";
         book.increaseCopyCount();
         this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
     }
 
-    public BookCopy(Book book,
-                    String id,
-                    boolean isBorrowed,
-                    LocalDate borrowedDate) {
+    public BookCopy(Book book, String id, String customerId, LocalDate borrowedDate, LocalDate returnedDate, float fee) {
         this.book = book;
-        this.id = id;
-        this.isBorrowed = isBorrowed;
-        this.borrowedDate = borrowedDate;
-        this.returnedDate = null;
-    }
-    //
-    public BookCopy(Book book, boolean isBorrowed){
-        this.book = book;
-        this.isBorrowed = isBorrowed;
-        book.increaseCopyCount();
-        this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
-    }
-    public BookCopy(Book book, boolean isBorrowed, LocalDate borrowedDate, LocalDate returnedDate){
-        this.book = book;
-        this.isBorrowed = isBorrowed;
-        book.increaseCopyCount();
-        this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
-        this.returnedDate = returnedDate;
-        this.borrowedDate = borrowedDate;
-    }
+        this.customerId = customerId;
 
+        if (id.isEmpty()) {
+            book.increaseCopyCount();
+            this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
+        }
+        else {
+            this.id = id;
+        }
+
+        if (!customerId.isEmpty()) {
+            this.returnedDate = returnedDate;
+            this.borrowedDate = borrowedDate;
+            this.fee = fee;
+        }
+    }
 
     public boolean isBorrowed() {
-        return this.isBorrowed;
+        return !this.customerId.isEmpty();
     }
 
     public LocalDate getBorrowedDate() {
@@ -87,8 +79,12 @@ public class BookCopy {
         return book;
     }
 
-    public void setIsBorrowed(boolean isBorrowed) {
-        this.isBorrowed = isBorrowed;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public void removeCustomer() {
+        this.customerId = "";
     }
 
     //ToDo change to string
@@ -97,6 +93,6 @@ public class BookCopy {
     }
 
     public String toCsv() {
-        return String.format("%s;%s;%s;%s;%s;%s", book.toCsv(), id, book.getClassificationNumber(), isBorrowed ? "no" : "yes", borrowedDate == null ? "--/--/----" : borrowedDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)),  returnedDate == null ? "--/--/----" : returnedDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
+        return String.format("%s;%s;%s;%s;%s;%s", book.toCsv(), id, book.getClassificationNumber(), customerId.isEmpty() ? "yes" : "no", borrowedDate == null ? "--/--/----" : borrowedDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)),  returnedDate == null ? "--/--/----" : returnedDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
     }
 }

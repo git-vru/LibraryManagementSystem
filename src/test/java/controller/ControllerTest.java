@@ -40,7 +40,7 @@ public class ControllerTest {
     void borrowBookCopyFail() {
         controller.getBookDatabase().put(book, new ArrayList<>());
         controller.getCustomers().add(customer);
-        bookCopy.setIsBorrowed(true);
+        bookCopy.setCustomerId("1");
 
         assertThrows(IllegalArgumentException.class, () -> {
             controller.borrowBookCopy(customer, bookCopy);

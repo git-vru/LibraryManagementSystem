@@ -39,7 +39,7 @@ public class Main {
         }
 
         controller.getCustomers().get(0).getBorrowedList().add(controller.getBookDatabase().get(book).get(0));
-        controller.getBookDatabase().get(book).get(0).setIsBorrowed(true);
+        controller.getBookDatabase().get(book).get(0).setCustomerId("1");
         controller.getBookDatabase().get(book).get(0).setBorrowedDate(LocalDate.now());
         controller.getBookDatabase().get(book).get(0).setReturnedDate(LocalDate.now().plusWeeks(2));
         controller.getMenu().show();
