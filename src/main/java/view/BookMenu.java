@@ -4,13 +4,8 @@ import controller.Controller;
 import exceptions.BorrowingNotNullException;
 import model.Book;
 import model.BookCopy;
-import model.Customer;
 import utilities.CSVreader;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -85,7 +80,7 @@ public class BookMenu extends View {
         if (!importedBooks.isEmpty()) System.out.println("Imported Books:");
 
         for (String[] data : importedBooks) {
-            Book book = controller.addBook(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim());
+            Book book = controller.addBook(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim(), data[5].trim(), 1);
             if (book != null) {
                 System.out.println(book);
                 importedBookCount++;
@@ -103,14 +98,14 @@ public class BookMenu extends View {
     private void addNewBook() {
         Book book = null;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please type :'<ISBN>,<Title>,<Author>,<PublicationYear(YYYY-MM-DD)>,<Shelf Location>'");
+        System.out.println("Please type :'<ISBN>,<Title>,<Author>,<Publisher>,<PublicationYear(YYYY-MM-DD)>,<Shelf Location>'");
 
         String input = scanner.nextLine().trim();
         String[] parts = input.split(",", 5);
 
-        if (parts.length == 5) {
+        if (parts.length == 6) {
             try {
-                book = controller.addBook(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim(), parts[4].trim());
+                book = controller.addBook(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim(), parts[4].trim(), parts[5].trim(), 1);
             }
             catch (IllegalArgumentException a) {
                 System.out.println("Book could not be added due to wrong argument");

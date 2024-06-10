@@ -7,8 +7,8 @@ import java.time.format.FormatStyle;
 // Book Copy Data: [Book Data] + ID, Shelf Location, Borrowing Status, Borrow Date
 
 public class BookCopy {
-    public final static String[] FORMAT = new String[] {"%-30s", "%-30s", "%4s", "%17s", "%12s", "%14s", "%9s", "%10s", "%11s"};
-    public final static String[] COLUMN_NAMES = new String[]{"TITLE", "AUTHOR", "YEAR", "ISBN", "BOOK COPY ID", "SHELF LOCATION", "AVAILABLE", "START DATE", "RETURN DATE"};
+    public final static String[] FORMAT = new String[] {"%-20s", "%-20s", "%-20s", "%4s", "%17s", "%12s", "%14s", "%9s", "%10s", "%11s"};
+    public final static String[] COLUMN_NAMES = new String[]{"TITLE", "AUTHOR", "PUBLISHER", "YEAR", "ISBN", "BOOK COPY ID", "SHELF LOCATION", "AVAILABLE", "START DATE", "RETURN DATE"};
 
     private final String id;
     private final Book book;

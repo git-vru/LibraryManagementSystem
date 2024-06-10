@@ -22,6 +22,7 @@ public class ReportingMenu extends View {
         this.options.add("Output all NON-borrowed book copies");
         this.options.add("Output all customers");
         this.options.add("Output all borrowed book copies from a specific customer");
+        this.options.add("Output number of book copies per publisher");
     }
 
     @Override
@@ -50,6 +51,17 @@ public class ReportingMenu extends View {
 
                 List<String[]> borrowedBookListFromCustomer = controller.searchCustomer(c -> c.getId().equals(customerId), Comparator.comparing(Customer::getId)).get(0).getBorrowedList().stream().map(bookCopy -> bookCopy.toCsv().split(";")).toList();
                 printTable("List of all borrowed book copies for customer n°" + customerId, borrowedBookListFromCustomer, BookCopy.FORMAT, BookCopy.COLUMN_NAMES);
+                break;
+            case '5':
+                List<String[]> data = new ArrayList<>();
+                List<String> publishers = controller.getBookDatabase().keySet().stream().map(Book::getPublisher).distinct().sorted().toList();
+                int bookCopyNb = controller.searchBookCopy(c -> true, Comparator.comparing(BookCopy::getId)).size();
+
+                for (String p : publishers) {
+                    int occurrences = controller.searchBookCopy(copy -> copy.getBook().getPublisher().equals(p), Comparator.comparing(BookCopy::getId)).size();
+                    data.add(new String[] {p, Integer.toString(occurrences), (float) (occurrences * 100) / bookCopyNb + "%"});
+                }
+                printTable("Number of book copies per publisher", data, new String[]{"%-35s", "%11s", "%10s"}, new String[]{"PUBLISHER NAME", "# OF COPIES", "PERCENTAGE"});
                 break;
         }
         prev.show();
