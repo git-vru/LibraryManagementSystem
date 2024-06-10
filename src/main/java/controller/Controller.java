@@ -172,10 +172,6 @@ public class Controller {
 
     //BookCopy Methods
     public BookCopy addBookCopy(String bookCopyId, String isbn){
-        if (isbn.isEmpty()) {
-            throw new IllegalArgumentException("ISBN cannot be empty");
-        }
-
         Book book = searchBookViaIsbn(isbn);
 
         if (book == null) {
@@ -191,17 +187,13 @@ public class Controller {
     public BookCopy addBorrowedBookCopy(String bookCopyId, String isbn, String customerId, String borrowedDate, String returnDate, String fee) {
         Customer customer = searchCustomerViaId(customerId);
 
-        LocalDate borrowedDateParse = null;
-        LocalDate returnDateParse = null;
-        float feeParse = -1.0f;
+        LocalDate borrowedDateParse;
+        LocalDate returnDateParse;
+        float feeParse;
 
         if (customer == null) {
             System.out.println("There is no customer with such id!");
             return null;
-        }
-
-        if (borrowedDate.isEmpty() || returnDate.isEmpty() || fee.isEmpty()) {
-            throw new IllegalArgumentException("Arguments cannot be empty");
         }
 
         try {
