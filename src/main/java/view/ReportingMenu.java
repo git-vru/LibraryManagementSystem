@@ -84,13 +84,20 @@ public class ReportingMenu extends View {
 
             for (int i = 0; i < row.length; i++) {
                 int cellSize = Integer.parseInt(format[i].replaceAll("%-?([0-9]{1,2})s", "$1"));
-                System.out.printf(format[i] + " | ", row[i].substring(0, Math.min(row[i].length(), cellSize - 3)) + (Math.max(row[i].length(), cellSize) > cellSize ? "..." : ""));
+                String dataStr = row[i];
+
+                //truncate string if length > cell size
+                if (Math.max(row[i].length(), cellSize) > cellSize) {
+                    dataStr = dataStr.replace(row[i].substring(dataStr.length() - (dataStr.length() - cellSize) - 3), "...");
+                }
+
+                System.out.printf(format[i] + " | ", dataStr);
             }
             System.out.print("\n");
         }
 
         System.out.printf("%s%n", "-".repeat(lineSize));
-
+        System.out.println(rows.isEmpty() ? "No object was found" : ("Total lines: " + rows.size()));
         super.promptAndExit("");
         this.show();
     }

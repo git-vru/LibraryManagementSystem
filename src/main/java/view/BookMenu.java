@@ -91,7 +91,7 @@ public class BookMenu extends View {
             System.out.printf("Total %d books imported.%n", importedBookCount);
         }
         else {
-            System.out.println("No book was imported !");
+            System.out.println("\nNo book was imported !");
         }
     }
 
@@ -151,7 +151,7 @@ public class BookMenu extends View {
             System.out.printf("Total %d book copies imported.%n", importedBookCopyCount);
         }
         else {
-            System.out.println("No book was imported !");
+            System.out.println("\nNo book copies was imported !");
         }
     }
 }
