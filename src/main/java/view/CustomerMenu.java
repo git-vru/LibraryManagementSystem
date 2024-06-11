@@ -48,11 +48,11 @@ public class CustomerMenu extends View {
             }
         }
 
-        if (importedCustomerCount == 0) {
+        if (importedCustomerCount > 0) {
             System.out.printf("Total %d customer imported.%n", importedCustomerCount);
         }
         else {
-            System.out.println("No customer was imported !");
+            System.out.println("\nNo customer was imported !");
         }
     }
 

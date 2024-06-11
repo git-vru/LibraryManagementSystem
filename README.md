@@ -1,3 +1,8 @@
+### Note on the assignment 5
+Because no feedback for assignment 4 was provided on time, we decide to focus on the tasks 2 & 3.
+A full code review, doesn't make much sense considering the amount of code that has been changed/added.
+It's preferable for us to wait for the feedback and review the code in consequences, before deeply refactoring the project.
+
 # How to install the prototype
 
 1. Download the source code or clone the project via ssh or https.
@@ -61,9 +66,14 @@ In the book menu, search for any book `0` and enter `1` to add a book copy.
 
 To add a book copy from a csv file:
 In the book menu, enter `3` and enter the path to the csv file.
-The csv file must respect the following format: `<book_isbn>,<0/1 (not borrowed/borrowed)>,<borrowed_date>,<return_date>`
+The csv file must respect one of the following format:
+- New NOT borrowed book copy: `<isbn>`
+- New borrowed book copy: `<isbn>,<customer_id>,<borrowed_date>,<return_date>,<fee>`
+- Pre-existing NOT borrowed book copy: `<bookcopy_id>,<isbn>`
+- Pre-existing borrowed book copy: `<bookcopy_id>,<isbn>,<customer_id>,<borrowed_date>,<return_date>,<fee>`
 
-The dates can only be null, if the book copy is not borrowed (0).
+The uniqueness of the `bookcopy_id` is not check!
+If the customer id is null or a customer can't be found, no book copy will be created.
 
 #### 3. Delete a book copy:
 Navigate to the book menu `0`, then search for a book `0`.
@@ -99,10 +109,10 @@ Open borrowing menu `2`, then create a new borrowing `0`, then enter a `customer
 Open borrowing menu `2`, then return a book `1`, then pass the `book copy id`.
 
 #### 3. Borrow a book (via customer)
-Open the customer menu `1`, search for the cutomer `0` and select Borrow a book for cutomer: (cutomer) `1` Then enter the `book copy id`.
+Open the customer menu `1`, search for the customer `0` and select Borrow a book for customer: (customer) `1` Then enter the `book copy id`.
 
 #### 4. Return a book (via customer)
-Open customer menu `1`, search for the cutomer `0` and select Return a book for cutomer: (customer) `2`. Then enter the `book copy id`.
+Open customer menu `1`, search for the customer `0` and select Return a book for customer: (customer) `2`. Then enter the `book copy id`.
 
 ## Objects Example
 
@@ -110,7 +120,7 @@ To properly test our prototype, we are creating some objects statically in the M
 You can also look at the following examples to see how the different objects are implemented.
 
 ### Book
-| Title             | Author             | Isbn              | Publication Date | Classification Number |
+| Title             | Author             | Isbn (unique)     | Publication Date | Classification Number |
 |-------------------|--------------------|-------------------|------------------|-----------------------|
 | Les Fleurs du Mal | Charles Baudelaire | 978-2-290-11507-7 | 21/06/1857       | BAU01                 |
 | Candide           | Voltaire           | isbn02            | 01/01/1759       | VOL01                 |
@@ -124,9 +134,9 @@ You can also look at the following examples to see how the different objects are
 
 
 ### Book Copy
-| Id       | Book                    | Borrower    | Borrowed Date | Returned Date | Fee  |
+| Id       | Book                    | Borrower Id | Borrowed Date | Returned Date | Fee  |
 |----------|-------------------------|-------------|---------------|---------------|------|
-| VOL01_01 | Book                    | Customer<1> | 05/05/2024    | 20/05/2024    | 0.00 |
+| VOL01_01 | Book                    | 1           | 05/05/2024    | 20/05/2024    | 0.00 |
 | BAU01_01 | Book<978-2-290-11507-7> | null        | null          | null          | 0.00 |
 
 ## Troubleshooting

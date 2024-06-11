@@ -23,12 +23,13 @@ public abstract class View {
     public abstract void show();
 
     public static String addPadding2Text(String text, int maxPipeLength) {
-        int boxWidth = maxPipeLength;
-        int paddingSize = (boxWidth - text.length()) / 2;
+        int paddingSize = (maxPipeLength - text.length()) / 2;
+        System.out.println(paddingSize);
         String padding = " ".repeat(paddingSize);
         String centeredName = padding + text + padding;
-        if (centeredName.length() < boxWidth - 2) centeredName += " ";
-        if (maxPipeLength % 2 == 0) centeredName += " ";
+
+        if (centeredName.length() % 2 != 0) centeredName += " ";
+        if (centeredName.length() < maxPipeLength) centeredName = " " + centeredName + " ";
         return centeredName;
     }
 
@@ -38,13 +39,13 @@ public abstract class View {
 
         String leftAlignFormat = "| %-1d | %-" + (maxOptionLength-2) + "s |%n";
 
-        System.out.format("-" + "-".repeat(maxPipeLength) + "-%n");
+        System.out.format("-".repeat(maxPipeLength + 2) + "%n");
         System.out.format("|%-" + maxOptionLength + "s|%n", addPadding2Text(name, maxPipeLength));
         System.out.format("|----" + "-".repeat(maxOptionLength) + "|%n");
         for (int i = 0; i < options.size(); i++) {
             System.out.format(leftAlignFormat, i, options.get(i));
         }
-        System.out.format("-----" + "-".repeat(maxOptionLength) + "%n");
+        System.out.format("-".repeat(maxPipeLength + 2) + "%n");
 
         if (isError) {
             System.out.println("Please only enter a number from 0 to " + (options.size() - 1));

@@ -51,7 +51,7 @@ public class BookTest {
 
     @Test
     void deleteBookWhenBorrowingNotNull() {
-        bookCopy.setIsBorrowed(true);
+        bookCopy.setCustomerId("1");
 
         assertThrows(BorrowingNotNullException.class, () -> {
             controller.deleteBook("isbn02");
@@ -62,7 +62,7 @@ public class BookTest {
 
     @Test
     void addBookSuccessfully() {
-        Book book = controller.addBook("0-345-40447-5", "Do Androids Dream of Electric Sheep?", "Philip K. Dick", "Lorem Ipsum", "1968-05-01", "DIC01");
+        Book book = controller.addBook("0-345-40447-5", "Do Androids Dream of Electric Sheep?", "Philip K. Dick", "Lorem Ipsum", "1968-05-01", "DIC01", 3);
         assertEquals(bookListSize + 1, controller.getBookDatabase().size());
         assertTrue(controller.getBookDatabase().containsKey(book));
 
@@ -77,25 +77,25 @@ public class BookTest {
     @Test
     void addBookUnsuccessful() {
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("", "author","isbn", "Lorem Ipsum", "2024-05-23", "classificationNumber");
+            controller.addBook("", "author","isbn", "Lorem Ipsum", "2024-05-23", "classificationNumber", 1);
         });
 
 
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("title", "","isbn", "Lorem Ipsum", "2024-05-23", "classificationNumber");
+            controller.addBook("title", "","isbn", "Lorem Ipsum", "2024-05-23", "classificationNumber", 1);
         });
 
 
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("title", "author","", "Lorem Ipsum", "2024-05-23", "classificationNumber");
+            controller.addBook("title", "author","", "Lorem Ipsum", "2024-05-23", "classificationNumber", 1);
         });
 
 
-        assertNull(controller.addBook("title", "author","isbn", "Lorem Ipsum", "24-24-24", "classificationNumber"));
+        assertNull(controller.addBook("title", "author","isbn", "Lorem Ipsum", "24-24-24", "classificationNumber", 1));
 
 
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("title", "author","isbn", "Lorem Ipsum", "2024-05-23", "");
+            controller.addBook("title", "author","isbn", "Lorem Ipsum", "2024-05-23", "", 1);
         });
         assertEquals(bookListSize, controller.getBookDatabase().size());
     }

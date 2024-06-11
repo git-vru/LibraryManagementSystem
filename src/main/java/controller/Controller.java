@@ -8,11 +8,13 @@ import view.MainMenu;
 import view.View;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.function.Predicate;
 
 public class Controller {
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private View menu;
     private Scanner sc;
     private final List<Customer> customers = new ArrayList<>();
@@ -44,6 +46,10 @@ public class Controller {
 
     public List<Customer> searchCustomer(Predicate<Customer> predicate, Comparator<Customer> comparator) {
         return this.customers.stream().filter(predicate).sorted(comparator).toList();
+    }
+
+    public Customer searchCustomerViaId(String id) {
+        return searchCustomer(c -> c.getId().equals(id), Comparator.comparing(Customer::getId)).stream().findFirst().orElse(null);
     }
 
     /**
@@ -85,7 +91,7 @@ public class Controller {
                 bookDatabase.put(book, new ArrayList<>());
 
                 for (int i = 0; i < copyNb; i++) {
-                    addBookCopy(isbn, "0", null, null);
+                    addBookCopy("", isbn);
                 }
                 return book;
             }
@@ -120,8 +126,7 @@ public class Controller {
             throw new NoSuchElementException();
         }
 
-        if (this.bookDatabase.get(optionalBook.get()).stream()
-                .anyMatch(BookCopy::isBorrowed)) {
+        if (this.bookDatabase.get(optionalBook.get()).stream().anyMatch(BookCopy::isBorrowed)) {
             throw new BorrowingNotNullException("A physical copy of this book is still borrowed by someone.");
         }
 
@@ -171,31 +176,60 @@ public class Controller {
 
 
     //BookCopy Methods
-    public BookCopy addBookCopy(String isbn, String isBorrowed, String borrowedDate, String returnDate){
+    public BookCopy addBookCopy(String bookCopyId, String isbn){
+        Book book = searchBookViaIsbn(isbn);
 
-        BookCopy bookCopy = null;
-        if (!isbn.isEmpty() && (isBorrowed.equals("0") || (!borrowedDate.isEmpty() && !returnDate.isEmpty()))) {
-            try {
-                if (isBorrowed.equals("0")) {
-                    bookCopy = new BookCopy(searchBookViaIsbn(isbn), false);
-                }
-                else {
-                    bookCopy = new BookCopy(searchBookViaIsbn(isbn), true, LocalDate.parse(borrowedDate), LocalDate.parse(returnDate));
-                }
-                getBookCopies(searchBookViaIsbn(isbn)).add(bookCopy);
-                searchBookViaIsbn(isbn).increaseCopyCount();
-
-            }
-            catch (DateTimeParseException a) {
-                System.out.println("Error at passing the date!");
-            }
-            catch (NullPointerException a) {
-                System.out.println("There is no book with such isbn!");
-                return null;
-            }
+        if (book == null) {
+            System.out.println("There is no book with such isbn!");
+            return null;
         }
-        else {
-            throw new IllegalArgumentException();
+
+        BookCopy bookCopy = new BookCopy(book, bookCopyId, "", null, null, .0f);
+        getBookCopies(searchBookViaIsbn(isbn)).add(bookCopy);
+        return bookCopy;
+    }
+
+    public BookCopy addBorrowedBookCopy(String bookCopyId, String isbn, String customerId, String borrowedDate, String returnDate, String fee) {
+        Customer customer = searchCustomerViaId(customerId);
+
+        LocalDate borrowedDateParse;
+        LocalDate returnDateParse;
+        float feeParse;
+
+        if (customer == null) {
+            System.out.println("There is no customer with such id!");
+            return null;
+        }
+
+        try {
+            borrowedDateParse = LocalDate.parse(borrowedDate, DATE_FORMAT);
+        }
+        catch (DateTimeParseException e) {
+            System.out.println("Error at passing the borrowing date: " + e.getMessage());
+            return null;
+        }
+
+        try {
+            returnDateParse = LocalDate.parse(returnDate, DATE_FORMAT);
+        }
+        catch (DateTimeParseException e) {
+            System.out.println("Error at passing the return date: " + e.getMessage());
+            return null;
+        }
+
+        try {
+            feeParse = Float.parseFloat(fee);
+        }
+
+        catch (NumberFormatException e) {
+            System.out.println("Error at parsing the fees: " + e.getMessage());
+            return null;
+        }
+
+        BookCopy bookCopy = addBookCopy(bookCopyId, isbn);
+
+        if (bookCopy != null) {
+            borrowBookCopy(customer, bookCopy, borrowedDateParse, returnDateParse, feeParse);
         }
 
         return bookCopy;
@@ -220,20 +254,31 @@ public class Controller {
     //Borrowing Methods
     public void borrowBookCopy(Customer customer, BookCopy bookCopy) {
         if (!bookCopy.isBorrowed()) {
-            bookCopy.setIsBorrowed(true);
+            bookCopy.setCustomerId(customer.getId());
             bookCopy.setBorrowedDate(LocalDate.now());
             bookCopy.setReturnedDate(LocalDate.now().plusWeeks(2));
             customer.getBorrowedList().add(bookCopy);
         } else {
             throw new IllegalArgumentException("BookCopy is already borrowed!");
         }
+    }
 
+    public void borrowBookCopy(Customer customer, BookCopy bookCopy, LocalDate borrowedDate, LocalDate returnDate, float fee) {
+        if (!bookCopy.isBorrowed()) {
+            bookCopy.setCustomerId(customer.getId());
+            bookCopy.setBorrowedDate(borrowedDate);
+            bookCopy.setReturnedDate(returnDate);
+            bookCopy.setFee(fee);
+            customer.getBorrowedList().add(bookCopy);
+        } else {
+            throw new IllegalArgumentException("BookCopy is already borrowed!");
+        }
     }
 
     public void returnBookCopy(Customer customer, BookCopy bookCopy) {
 
         if (customer.getBorrowedList().contains(bookCopy)) {
-            bookCopy.setIsBorrowed(false);
+            bookCopy.removeCustomer();
             bookCopy.setBorrowedDate(null);
             bookCopy.setReturnedDate(null);
             customer.getBorrowedList().remove(bookCopy);
