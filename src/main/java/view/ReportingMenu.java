@@ -59,7 +59,7 @@ public class ReportingMenu extends View {
 
                 for (String p : publishers) {
                     int occurrences = controller.searchBookCopy(copy -> copy.getBook().getPublisher().equals(p), Comparator.comparing(BookCopy::getId)).size();
-                    data.add(new String[] {p, Integer.toString(occurrences), (float) (occurrences * 100) / bookCopyNb + "%"});
+                    data.add(new String[] {p, Integer.toString(occurrences), String.format("%.2f%%", (float) (occurrences * 100) / bookCopyNb)});
                 }
                 printTable("Number of book copies per publisher", data, new String[]{"%-35s", "%11s", "%10s"}, new String[]{"PUBLISHER NAME", "# OF COPIES", "PERCENTAGE"});
                 break;
@@ -84,7 +84,7 @@ public class ReportingMenu extends View {
 
             for (int i = 0; i < row.length; i++) {
                 int cellSize = Integer.parseInt(format[i].replaceAll("%-?([0-9]{1,2})s", "$1"));
-                System.out.printf(format[i] + " | ", row[i].substring(0, Math.min(row[i].length(), cellSize)) + (Math.max(row[i].length(), cellSize) > cellSize ? "..." : ""));
+                System.out.printf(format[i] + " | ", row[i].substring(0, Math.min(row[i].length(), cellSize - 3)) + (Math.max(row[i].length(), cellSize) > cellSize ? "..." : ""));
             }
             System.out.print("\n");
         }

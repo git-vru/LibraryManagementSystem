@@ -91,7 +91,7 @@ public class Controller {
                 bookDatabase.put(book, new ArrayList<>());
 
                 for (int i = 0; i < copyNb; i++) {
-                    addBookCopy(isbn, "0", null, null);
+                    addBookCopy("", isbn);
                 }
                 return book;
             }

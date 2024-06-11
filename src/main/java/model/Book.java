@@ -9,7 +9,7 @@ import static java.util.Collections.max;
 
 // Book Data: Title, Authors, ISBN, Year
 public class Book {
-    public final static String[] FORMAT = new String[]{"%-50s", "%-50s", "%-30s", "%4s", "%17s"};
+    public final static String[] FORMAT = new String[]{"%-30s", "%-30s", "%-20s", "%4s", "%17s"};
     public final static String[] COLUMN_NAMES = new String[]{"TITLE", "AUTHOR", "PUBLISHER", "YEAR", "ISBN"};
 
     private String classificationNumber;
