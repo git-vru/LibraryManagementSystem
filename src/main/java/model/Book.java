@@ -9,23 +9,25 @@ import static java.util.Collections.max;
 
 // Book Data: Title, Authors, ISBN, Year
 public class Book {
-    public final static String[] FORMAT = new String[]{"%-50s", "%-50s", "%4s", "%17s"};
-    public final static String[] COLUMN_NAMES = new String[]{"TITLE", "AUTHOR", "YEAR", "ISBN"};
+    public final static String[] FORMAT = new String[]{"%-30s", "%-30s", "%-20s", "%4s", "%17s"};
+    public final static String[] COLUMN_NAMES = new String[]{"TITLE", "AUTHOR", "PUBLISHER", "YEAR", "ISBN"};
 
     private String classificationNumber;
     private final String isbn;
     private String title;
     private String author;
     private LocalDate publicationDate;
+    private String publisher;
 
     private int copyCount;
 
-    public Book(String title, String author, String isbn, LocalDate dateOfFirstPublication, String classificationNumber) {
+    public Book(String title, String author, String isbn, LocalDate dateOfFirstPublication, String classificationNumber, String publisher) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.publicationDate = dateOfFirstPublication;
         this.classificationNumber = classificationNumber;
+        this.publisher = publisher;
 
         copyCount = 0;
     }
@@ -54,6 +56,10 @@ public class Book {
         return classificationNumber;
     }
 
+    public String getPublisher() {
+        return publisher;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -68,6 +74,10 @@ public class Book {
 
     public void setClassificationNumber(String classificationNumber) {
         this.classificationNumber = classificationNumber;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
     public int getCopyCount() {
@@ -86,9 +96,8 @@ public class Book {
         this.copyCount--;
     }
 
-    //TODO: Title, Authors, ISBN, !ID, !Shelf Location, !Borrowing Status, !Borrow Date
     public String toString() {
-        List<String> data = List.of(title, author, isbn, classificationNumber, publicationDate.toString());
+        List<String> data = List.of(title, author, isbn, classificationNumber, publisher, publicationDate.toString());
         int maxLength = max(data.stream().map(String::length).toList());
 
         String header = View.addPadding2Text(title, 24 + maxLength);
@@ -100,14 +109,15 @@ public class Book {
                 "| Author                | %-" + maxLength + "s |\n" +
                 "| ISBN                  | %-" + maxLength + "s |\n" +
                 "| Classification Number | %-" + maxLength + "s |\n" +
+                "| Publisher             | %-" + maxLength + "s |\n" +
                 "| Publication Date:     | %-" + maxLength + "s |\n" +
                 "| # of physical copies  | %-" + maxLength + "d |\n" +
                 "-------------------------" + "-".repeat(maxLength+2) + "-",
-                header, author, isbn, classificationNumber, publicationDate, copyCount
+                header, author, isbn, classificationNumber, publisher, publicationDate, copyCount
         );
     }
 
     public String toCsv() {
-        return String.format("%s;%s;%tY;%s", title, author, publicationDate, isbn);
+        return String.format("%s;%s;%s;%tY;%s", title, author, publisher, publicationDate, isbn);
     }
 }

@@ -75,7 +75,7 @@ public class BookSearch extends View {
             }
         }
         else if (inputChar == '1') {
-            BookCopy bc = controller.addBookCopy(bookISBN, "0", "", "");
+            BookCopy bc = controller.addBookCopy("", bookISBN);
 
             if (bc != null) {
                 System.out.println("The book copy :" + bc.getId() + " has been successfully added!");

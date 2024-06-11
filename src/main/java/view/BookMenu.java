@@ -4,13 +4,8 @@ import controller.Controller;
 import exceptions.BorrowingNotNullException;
 import model.Book;
 import model.BookCopy;
-import model.Customer;
 import utilities.CSVreader;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -85,32 +80,32 @@ public class BookMenu extends View {
         if (!importedBooks.isEmpty()) System.out.println("Imported Books:");
 
         for (String[] data : importedBooks) {
-            Book book = controller.addBook(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim());
+            Book book = controller.addBook(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim(), data[5].trim(), 1);
             if (book != null) {
                 System.out.println(book);
                 importedBookCount++;
             }
         }
 
-        if (importedBookCount == 0) {
+        if (importedBookCount > 0) {
             System.out.printf("Total %d books imported.%n", importedBookCount);
         }
         else {
-            System.out.println("No book was imported !");
+            System.out.println("\nNo book was imported !");
         }
     }
 
     private void addNewBook() {
         Book book = null;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please type :'<ISBN>,<Title>,<Author>,<PublicationYear(YYYY-MM-DD)>,<Shelf Location>'");
+        System.out.println("Please type :'<ISBN>,<Title>,<Author>,<Publisher>,<PublicationYear(YYYY-MM-DD)>,<Shelf Location>'");
 
         String input = scanner.nextLine().trim();
         String[] parts = input.split(",", 5);
 
-        if (parts.length == 5) {
+        if (parts.length == 6) {
             try {
-                book = controller.addBook(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim(), parts[4].trim());
+                book = controller.addBook(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim(), parts[4].trim(), parts[5].trim(), 1);
             }
             catch (IllegalArgumentException a) {
                 System.out.println("Book could not be added due to wrong argument");
@@ -138,14 +133,12 @@ public class BookMenu extends View {
 
         BookCopy bookCopy = null;
         for (String[] data : importedBookCopies) {
-            if (data.length == 2) {
-                bookCopy = controller.addBookCopy(data[0].trim(), data[1].trim(), "", "");
-            }
-            else if (data.length == 4) {
-                bookCopy = controller.addBookCopy(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim());
-            }
-            else {
-                System.out.println("Error while parsing data. Bad Arguments number");
+            switch (data.length) {
+                case 1 -> bookCopy = controller.addBookCopy("", data[0].trim());
+                case 2 -> bookCopy = controller.addBookCopy(data[0].trim(), data[1].trim());
+                case 5 -> bookCopy = controller.addBorrowedBookCopy("", data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim());
+                case 6 -> bookCopy = controller.addBorrowedBookCopy(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim(), data[5].trim());
+                default -> System.out.println("Error while parsing data. Bad Arguments number");
             }
 
             if (bookCopy != null) {
@@ -154,11 +147,11 @@ public class BookMenu extends View {
             }
         }
 
-        if (importedBookCopyCount == 0) {
+        if (importedBookCopyCount > 0) {
             System.out.printf("Total %d book copies imported.%n", importedBookCopyCount);
         }
         else {
-            System.out.println("No book was imported !");
+            System.out.println("\nNo book copies was imported !");
         }
     }
 }

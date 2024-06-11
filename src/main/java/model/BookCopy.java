@@ -7,12 +7,12 @@ import java.time.format.FormatStyle;
 // Book Copy Data: [Book Data] + ID, Shelf Location, Borrowing Status, Borrow Date
 
 public class BookCopy {
-    public final static String[] FORMAT = new String[] {"%-30s", "%-30s", "%4s", "%17s", "%12s", "%14s", "%9s", "%10s", "%11s"};
-    public final static String[] COLUMN_NAMES = new String[]{"TITLE", "AUTHOR", "YEAR", "ISBN", "BOOK COPY ID", "SHELF LOCATION", "AVAILABLE", "START DATE", "RETURN DATE"};
+    public final static String[] FORMAT = new String[] {"%8s", "%-20s", "%-20s", "%17s", "%8s", "%6s", "%10s", "%11s"};
+    public final static String[] COLUMN_NAMES = new String[]{"ID", "TITLE", "AUTHOR", "ISBN", "LOCATION", "AVAIL.", "START DATE", "RETURN DATE"};
 
     private final String id;
     private final Book book;
-    private boolean isBorrowed;
+    private String customerId;
 
     private LocalDate borrowedDate;
     private LocalDate returnedDate;
@@ -20,40 +20,32 @@ public class BookCopy {
 
     public BookCopy(Book book) {
         this.book = book;
-        this.isBorrowed = false;
+        this.customerId = "";
         book.increaseCopyCount();
         this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
     }
 
-    public BookCopy(Book book,
-                    String id,
-                    boolean isBorrowed,
-                    LocalDate borrowedDate) {
+    public BookCopy(Book book, String id, String customerId, LocalDate borrowedDate, LocalDate returnedDate, float fee) {
         this.book = book;
-        this.id = id;
-        this.isBorrowed = isBorrowed;
-        this.borrowedDate = borrowedDate;
-        this.returnedDate = null;
-    }
-    //
-    public BookCopy(Book book, boolean isBorrowed){
-        this.book = book;
-        this.isBorrowed = isBorrowed;
-        book.increaseCopyCount();
-        this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
-    }
-    public BookCopy(Book book, boolean isBorrowed, LocalDate borrowedDate, LocalDate returnedDate){
-        this.book = book;
-        this.isBorrowed = isBorrowed;
-        book.increaseCopyCount();
-        this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
-        this.returnedDate = returnedDate;
-        this.borrowedDate = borrowedDate;
-    }
+        this.customerId = customerId;
 
+        if (id.isEmpty()) {
+            book.increaseCopyCount();
+            this.id = book.getClassificationNumber() + "_" + book.getCopyCount();
+        }
+        else {
+            this.id = id;
+        }
+
+        if (!customerId.isEmpty()) {
+            this.returnedDate = returnedDate;
+            this.borrowedDate = borrowedDate;
+            this.fee = fee;
+        }
+    }
 
     public boolean isBorrowed() {
-        return this.isBorrowed;
+        return !this.customerId.isEmpty();
     }
 
     public LocalDate getBorrowedDate() {
@@ -87,8 +79,12 @@ public class BookCopy {
         return book;
     }
 
-    public void setIsBorrowed(boolean isBorrowed) {
-        this.isBorrowed = isBorrowed;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public void removeCustomer() {
+        this.customerId = "";
     }
 
     //ToDo change to string
@@ -97,6 +93,6 @@ public class BookCopy {
     }
 
     public String toCsv() {
-        return String.format("%s;%s;%s;%s;%s;%s", book.toCsv(), id, book.getClassificationNumber(), isBorrowed ? "no" : "yes", borrowedDate == null ? "--/--/----" : borrowedDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)),  returnedDate == null ? "--/--/----" : returnedDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
+        return String.format("%s;%s;%s;%s;%s;%s;%s;%s", id, book.getTitle(), book.getAuthor(), book.getIsbn(), book.getClassificationNumber(), customerId.isEmpty() ? "yes" : "no", borrowedDate == null ? "--/--/----" : borrowedDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)),  returnedDate == null ? "--/--/----" : returnedDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
     }
 }

@@ -34,7 +34,7 @@ public class BorrowingMenu extends View {
             List<Customer> customerList = controller.searchCustomer(c -> c.getId().equals(customerId), Comparator.comparing(Customer::getLastName));
 
             if (customerList.isEmpty() || customerList.get(0) == null) {
-                System.out.println("---\nNo customer with this is has been found!\n");
+                System.out.println("---\nNo customer with this id has been found!\n");
                 prev.show();
             }
 
@@ -43,7 +43,7 @@ public class BorrowingMenu extends View {
             List<BookCopy> bookCopyList = controller.searchBookCopy(bc -> bc.getId().equals(bookCopyId), Comparator.comparing(BookCopy::getId));
 
             if (bookCopyList.isEmpty() || bookCopyList.get(0) == null) {
-                System.out.println("---\nNo book with this is has been found!\n");
+                System.out.println("---\nNo book with this id has been found!\n");
                 prev.show();
             }
 
