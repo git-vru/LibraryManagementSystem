@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class BookCopyTest {
     int bookCopyListSize;
     Controller controller = new Controller();
-    Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01");
-    Book testBook = new Book("Les Fleurs du Mal", "Charles Baudelaire","isbn03", LocalDate.of(1800, 2, 2), "BAU01");
+    Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01", "Lorem Ipsum");
+    Book testBook = new Book("Les Fleurs du Mal", "Charles Baudelaire","isbn03", LocalDate.of(1800, 2, 2), "BAU01", "Lorem Ipsum");
     BookCopy bookCopy = new BookCopy(book);
     Customer customer = new Customer("Vrushabh", "Jain", LocalDate.of(2004, 10, 30));
 

@@ -81,13 +81,18 @@ public class Controller {
 
 
     //Book Methods
-    public Book addBook(String isbn, String title, String author , String dateOfFirstPublication, String classificationNumber){
+    //ToDo: add nb of book copy as argument
+    public Book addBook(String isbn, String title, String author , String publisher, String dateOfFirstPublication, String classificationNumber, int copyNb) {
 
         if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty() && !classificationNumber.isEmpty()) {
             try {
                 LocalDate dob = LocalDate.parse(dateOfFirstPublication);
-                Book book = new Book(title, author, isbn, dob, classificationNumber);
+                Book book = new Book(title, author, isbn, dob, classificationNumber, publisher);
                 bookDatabase.put(book, new ArrayList<>());
+
+                for (int i = 0; i < copyNb; i++) {
+                    addBookCopy(isbn, "0", null, null);
+                }
                 return book;
             }
             catch (DateTimeParseException a) {

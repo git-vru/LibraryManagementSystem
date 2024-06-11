@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ControllerTest {
     Controller controller = new Controller();
-    Book book = new Book("abc", "bcd", "isbn08", LocalDate.parse("2001-12-12"), "987");
+    Book book = new Book("abc", "bcd", "isbn08", LocalDate.parse("2001-12-12"), "987", "Lorem Ipsum");
     BookCopy bookCopy = new BookCopy(book);
     Customer customer = new Customer("Elon", "Musk", LocalDate.parse("2000-01-01"));
 

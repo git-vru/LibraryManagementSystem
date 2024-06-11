@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BookTest {
     int bookListSize;
     Controller controller = new Controller();
-    Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01");
-    Book bladeRunner = new Book("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", LocalDate.of(1968,5,1), "DIC01");
+    Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01","Lorem Ipsum");
+    Book bladeRunner = new Book("Do Androids Dream of Electric Sheep?", "Philip K. Dick", "0-345-40447-5", LocalDate.of(1968,5,1), "DIC01", "Lorem Ipsum");
     BookCopy bookCopy = new BookCopy(book);
     Customer customer = new Customer("Vrushabh", "Jain", LocalDate.of(2004, 10, 30));
 
@@ -62,7 +62,7 @@ public class BookTest {
 
     @Test
     void addBookSuccessfully() {
-        Book book = controller.addBook("0-345-40447-5", "Do Androids Dream of Electric Sheep?", "Philip K. Dick", "1968-05-01", "DIC01");
+        Book book = controller.addBook("0-345-40447-5", "Do Androids Dream of Electric Sheep?", "Philip K. Dick", "Lorem Ipsum", "1968-05-01", "DIC01");
         assertEquals(bookListSize + 1, controller.getBookDatabase().size());
         assertTrue(controller.getBookDatabase().containsKey(book));
 
@@ -77,25 +77,25 @@ public class BookTest {
     @Test
     void addBookUnsuccessful() {
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("", "author","isbn", "2024-05-23", "classificationNumber");
+            controller.addBook("", "author","isbn", "Lorem Ipsum", "2024-05-23", "classificationNumber");
         });
 
 
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("title", "","isbn", "2024-05-23", "classificationNumber");
+            controller.addBook("title", "","isbn", "Lorem Ipsum", "2024-05-23", "classificationNumber");
         });
 
 
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("title", "author","", "2024-05-23", "classificationNumber");
+            controller.addBook("title", "author","", "Lorem Ipsum", "2024-05-23", "classificationNumber");
         });
 
 
-        assertNull(controller.addBook("title", "author","isbn", "24-24-24", "classificationNumber"));
+        assertNull(controller.addBook("title", "author","isbn", "Lorem Ipsum", "24-24-24", "classificationNumber"));
 
 
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("title", "author","isbn", "2024-05-23", "");
+            controller.addBook("title", "author","isbn", "Lorem Ipsum", "2024-05-23", "");
         });
         assertEquals(bookListSize, controller.getBookDatabase().size());
     }
@@ -139,11 +139,11 @@ public class BookTest {
     @Test
     void searchBookSuccessful() {
         Comparator<Book> comparator = Comparator.comparing(Book::getTitle);
-        Book book1 = new Book("Book One", "Author A", "1234567890", LocalDate.of(2000, 1, 1), "001");
-        Book book2 = new Book("Book Two", "Author B", "1234567891", LocalDate.of(2001, 2, 2), "002");
-        Book book3 = new Book("Book Three", "Author A", "1234567892", LocalDate.of(2002, 3, 3), "003");
-        Book book4 = new Book("Book Four", "Author C", "1234567893", LocalDate.of(2003, 4, 4), "004");
-        Book book5 = new Book("Book Five", "Author B", "1234567894", LocalDate.of(2004, 5, 5), "005");
+        Book book1 = new Book("Book One", "Author A", "1234567890", LocalDate.of(2000, 1, 1), "001", "Lorem Ipsum");
+        Book book2 = new Book("Book Two", "Author B", "1234567891", LocalDate.of(2001, 2, 2), "002", "Lorem Ipsum");
+        Book book3 = new Book("Book Three", "Author A", "1234567892", LocalDate.of(2002, 3, 3), "003", "Lorem Ipsum");
+        Book book4 = new Book("Book Four", "Author C", "1234567893", LocalDate.of(2003, 4, 4), "004", "Lorem Ipsum");
+        Book book5 = new Book("Book Five", "Author B", "1234567894", LocalDate.of(2004, 5, 5), "005", "Lorem Ipsum");
         controller.getBookDatabase().put(book1, new ArrayList<>());
         controller.getBookDatabase().put(book2, new ArrayList<>());
         controller.getBookDatabase().put(book3, new ArrayList<>());
