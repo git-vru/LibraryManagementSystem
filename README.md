@@ -1,5 +1,5 @@
 ### Note on the assignment 5
-Because no feedback for assignment 4 was provided on time, we decide to focus on the tasks 2 & 3 .
+Because no feedback for assignment 4 was provided on time, we decide to focus on the tasks 2 & 3.
 A full code review, doesn't make much sense considering the amount of code that has been changed/added.
 It's preferable for us to wait for the feedback and review the code in consequences, before deeply refactoring the project.
 
