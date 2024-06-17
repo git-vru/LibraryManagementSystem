@@ -76,16 +76,8 @@ public class Book {
         this.classificationNumber = classificationNumber;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
     public int getCopyCount() {
         return copyCount;
-    }
-
-    public void setCopyCount(int copyCount) {
-        this.copyCount = copyCount;
     }
 
     public void increaseCopyCount() {
