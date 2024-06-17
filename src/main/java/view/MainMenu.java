@@ -26,9 +26,7 @@ public class MainMenu extends View {
 
     @Override
     public void show() {
-        char inputChar;
-        inputChar = super.promptMenu(name, this.options);
-        switch (inputChar) {
+        switch (super.promptMenu(name, this.options)) {
             case '0' -> controller.setMenu(new BookMenu(controller, this));
             case '1' -> controller.setMenu(new CustomerMenu(controller, this));
             case '2' -> controller.setMenu(new BorrowingMenu(controller, this));
