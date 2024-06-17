@@ -77,20 +77,20 @@ class BookCopyTest {
         assertEquals(bookCopyListSize , controller.getBookCopies(book).size());
         assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("isbn03")).isEmpty());
 
-        assertThrows(IllegalArgumentException.class, () -> controller.addBorrowedBookCopy("", "", "1", "2024-06-04", "2024-06-04", "0.0"));
-        assertThrows(IllegalArgumentException.class, () -> controller.addBorrowedBookCopy("", "isbn03", "1", "", "2024-06-04", "0.0"));
-        assertThrows(IllegalArgumentException.class, () -> controller.addBorrowedBookCopy("", "isbn03", "1", "2024-06-04", "", "0.0"));
-        assertThrows(IllegalArgumentException.class, () -> controller.addBorrowedBookCopy("", "isbn03", "1", "2024-06-04", "2024-06-04", ""));
+        assertThrows(IllegalArgumentException.class, () -> controller.addBorrowedBookCopy("", "", "1", "04/06/2024", "04/06/2024", "0.0"));
+        assertThrows(IllegalArgumentException.class, () -> controller.addBorrowedBookCopy("", "isbn03", "1", "", "04/06/2024", "0.0"));
+        assertThrows(IllegalArgumentException.class, () -> controller.addBorrowedBookCopy("", "isbn03", "1", "04/06/2024", "", "0.0"));
+        assertThrows(IllegalArgumentException.class, () -> controller.addBorrowedBookCopy("", "isbn03", "1", "04/06/2024", "04/06/2024", ""));
 
-        controller.addBorrowedBookCopy("", "isbn03", "1", "33", "2024-06-04", "0.0");
+        controller.addBorrowedBookCopy("", "isbn03", "1", "33", "04/06/2024", "0.0");
         assertEquals(bookCopyListSize , controller.getBookCopies(book).size());
         assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("isbn03")).isEmpty());
 
-        controller.addBorrowedBookCopy("", "isbn03", "1", "2024-06-04", "111", "0.0");
+        controller.addBorrowedBookCopy("", "isbn03", "1", "04/06/2024", "111", "0.0");
         assertEquals(bookCopyListSize , controller.getBookCopies(book).size());
         assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("isbn03")).isEmpty());
 
-        controller.addBorrowedBookCopy("", "isbn03", "1", "2024-06-04", "2024-06-04", "a");
+        controller.addBorrowedBookCopy("", "isbn03", "1", "04/06/2024", "04/06/2024", "a");
         assertEquals(bookCopyListSize , controller.getBookCopies(book).size());
         assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("isbn03")).isEmpty());
     }

@@ -65,7 +65,7 @@ class CustomerTest {
 
     @Test
     void addCustomerSuccessfully() {
-        Customer newCustomer = controller.addCustomer("Samuel","Kemmler","2005-08-28");
+        Customer newCustomer = controller.addCustomer("Samuel","Kemmler","28/08/2005");
         assertEquals(customerListSize+1, controller.getCustomers().size());
 
         assertEquals("Samuel", newCustomer.getFirstName());
@@ -78,12 +78,12 @@ class CustomerTest {
     @Test
     void addCustomerUnsuccessful() {
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addCustomer("", "Smith", "2001-01-01");
+            controller.addCustomer("", "Smith", "01/01/2001");
         });
         assertEquals(customerListSize, controller.getCustomers().size());
 
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addCustomer("Will", "", "2001-01-01");
+            controller.addCustomer("Will", "", "01/01/2001");
         });
         assertEquals(customerListSize, controller.getCustomers().size());
 
@@ -96,7 +96,7 @@ class CustomerTest {
 
     @Test
     void modifyCustomerSuccessfully() {
-        assertTrue(controller.modifyCustomer(customer,"Unga", "Bunga", "2001-01-01"));
+        assertTrue(controller.modifyCustomer(customer,"Unga", "Bunga", "01/01/2001"));
 
         assertEquals("Unga",customer.getFirstName());
         assertEquals("Bunga",customer.getLastName());
@@ -107,11 +107,11 @@ class CustomerTest {
     void modifyCustomerUnsuccessful() {
         Customer modifiedCustomer = customer;
         assertThrows(NoSuchElementException.class, () -> {
-            controller.modifyCustomer(modifiedCustomer,"", "Smith", "2001-01-01");
+            controller.modifyCustomer(modifiedCustomer,"", "Smith", "01/01/2001");
         });
 
         assertThrows(NoSuchElementException.class, () -> {
-            controller.modifyCustomer(modifiedCustomer, "Will", "", "2001-01-01");
+            controller.modifyCustomer(modifiedCustomer, "Will", "", "01/01/2001");
         });
 
         assertThrows(DateTimeParseException.class, () -> {
