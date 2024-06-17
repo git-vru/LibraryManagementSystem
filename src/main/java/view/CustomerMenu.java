@@ -1,12 +1,8 @@
 package view;
 
-import controller.Controller;
-import model.Book;
+import  controller.Controller;
 import utilities.CSVreader;
 import model.Customer;
-
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;

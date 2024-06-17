@@ -1,17 +1,10 @@
 package view;
 
 import controller.Controller;
-import model.Book;
 import model.BookCopy;
 import model.Customer;
-import utilities.CSVreader;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 
 public class BorrowingMenu extends View {
     private final List<String> options1;
