@@ -12,8 +12,8 @@ import java.util.List;
 public class CustomerInfo extends View {
     private Customer customer = null;
 
-    public CustomerInfo(Controller controller, View prev) {
-        super(controller, prev);
+    public CustomerInfo(Controller controller, View previous) {
+        super(controller, previous);
 
         this.name = "Customer Info";
     }

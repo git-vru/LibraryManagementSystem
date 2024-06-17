@@ -11,8 +11,8 @@ import java.util.function.Predicate;
 public class ReportingMenu extends View {
     private final List<String> options;
 
-    public ReportingMenu(Controller controller, View prev) {
-        super(controller, prev);
+    public ReportingMenu(Controller controller, View previous) {
+        super(controller, previous);
 
         this.name = "Reporting Menu";
 
