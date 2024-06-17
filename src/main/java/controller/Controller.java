@@ -190,46 +190,32 @@ public class Controller {
     }
 
     public BookCopy addBorrowedBookCopy(String bookCopyId, String isbn, String customerId, String borrowedDate, String returnDate, String fee) {
+        if (!customerId.matches("\\d+")) {
+            throw new IllegalArgumentException("The given <customer_id> does not respect the correct format");
+        }
+
+        if (!fee.matches("\\d*(\\.\\d{2})?")) {
+            throw new IllegalArgumentException("The given <fee> does not respect the correct format");
+        }
+
+        if (!borrowedDate.matches("(0[1-9]|[12][0-9]|3[01]|)/(1[012]|0[1-9])/(19|20)\\d{2}")) {
+            throw new IllegalArgumentException("The given <borrowed_id> does not respect the correct format");
+        }
+
+        if (!returnDate.matches("(0[1-9]|[12][0-9]|3[01]|)/(1[012]|0[1-9])/(19|20)\\d{2}")) {
+            throw new IllegalArgumentException("The given <return_id> does not respect the correct format");
+        }
+
         Customer customer = searchCustomerViaId(customerId);
-
-        LocalDate borrowedDateParse;
-        LocalDate returnDateParse;
-        float feeParse;
-
         if (customer == null) {
             System.out.println("There is no customer with such id!");
-            return null;
-        }
-
-        try {
-            borrowedDateParse = LocalDate.parse(borrowedDate, DATE_FORMAT);
-        }
-        catch (DateTimeParseException e) {
-            System.out.println("Error at passing the borrowing date: " + e.getMessage());
-            return null;
-        }
-
-        try {
-            returnDateParse = LocalDate.parse(returnDate, DATE_FORMAT);
-        }
-        catch (DateTimeParseException e) {
-            System.out.println("Error at passing the return date: " + e.getMessage());
-            return null;
-        }
-
-        try {
-            feeParse = Float.parseFloat(fee);
-        }
-
-        catch (NumberFormatException e) {
-            System.out.println("Error at parsing the fees: " + e.getMessage());
             return null;
         }
 
         BookCopy bookCopy = addBookCopy(bookCopyId, isbn);
 
         if (bookCopy != null) {
-            borrowBookCopy(customer, bookCopy, borrowedDateParse, returnDateParse, feeParse);
+            borrowBookCopy(customer, bookCopy, LocalDate.parse(borrowedDate, DATE_FORMAT), LocalDate.parse(returnDate, DATE_FORMAT), Float.parseFloat(fee));
         }
 
         return bookCopy;
