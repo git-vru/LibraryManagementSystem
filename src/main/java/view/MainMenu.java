@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenu extends View {
-    private char inputChar;
 
     private final List<String> options;
 
@@ -26,8 +25,8 @@ public class MainMenu extends View {
     }
 
     @Override
-    public void show() {inputChar = super.promptMenu(name, this.options);
-        switch (inputChar) {
+    public void show() {
+        switch (super.promptMenu(name, this.options)) {
             case '0' -> controller.setMenu(new BookMenu(controller, this));
             case '1' -> controller.setMenu(new CustomerMenu(controller, this));
             case '2' -> controller.setMenu(new BorrowingMenu(controller, this));
