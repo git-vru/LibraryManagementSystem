@@ -40,7 +40,7 @@ public class CustomerInfo extends View {
 
         List<String> options = List.of("Delete the customer : " + customerId, "Borrow a book for customer : " + customerId, "Return a book for customer : " + customerId, "Modify the first name of customer: " + customerId, "Modify the last name of customer: " + customerId, "Modify the Date of Birth of customer: " + customerId);
         char inputChar;
-        inputChar = super.promptOptions(options);
+        inputChar = super.prompt(options, false);
 
         if (inputChar == 'q') {
             prev.show();

@@ -25,7 +25,7 @@ public class BookMenu extends View {
     }
 
     public void show() {
-        char inputChar = super.promptMenu(name, options1);
+        char inputChar = super.prompt(options1, true);
 
         if (inputChar == '0') {
             controller.setMenu(new BookSearch(controller, this));
@@ -41,7 +41,7 @@ public class BookMenu extends View {
             }
 
             System.out.println(bookCopyList.get(0));
-            inputChar = super.promptOptions(options3);
+            inputChar = super.prompt(options3, false);
 
             if (inputChar == '0') {
                 try {
@@ -55,7 +55,7 @@ public class BookMenu extends View {
             this.show();
         }
         else if (inputChar == '2') {
-            inputChar = super.promptMenu("Add a book", options2);
+            inputChar = super.prompt(options2, true);
             if (inputChar == '0'){
                 addNewBook();
             } else if (inputChar == '1') {

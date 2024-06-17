@@ -1,12 +1,9 @@
 package view;
 
 import controller.Controller;
-import model.Book;
 import utilities.CSVreader;
 import model.Customer;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -78,14 +75,14 @@ public class CustomerMenu extends View {
 
     public void show() {
         char inputChar;
-        inputChar = super.promptMenu(name, options);
+        inputChar = super.prompt(options, true);
 
         if (inputChar == '0') {
             controller.setMenu(new CustomerInfo(controller, this));
 
         }
         else if (inputChar == '1') {
-            inputChar = super.promptOptions(options2);
+            inputChar = super.prompt(options2, false);
             if (inputChar == '0'){
                 addNewCustomer();
             }
