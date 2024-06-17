@@ -177,8 +177,11 @@ public class Controller {
 
     //BookCopy Methods
     public BookCopy addBookCopy(String bookCopyId, String isbn){
-        Book book = searchBookViaIsbn(isbn);
+        if (!bookCopyId.matches("(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+")) {
+            throw new IllegalArgumentException("The given <book_isbn> does not respect the correct format");
+        }
 
+        Book book = searchBookViaIsbn(isbn);
         if (book == null) {
             System.out.println("There is no book with such isbn!");
             return null;
