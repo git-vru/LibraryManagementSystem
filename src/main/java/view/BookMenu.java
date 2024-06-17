@@ -15,8 +15,8 @@ public class BookMenu extends View {
     private final List<String> options2;
     private final List<String> options3;
 
-    public BookMenu(Controller controller, View prev) {
-        super(controller, prev);
+    public BookMenu(Controller controller, View previous) {
+        super(controller, previous);
 
         this.name = "Book Menu";
         this.options1 = List.of("Search for a book", "Search for a book copy", "Add a new book", "Import Book Copies from CSV file");

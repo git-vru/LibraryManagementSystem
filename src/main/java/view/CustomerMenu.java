@@ -18,8 +18,8 @@ public class CustomerMenu extends View {
     private final List<String> options;
     private final List<String> options2;
 
-    public CustomerMenu(Controller controller, View prev) {
-        super(controller, prev);
+    public CustomerMenu(Controller controller, View previous) {
+        super(controller, previous);
 
         this.name = "Customer Menu";
         this.options = new ArrayList<>();

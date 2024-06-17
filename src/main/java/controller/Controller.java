@@ -16,12 +16,12 @@ import java.util.function.Predicate;
 public class Controller {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private View menu;
-    private Scanner sc;
+    private Scanner scanner;
     private final List<Customer> customers = new ArrayList<>();
     private final Map<Book, List<BookCopy>> bookDatabase = new HashMap<>();
 
     public Controller() {
-        sc = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         this.menu = new MainMenu(this);
     }
 
@@ -86,8 +86,8 @@ public class Controller {
 
         if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty() && !classificationNumber.isEmpty()) {
             try {
-                LocalDate dob = LocalDate.parse(dateOfFirstPublication);
-                Book book = new Book(title, author, isbn, dob, classificationNumber, publisher);
+                LocalDate dateOfBirth = LocalDate.parse(dateOfFirstPublication);
+                Book book = new Book(title, author, isbn, dateOfBirth, classificationNumber, publisher);
                 bookDatabase.put(book, new ArrayList<>());
 
                 for (int i = 0; i < copyNb; i++) {
@@ -137,8 +137,8 @@ public class Controller {
     //Customer Methods
     public Customer addCustomer(String firstName, String lastName, String date) {
         if (!firstName.isEmpty() && !lastName.isEmpty()) {
-            LocalDate dob = LocalDate.parse(date);
-            Customer customer = new Customer(firstName, lastName, dob);
+            LocalDate dateOfBirth = LocalDate.parse(date);
+            Customer customer = new Customer(firstName, lastName, dateOfBirth);
             this.getCustomers().add(customer);
             return customer;
         }
@@ -147,10 +147,10 @@ public class Controller {
         }
     }
 
-    public boolean modifyCustomer(Customer customer, String firstName, String lastName, String dob){
+    public boolean modifyCustomer(Customer customer, String firstName, String lastName, String dateOfBirth){
         if (!firstName.isEmpty() && !lastName.isEmpty()) {
             customer.setFirstName(firstName);
-            customer.setDateOfBirth(LocalDate.parse(dob));
+            customer.setDateOfBirth(LocalDate.parse(dateOfBirth));
             customer.setLastName(lastName);
             return true;
 
@@ -291,7 +291,7 @@ public class Controller {
 
     //Getters
     public Scanner getScanner() {
-        return this.sc;
+        return this.scanner;
     }
 
     public List<Customer> getCustomers() {

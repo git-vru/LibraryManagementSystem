@@ -16,9 +16,9 @@ public abstract class View {
     protected String name;
     protected View prev;
 
-    public View(Controller controller, View prev) {
+    public View(Controller controller, View previous) {
         this.controller = controller;
-        this.prev = prev;
+        this.prev = previous;
     }
     public abstract void show();
 
