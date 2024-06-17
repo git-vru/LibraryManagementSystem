@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class CustomerInfo extends View {
-    private char inputChar;
     private Customer customer = null;
 
     public CustomerInfo(Controller controller, View previous) {
@@ -40,7 +39,7 @@ public class CustomerInfo extends View {
         }
 
         List<String> options = List.of("Delete the customer : " + customerId, "Borrow a book for customer : " + customerId, "Return a book for customer : " + customerId, "Modify the first name of customer: " + customerId, "Modify the last name of customer: " + customerId, "Modify the Date of Birth of customer: " + customerId);
-
+        char inputChar;
         inputChar = super.promptOptions(options);
 
         if (inputChar == 'q') {

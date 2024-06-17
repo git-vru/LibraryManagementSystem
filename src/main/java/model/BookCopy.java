@@ -56,10 +56,6 @@ public class BookCopy {
         this.borrowedDate = borrowedDate;
     }
 
-    public LocalDate getReturnedDate() {
-        return returnedDate;
-    }
-
     public void setReturnedDate(LocalDate returnedDate) {
         this.returnedDate = returnedDate;
     }

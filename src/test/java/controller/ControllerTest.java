@@ -7,15 +7,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+
 public class ControllerTest {
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     Controller controller = new Controller();
-    Book book = new Book("abc", "bcd", "isbn08", LocalDate.parse("2001-12-12"), "987", "Lorem Ipsum");
+    Book book = new Book("abc", "bcd", "isbn08", LocalDate.parse("12/12/2001", DATE_FORMAT), "987", "Lorem Ipsum");
     BookCopy bookCopy = new BookCopy(book);
-    Customer customer = new Customer("Elon", "Musk", LocalDate.parse("2000-01-01"));
+    Customer customer = new Customer("Elon", "Musk", LocalDate.parse("01/01/2000", DATE_FORMAT));
 
     @BeforeEach
     void setup() {

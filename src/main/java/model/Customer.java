@@ -16,7 +16,6 @@ public class Customer {
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
-    private int paymentStatus;
     private final List<BookCopy> borrowedList;
 
     private final LocalDate subscriptionDate;

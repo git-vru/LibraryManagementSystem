@@ -26,7 +26,6 @@ public class BookMenu extends View {
 
     public void show() {
         char inputChar = super.promptMenu(name, options1);
-        BookCopy bookCopy = null;
 
         if (inputChar == '0') {
             controller.setMenu(new BookSearch(controller, this));

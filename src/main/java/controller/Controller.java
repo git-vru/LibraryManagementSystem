@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class Controller {
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private View menu;
     private Scanner scanner;
     private final List<Customer> customers = new ArrayList<>();
@@ -86,7 +86,7 @@ public class Controller {
 
         if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty() && !classificationNumber.isEmpty()) {
             try {
-                LocalDate dateOfBirth = LocalDate.parse(dateOfFirstPublication);
+                LocalDate dateOfBirth = LocalDate.parse(dateOfFirstPublication, DATE_FORMAT);
                 Book book = new Book(title, author, isbn, dateOfBirth, classificationNumber, publisher);
                 bookDatabase.put(book, new ArrayList<>());
 
@@ -111,7 +111,7 @@ public class Controller {
         if (!title.isEmpty() && !author.isEmpty() && !classificationNumber.isEmpty()) {
             book.setTitle(title);
             book.setAuthor(author);
-            book.setPublicationDate(LocalDate.parse(dateOfFirstPublication));
+            book.setPublicationDate(LocalDate.parse(dateOfFirstPublication, DATE_FORMAT));
             book.setClassificationNumber(classificationNumber);
             return true;
         } else {
@@ -137,7 +137,7 @@ public class Controller {
     //Customer Methods
     public Customer addCustomer(String firstName, String lastName, String date) {
         if (!firstName.isEmpty() && !lastName.isEmpty()) {
-            LocalDate dateOfBirth = LocalDate.parse(date);
+            LocalDate dateOfBirth = LocalDate.parse(date, DATE_FORMAT);
             Customer customer = new Customer(firstName, lastName, dateOfBirth);
             this.getCustomers().add(customer);
             return customer;
@@ -150,7 +150,7 @@ public class Controller {
     public boolean modifyCustomer(Customer customer, String firstName, String lastName, String dateOfBirth){
         if (!firstName.isEmpty() && !lastName.isEmpty()) {
             customer.setFirstName(firstName);
-            customer.setDateOfBirth(LocalDate.parse(dateOfBirth));
+            customer.setDateOfBirth(LocalDate.parse(dateOfBirth, DATE_FORMAT));
             customer.setLastName(lastName);
             return true;
 
