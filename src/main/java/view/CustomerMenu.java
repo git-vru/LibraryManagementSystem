@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CustomerMenu extends View {
-    //private utilities.CSVreader reader;
-    private char inputChar;
+    //private utilities.CSVreader reader
 
     private final List<String> options;
     private final List<String> options2;
@@ -78,6 +77,7 @@ public class CustomerMenu extends View {
     }
 
     public void show() {
+        char inputChar;
         inputChar = super.promptMenu(name, options);
 
         if (inputChar == '0') {
