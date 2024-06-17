@@ -1,14 +1,6 @@
 package utilities;
 
-import controller.Controller;
-import model.Book;
-import model.BookCopy;
-import model.Customer;
-
 import java.io.*;
-import java.time.LocalDate;
-import java.time.Year;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 //Please dont move this out of utilities

@@ -4,8 +4,6 @@ import controller.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static java.util.Collections.max;
 
 public abstract class View {
