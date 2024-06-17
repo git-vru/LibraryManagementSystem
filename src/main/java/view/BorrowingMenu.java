@@ -9,8 +9,8 @@ import java.util.List;
 public class BorrowingMenu extends View {
     private final List<String> options1;
 
-    public BorrowingMenu(Controller controller, View prev) {
-        super(controller, prev);
+    public BorrowingMenu(Controller controller, View previous) {
+        super(controller, previous);
 
         this.name = "Borrowing Menu";
 

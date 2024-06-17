@@ -13,8 +13,8 @@ import java.util.Scanner;
 public class    BookSearch extends View {
     private Book book;
 
-    public BookSearch(Controller controller, View prev) {
-        super(controller, prev);
+    public BookSearch(Controller controller, View previous) {
+        super(controller, previous);
         this.name = "Book Info";
         this.book = null;
     }

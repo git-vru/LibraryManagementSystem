@@ -16,12 +16,12 @@ import java.util.function.Predicate;
 public class    Controller {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private View menu;
-    private Scanner sc;
+    private Scanner scanner;
     private final List<Customer> customers = new ArrayList<>();
     private final Map<Book, List<BookCopy>> bookDatabase = new HashMap<>();
 
     public Controller() {
-        sc = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         this.menu = new MainMenu(this);
     }
 
@@ -86,8 +86,8 @@ public class    Controller {
 
         if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty() && !classificationNumber.isEmpty()) {
             try {
-                LocalDate dob = LocalDate.parse(dateOfFirstPublication);
-                Book book = new Book(title, author, isbn, dob, classificationNumber, publisher);
+                LocalDate dateOfBirth = LocalDate.parse(dateOfFirstPublication);
+                Book book = new Book(title, author, isbn, dateOfBirth, classificationNumber, publisher);
                 bookDatabase.put(book, new ArrayList<>());
 
                 for (int i = 0; i < copyNb; i++) {
@@ -291,7 +291,7 @@ public class    Controller {
 
     //Getters
     public Scanner getScanner() {
-        return this.sc;
+        return this.scanner;
     }
 
     public List<Customer> getCustomers() {
