@@ -52,34 +52,6 @@ public class Controller {
         return searchCustomer(c -> c.getId().equals(id), Comparator.comparing(Customer::getId)).stream().findFirst().orElse(null);
     }
 
-    /**
-     * Returns book on specified type of search and key.
-     * @param by Style of the search.
-     *           0 - ISBN
-     *           1 - Book Name
-     *           2 - Author Name
-     * @param token Token for search.
-     * @return Returns a book list of found books.
-     */
-    public List<Book> searchBook(int by, String token) {
-        List<Book> foundBooks = new ArrayList<>();
-
-        if (0 > by || by > 2) return foundBooks;
-
-        String value = null;
-
-        List<Book> books = bookDatabase.keySet().stream().toList();
-
-        for (Book book : books) {
-            if (by == 0) value = book.getIsbn();
-            else if (by == 1) value = book.getTitle();
-            else if (by == 2) value = book.getAuthor();
-            if (value.equals(token)) foundBooks.add(book);
-        }
-        return foundBooks;
-    }
-
-
     //Book Methods
     //ToDo: add nb of book copy as argument
     public Book addBook(String isbn, String title, String author , String publisher, String dateOfFirstPublication, String classificationNumber, int copyNb) {

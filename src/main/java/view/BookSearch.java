@@ -6,6 +6,7 @@ import model.Book;
 import model.BookCopy;
 
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -31,8 +32,14 @@ public class BookSearch extends View {
         }
 
         String token = new Scanner(System.in).nextLine();
+        List<Book> foundBooks = new ArrayList<>();
 
-        List<Book> foundBooks = controller.searchBook(inputChar-'0', token);
+        switch (inputChar) {
+            case 'q' -> prev.show();
+            case '0' -> foundBooks = controller.searchBook(b -> b.getIsbn().equals(token), Comparator.comparing(Book::getIsbn));
+            case '1' -> foundBooks = controller.searchBook(b -> b.getTitle().contains(token), Comparator.comparing(Book::getIsbn));
+            case '2' -> foundBooks = controller.searchBook(b -> b.getAuthor().contains(token), Comparator.comparing(Book::getIsbn));
+        }
 
         if (foundBooks.isEmpty()) {
             System.out.println("Couldn't find the book you were searching for.");
