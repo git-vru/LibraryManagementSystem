@@ -70,6 +70,7 @@ public class BookMenu extends View {
 
     private void importBooksFromCSV() {
         int importedBookCount = 0;
+        int errorBookCount = 0;
         Scanner scanner = new Scanner(System.in);
         System.out.print("Please enter the path to the CSV file: ");
         String filePath = scanner.nextLine().trim();
@@ -89,13 +90,24 @@ public class BookMenu extends View {
                 System.out.println(book);
                 importedBookCount++;
             }
+            else {
+                errorBookCount++;
+            }
         }
 
         if (importedBookCount > 0) {
             System.out.printf("Total %d books imported.%n", importedBookCount);
+            if (errorBookCount > 0) {
+                System.out.printf("Total %d books couldn't be imported", errorBookCount);
+            }
         }
         else {
-            System.out.println("\nNo book was imported !");
+            if (errorBookCount > 0) {
+                System.out.println("Data found but no book could be imported.");
+            }
+            else {
+                System.out.println("\nNo book was imported !");
+            }
         }
     }
 

@@ -37,9 +37,7 @@ public class Controller {
     public List<BookCopy> searchBookCopy(Predicate<BookCopy> predicate, Comparator<BookCopy> comparator) {
         List<BookCopy> list = new ArrayList<>();
 
-        this.bookDatabase.values().forEach(bookCopyList -> {
-            list.addAll(bookCopyList.stream().filter(predicate).toList());
-        });
+        this.bookDatabase.values().forEach(bookCopyList -> list.addAll(bookCopyList.stream().filter(predicate).toList()));
 
         return list.stream().sorted(comparator).toList();
     }
@@ -163,7 +161,7 @@ public class Controller {
 
     //BookCopy Methods
     public BookCopy addBookCopy(String bookCopyId, String isbn){
-        if (!bookCopyId.matches("(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+")) {
+        if (!isbn.matches("(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+")) {
             throw new IllegalArgumentException("The given <book_isbn> does not respect the correct format");
         }
 
