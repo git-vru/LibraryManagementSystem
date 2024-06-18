@@ -27,7 +27,7 @@ public class ReportingMenu extends View {
 
     @Override
     public void show() {
-        char inputChar = super.promptMenu(name, this.options);
+        char inputChar = super.prompt(this.options, true);
 
         switch (inputChar) {
             case '0':

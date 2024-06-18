@@ -16,14 +16,14 @@ public class BookSearch extends View {
 
     public BookSearch(Controller controller, View previous) {
         super(controller, previous);
-        this.name = "Book Info";
+        this.name = "Book Search";
         this.book = null;
     }
 
     public void show() {
         List<String> searchByMenu = List.of("ISBN", "Book Name", "Author");
 
-        char inputChar = super.promptOptions(searchByMenu);
+        char inputChar = super.prompt(searchByMenu, true);
         switch (inputChar) {
             case 'q' -> prev.show();
             case '0' -> System.out.print("Please enter a book ISBN: ");
@@ -55,7 +55,7 @@ public class BookSearch extends View {
             List<String> foundBookSelectionMenu = foundBooks.stream()
                             .map(Book::toString)
                             .toList();
-            inputChar = super.promptOptions(foundBookSelectionMenu);
+            inputChar = super.prompt(foundBookSelectionMenu, false);
             if (inputChar == 'q') prev.show();
             else book = foundBooks.get(inputChar-'0');
         }
@@ -69,7 +69,7 @@ public class BookSearch extends View {
                     "Modify the publication date of book",
                     "Modify the classification number of book");
 
-        inputChar = super.promptOptions(options);
+        inputChar = super.prompt(options, false);
         String bookISBN = book.getIsbn();
 
         if (inputChar == '0') {

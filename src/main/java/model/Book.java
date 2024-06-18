@@ -92,11 +92,11 @@ public class Book {
         List<String> data = List.of(title, author, isbn, classificationNumber, publisher, publicationDate.toString());
         int maxLength = max(data.stream().map(String::length).toList());
 
-        String header = View.addPadding2Text(title, 24 + maxLength);
+        String header = View.addPadding(title, 24 + maxLength);
 
         return String.format(
                 "-------------------------" + "-".repeat(maxLength+2) + "-\n" +
-                "| %s|\n" +
+                "| %s |\n" +
                 "|------------------------" + "-".repeat(maxLength+2) + "|\n" +
                 "| Author                | %-" + maxLength + "s |\n" +
                 "| ISBN                  | %-" + maxLength + "s |\n" +

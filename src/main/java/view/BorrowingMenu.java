@@ -1,17 +1,11 @@
 package view;
 
 import controller.Controller;
-import model.Book;
 import model.BookCopy;
 import model.Customer;
-import utilities.CSVreader;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 
 public class BorrowingMenu extends View {
     private final List<String> options1;
@@ -25,7 +19,7 @@ public class BorrowingMenu extends View {
     }
 
     public void show() {
-        char inputChar = super.promptMenu(name, options1);
+        char inputChar = super.prompt(options1, true);
 
         if (inputChar == '0') {
             System.out.print("Please enter a customer id: ");
