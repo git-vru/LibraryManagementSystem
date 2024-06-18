@@ -92,11 +92,12 @@ public class Controller {
         return null;
     }
 
-    public boolean modifyBook(Book book, String title, String author, String dateOfFirstPublication, String classificationNumber){
-        if (!title.isEmpty() && !author.isEmpty() && !classificationNumber.isEmpty()) {
+    public boolean modifyBook(Book book, String title, String author, String dateOfFirstPublication, String publisher, String classificationNumber){
+        if (!title.isEmpty() && !author.isEmpty() && !publisher.isEmpty() && !classificationNumber.isEmpty()) {
             book.setTitle(title);
             book.setAuthor(author);
             book.setPublicationDate(LocalDate.parse(dateOfFirstPublication, DATE_FORMAT));
+            book.setPublisher(publisher);
             book.setClassificationNumber(classificationNumber);
             return true;
         } else {

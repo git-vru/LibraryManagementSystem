@@ -67,6 +67,7 @@ public class BookSearch extends View {
                     "Modify the title of book",
                     "Modify the author of book",
                     "Modify the publication date of book",
+                    "Modify the publisher of book",
                     "Modify the classification number of book");
 
         inputChar = super.prompt(options, false);
@@ -115,7 +116,7 @@ public class BookSearch extends View {
             System.out.println("Please enter a new title: ");
             controller.getScanner().nextLine();
 
-            controller.modifyBook(book, controller.getScanner().nextLine(), book.getAuthor(), book.getPublicationDate().toString(), book.getClassificationNumber());
+            controller.modifyBook(book, controller.getScanner().nextLine(), book.getAuthor(), book.getPublicationDate().toString(), book.getPublisher(), book.getClassificationNumber());
             super.promptAndExit("Title was successfully changed!");
 
             this.show();
@@ -123,7 +124,7 @@ public class BookSearch extends View {
         else if (inputChar == '4') {
             System.out.println("Please enter a new author: ");
             controller.getScanner().nextLine();
-            controller.modifyBook(book, book.getTitle(), controller.getScanner().nextLine(), book.getPublicationDate().toString(), book.getClassificationNumber());
+            controller.modifyBook(book, book.getTitle(), controller.getScanner().nextLine(), book.getPublicationDate().toString(), book.getPublisher(), book.getClassificationNumber());
             super.promptAndExit("Title was successfully changed!");
 
             this.show();
@@ -131,19 +132,25 @@ public class BookSearch extends View {
         else if (inputChar == '5') {
             System.out.println("Please enter a new publication date <YYYY-MM-DD>: ");
             try {
-                controller.modifyBook(book, book.getTitle(), book.getAuthor(), controller.getScanner().next(), book.getClassificationNumber());
+                controller.modifyBook(book, book.getTitle(), book.getAuthor(), controller.getScanner().next(), book.getPublisher(), book.getClassificationNumber());
                 super.promptAndExit("Publication date was successfully changed!");
             } catch (DateTimeParseException dateTimeParseException) {
                 super.promptAndExit("Please pass a valid value!");
             }
-
-
             this.show();
         }
         else if (inputChar == '6') {
+            System.out.println("Please enter a new publisher name: ");
+
+            controller.modifyBook(book, book.getTitle(), book.getAuthor(), book.getPublicationDate().toString(), controller.getScanner().next(), book.getClassificationNumber());
+            super.promptAndExit("Classification number was successfully changed!");
+
+            this.show();
+        }
+        else if (inputChar == '7') {
             System.out.println("Please enter a new classification number: ");
 
-            controller.modifyBook(book, book.getTitle(), book.getAuthor(), book.getPublicationDate().toString(), controller.getScanner().next());
+            controller.modifyBook(book, book.getTitle(), book.getAuthor(), book.getPublicationDate().toString(), book.getPublisher(), controller.getScanner().next());
             super.promptAndExit("Classification number was successfully changed!");
 
             this.show();

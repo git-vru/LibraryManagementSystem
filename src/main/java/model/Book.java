@@ -72,6 +72,10 @@ public class Book {
         this.publicationDate = publicationDate;
     }
 
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
     public void setClassificationNumber(String classificationNumber) {
         this.classificationNumber = classificationNumber;
     }
