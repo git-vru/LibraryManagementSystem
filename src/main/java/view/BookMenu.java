@@ -70,6 +70,7 @@ public class BookMenu extends View {
 
     private void importBooksFromCSV() {
         int importedBookCount = 0;
+        int errorBookCount = 0;
         Scanner scanner = new Scanner(System.in);
         System.out.print("Please enter the path to the CSV file: ");
         String filePath = scanner.nextLine().trim();
@@ -79,18 +80,34 @@ public class BookMenu extends View {
         if (!importedBooks.isEmpty()) System.out.println("Imported Books:");
 
         for (String[] data : importedBooks) {
+            if (data.length != 7) {
+                System.out.println("Error while parsing data. Bad Arguments number");
+                continue;
+            }
+
             Book book = controller.addBook(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim(), data[5].trim(), data[6].trim());
             if (book != null) {
                 System.out.println(book);
                 importedBookCount++;
             }
+            else {
+                errorBookCount++;
+            }
         }
 
         if (importedBookCount > 0) {
             System.out.printf("Total %d books imported.%n", importedBookCount);
+            if (errorBookCount > 0) {
+                System.out.printf("Total %d books couldn't be imported", errorBookCount);
+            }
         }
         else {
-            System.out.println("\nNo book was imported !");
+            if (errorBookCount > 0) {
+                System.out.println("Data found but no book could be imported.");
+            }
+            else {
+                System.out.println("\nNo book was imported !");
+            }
         }
     }
 
