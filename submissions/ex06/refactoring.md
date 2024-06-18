@@ -20,4 +20,4 @@
 - #18 Rewrite methods to add/modify/delete objects: Open in !22
 - #19 Publisher can't be updated in the BookMenu Option: Resolve in !29
 - #20 Number of book copy is always one when a new book is created inline: Resolve by !28
-- #21 App crash when adding a book from csv with too few arguments 
+- #21 App crash when adding a book from csv with too few arguments: Resolve in !30
