@@ -8,7 +8,7 @@ import java.util.List;
 
 import static java.util.Collections.max;
 
-public class Customer {
+public class    Customer {
     public final static String[] FORMAT = new String[]{"%8s", "%-30s", "%-30s", "%20s", "%10s"};
     public final static String[] COLUMN_NAMES = new String[]{"ID", "FIRST NAME", "LAST NAME", "# OF BORROWED BOOKS", "TOTAL FEES"};
 

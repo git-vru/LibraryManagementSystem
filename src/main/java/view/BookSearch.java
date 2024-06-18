@@ -11,7 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-public class BookSearch extends View {
+public class    BookSearch extends View {
     private Book book;
 
     public BookSearch(Controller controller, View previous) {
