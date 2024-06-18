@@ -132,12 +132,17 @@ public class BookMenu extends View {
 
         BookCopy bookCopy = null;
         for (String[] data : importedBookCopies) {
-            switch (data.length) {
-                case 1 -> bookCopy = controller.addBookCopy("", data[0].trim());
-                case 2 -> bookCopy = controller.addBookCopy(data[0].trim(), data[1].trim());
-                case 5 -> bookCopy = controller.addBorrowedBookCopy("", data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim());
-                case 6 -> bookCopy = controller.addBorrowedBookCopy(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim(), data[5].trim());
-                default -> System.out.println("Error while parsing data. Bad Arguments number");
+            try {
+                switch (data.length) {
+                    case 1 -> bookCopy = controller.addBookCopy("", data[0].trim());
+                    case 2 -> bookCopy = controller.addBookCopy(data[0].trim(), data[1].trim());
+                    case 5 -> bookCopy = controller.addBorrowedBookCopy("", data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim());
+                    case 6 -> bookCopy = controller.addBorrowedBookCopy(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim(), data[5].trim());
+                    default -> System.out.println("Error while parsing data. Bad Arguments number");
+                }
+            }
+            catch (IllegalArgumentException e) {
+                System.err.println(e.getMessage());
             }
 
             if (bookCopy != null) {
