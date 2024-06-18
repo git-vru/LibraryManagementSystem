@@ -6,6 +6,7 @@ import model.Book;
 import model.BookCopy;
 
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -15,14 +16,14 @@ public class    BookSearch extends View {
 
     public BookSearch(Controller controller, View previous) {
         super(controller, previous);
-        this.name = "Book Info";
+        this.name = "Book Search";
         this.book = null;
     }
 
     public void show() {
         List<String> searchByMenu = List.of("ISBN", "Book Name", "Author");
 
-        char inputChar = super.promptOptions(searchByMenu);
+        char inputChar = super.prompt(searchByMenu, true);
         switch (inputChar) {
             case 'q' -> prev.show();
             case '0' -> System.out.print("Please enter a book ISBN: ");
@@ -31,8 +32,14 @@ public class    BookSearch extends View {
         }
 
         String token = new Scanner(System.in).nextLine();
+        List<Book> foundBooks = new ArrayList<>();
 
-        List<Book> foundBooks = controller.searchBook(inputChar-'0', token);
+        switch (inputChar) {
+            case 'q' -> prev.show();
+            case '0' -> foundBooks = controller.searchBook(b -> b.getIsbn().equals(token), Comparator.comparing(Book::getIsbn));
+            case '1' -> foundBooks = controller.searchBook(b -> b.getTitle().contains(token), Comparator.comparing(Book::getIsbn));
+            case '2' -> foundBooks = controller.searchBook(b -> b.getAuthor().contains(token), Comparator.comparing(Book::getIsbn));
+        }
 
         if (foundBooks.isEmpty()) {
             System.out.println("Couldn't find the book you were searching for.");
@@ -48,7 +55,7 @@ public class    BookSearch extends View {
             List<String> foundBookSelectionMenu = foundBooks.stream()
                             .map(Book::toString)
                             .toList();
-            inputChar = super.promptOptions(foundBookSelectionMenu);
+            inputChar = super.prompt(foundBookSelectionMenu, false);
             if (inputChar == 'q') prev.show();
             else book = foundBooks.get(inputChar-'0');
         }
@@ -60,9 +67,10 @@ public class    BookSearch extends View {
                     "Modify the title of book",
                     "Modify the author of book",
                     "Modify the publication date of book",
+                    "Modify the publisher of book",
                     "Modify the classification number of book");
 
-        inputChar = super.promptOptions(options);
+        inputChar = super.prompt(options, false);
         String bookISBN = book.getIsbn();
 
         if (inputChar == '0') {
@@ -108,7 +116,7 @@ public class    BookSearch extends View {
             System.out.println("Please enter a new title: ");
             controller.getScanner().nextLine();
 
-            controller.modifyBook(book, controller.getScanner().nextLine(), book.getAuthor(), book.getPublicationDate().toString(), book.getClassificationNumber());
+            controller.modifyBook(book, controller.getScanner().nextLine(), book.getAuthor(), book.getPublicationDate().toString(), book.getPublisher(), book.getClassificationNumber());
             super.promptAndExit("Title was successfully changed!");
 
             this.show();
@@ -116,7 +124,7 @@ public class    BookSearch extends View {
         else if (inputChar == '4') {
             System.out.println("Please enter a new author: ");
             controller.getScanner().nextLine();
-            controller.modifyBook(book, book.getTitle(), controller.getScanner().nextLine(), book.getPublicationDate().toString(), book.getClassificationNumber());
+            controller.modifyBook(book, book.getTitle(), controller.getScanner().nextLine(), book.getPublicationDate().toString(), book.getPublisher(), book.getClassificationNumber());
             super.promptAndExit("Title was successfully changed!");
 
             this.show();
@@ -124,19 +132,25 @@ public class    BookSearch extends View {
         else if (inputChar == '5') {
             System.out.println("Please enter a new publication date <YYYY-MM-DD>: ");
             try {
-                controller.modifyBook(book, book.getTitle(), book.getAuthor(), controller.getScanner().next(), book.getClassificationNumber());
+                controller.modifyBook(book, book.getTitle(), book.getAuthor(), controller.getScanner().next(), book.getPublisher(), book.getClassificationNumber());
                 super.promptAndExit("Publication date was successfully changed!");
             } catch (DateTimeParseException dateTimeParseException) {
                 super.promptAndExit("Please pass a valid value!");
             }
-
-
             this.show();
         }
         else if (inputChar == '6') {
+            System.out.println("Please enter a new publisher name: ");
+
+            controller.modifyBook(book, book.getTitle(), book.getAuthor(), book.getPublicationDate().toString(), controller.getScanner().next(), book.getClassificationNumber());
+            super.promptAndExit("Classification number was successfully changed!");
+
+            this.show();
+        }
+        else if (inputChar == '7') {
             System.out.println("Please enter a new classification number: ");
 
-            controller.modifyBook(book, book.getTitle(), book.getAuthor(), book.getPublicationDate().toString(), controller.getScanner().next());
+            controller.modifyBook(book, book.getTitle(), book.getAuthor(), book.getPublicationDate().toString(), book.getPublisher(), controller.getScanner().next());
             super.promptAndExit("Classification number was successfully changed!");
 
             this.show();

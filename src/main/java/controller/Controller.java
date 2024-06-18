@@ -13,8 +13,8 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.function.Predicate;
 
-public class    Controller {
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+public class Controller {
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private View menu;
     private Scanner scanner;
     private final List<Customer> customers = new ArrayList<>();
@@ -37,9 +37,7 @@ public class    Controller {
     public List<BookCopy> searchBookCopy(Predicate<BookCopy> predicate, Comparator<BookCopy> comparator) {
         List<BookCopy> list = new ArrayList<>();
 
-        this.bookDatabase.values().forEach(bookCopyList -> {
-            list.addAll(bookCopyList.stream().filter(predicate).toList());
-        });
+        this.bookDatabase.values().forEach(bookCopyList -> list.addAll(bookCopyList.stream().filter(predicate).toList()));
 
         return list.stream().sorted(comparator).toList();
     }
@@ -52,48 +50,33 @@ public class    Controller {
         return searchCustomer(c -> c.getId().equals(id), Comparator.comparing(Customer::getId)).stream().findFirst().orElse(null);
     }
 
-    /**
-     * Returns book on specified type of search and key.
-     * @param by Style of the search.
-     *           0 - ISBN
-     *           1 - Book Name
-     *           2 - Author Name
-     * @param token Token for search.
-     * @return Returns a book list of found books.
-     */
-    public List<Book> searchBook(int by, String token) {
-        List<Book> foundBooks = new ArrayList<>();
-
-        if (0 > by || by > 2) return foundBooks;
-
-        String value = null;
-
-        List<Book> books = bookDatabase.keySet().stream().toList();
-
-        for (Book book : books) {
-            if (by == 0) value = book.getIsbn();
-            else if (by == 1) value = book.getTitle();
-            else if (by == 2) value = book.getAuthor();
-            if (value.equals(token)) foundBooks.add(book);
-        }
-        return foundBooks;
-    }
-
-
     //Book Methods
     //ToDo: add nb of book copy as argument
-    public Book addBook(String isbn, String title, String author , String publisher, String dateOfFirstPublication, String classificationNumber, int copyNb) {
+    public Book addBook(String isbn, String title, String author , String publisher, String dateOfFirstPublication, String classificationNumber, String copyNb) {
 
         if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty() && !classificationNumber.isEmpty()) {
+            if (searchBookViaIsbn(isbn) != null) {
+                System.out.println("A book with this id already exists in the database!");
+                return null;
+            }
+
+            if (!validIsbn(isbn.replace("-", ""))) {
+                System.out.println("The given ISBN is not valid.");
+                return null;
+            }
+
             try {
-                LocalDate dateOfBirth = LocalDate.parse(dateOfFirstPublication);
-                Book book = new Book(title, author, isbn, dateOfBirth, classificationNumber, publisher);
+                LocalDate dateOfPublication = LocalDate.parse(dateOfFirstPublication, DATE_FORMAT);
+                Book book = new Book(title, author, isbn, dateOfPublication, classificationNumber, publisher);
                 bookDatabase.put(book, new ArrayList<>());
 
-                for (int i = 0; i < copyNb; i++) {
+                for (int i = 0; i < Integer.parseInt(copyNb); i++) {
                     addBookCopy("", isbn);
                 }
                 return book;
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Error at parsing the number of book copy!");
             }
             catch (DateTimeParseException a) {
                 System.out.println("Error at passing the date!");
@@ -102,16 +85,17 @@ public class    Controller {
         }
         else {
             throw new IllegalArgumentException();
-
         }
+
         return null;
     }
 
-    public boolean modifyBook(Book book, String title, String author, String dateOfFirstPublication, String classificationNumber){
-        if (!title.isEmpty() && !author.isEmpty() && !classificationNumber.isEmpty()) {
+    public boolean modifyBook(Book book, String title, String author, String dateOfFirstPublication, String publisher, String classificationNumber){
+        if (!title.isEmpty() && !author.isEmpty() && !publisher.isEmpty() && !classificationNumber.isEmpty()) {
             book.setTitle(title);
             book.setAuthor(author);
-            book.setPublicationDate(LocalDate.parse(dateOfFirstPublication));
+            book.setPublicationDate(LocalDate.parse(dateOfFirstPublication, DATE_FORMAT));
+            book.setPublisher(publisher);
             book.setClassificationNumber(classificationNumber);
             return true;
         } else {
@@ -137,8 +121,8 @@ public class    Controller {
     //Customer Methods
     public Customer addCustomer(String firstName, String lastName, String date) {
         if (!firstName.isEmpty() && !lastName.isEmpty()) {
-            LocalDate dob = LocalDate.parse(date);
-            Customer customer = new Customer(firstName, lastName, dob);
+            LocalDate dateOfBirth = LocalDate.parse(date, DATE_FORMAT);
+            Customer customer = new Customer(firstName, lastName, dateOfBirth);
             this.getCustomers().add(customer);
             return customer;
         }
@@ -147,10 +131,10 @@ public class    Controller {
         }
     }
 
-    public boolean modifyCustomer(Customer customer, String firstName, String lastName, String dob){
+    public boolean modifyCustomer(Customer customer, String firstName, String lastName, String dateOfBirth){
         if (!firstName.isEmpty() && !lastName.isEmpty()) {
             customer.setFirstName(firstName);
-            customer.setDateOfBirth(LocalDate.parse(dob));
+            customer.setDateOfBirth(LocalDate.parse(dateOfBirth, DATE_FORMAT));
             customer.setLastName(lastName);
             return true;
 
@@ -177,8 +161,11 @@ public class    Controller {
 
     //BookCopy Methods
     public BookCopy addBookCopy(String bookCopyId, String isbn){
-        Book book = searchBookViaIsbn(isbn);
+        if (!isbn.matches("(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+")) {
+            throw new IllegalArgumentException("The given <book_isbn> does not respect the correct format");
+        }
 
+        Book book = searchBookViaIsbn(isbn);
         if (book == null) {
             System.out.println("There is no book with such isbn!");
             return null;
@@ -190,46 +177,32 @@ public class    Controller {
     }
 
     public BookCopy addBorrowedBookCopy(String bookCopyId, String isbn, String customerId, String borrowedDate, String returnDate, String fee) {
+        if (!customerId.matches("\\d+")) {
+            throw new IllegalArgumentException("The given <customer_id> does not respect the correct format");
+        }
+
+        if (!fee.matches("\\d*(\\.\\d{2})?")) {
+            throw new IllegalArgumentException("The given <fee> does not respect the correct format");
+        }
+
+        if (!borrowedDate.matches("(0[1-9]|[12][0-9]|3[01]|)/(1[012]|0[1-9])/(19|20)\\d{2}")) {
+            throw new IllegalArgumentException("The given <borrowed_id> does not respect the correct format");
+        }
+
+        if (!returnDate.matches("(0[1-9]|[12][0-9]|3[01]|)/(1[012]|0[1-9])/(19|20)\\d{2}")) {
+            throw new IllegalArgumentException("The given <return_id> does not respect the correct format");
+        }
+
         Customer customer = searchCustomerViaId(customerId);
-
-        LocalDate borrowedDateParse;
-        LocalDate returnDateParse;
-        float feeParse;
-
         if (customer == null) {
             System.out.println("There is no customer with such id!");
-            return null;
-        }
-
-        try {
-            borrowedDateParse = LocalDate.parse(borrowedDate, DATE_FORMAT);
-        }
-        catch (DateTimeParseException e) {
-            System.out.println("Error at passing the borrowing date: " + e.getMessage());
-            return null;
-        }
-
-        try {
-            returnDateParse = LocalDate.parse(returnDate, DATE_FORMAT);
-        }
-        catch (DateTimeParseException e) {
-            System.out.println("Error at passing the return date: " + e.getMessage());
-            return null;
-        }
-
-        try {
-            feeParse = Float.parseFloat(fee);
-        }
-
-        catch (NumberFormatException e) {
-            System.out.println("Error at parsing the fees: " + e.getMessage());
             return null;
         }
 
         BookCopy bookCopy = addBookCopy(bookCopyId, isbn);
 
         if (bookCopy != null) {
-            borrowBookCopy(customer, bookCopy, borrowedDateParse, returnDateParse, feeParse);
+            borrowBookCopy(customer, bookCopy, LocalDate.parse(borrowedDate, DATE_FORMAT), LocalDate.parse(returnDate, DATE_FORMAT), Float.parseFloat(fee));
         }
 
         return bookCopy;
@@ -315,5 +288,49 @@ public class    Controller {
     public void setMenu(View menu) {
         this.menu = menu;
         this.menu.show();
+    }
+
+    public static boolean validIsbn(String isbn) {
+        if (isbn.length() == 10) {
+            try {
+                int sum = 0;
+                for (int i = 0; i < 9; i++) {
+                    int digit = Integer.parseInt(isbn.substring(i, i + 1));
+                    sum += digit * (10 - i);
+                }
+
+                char lastChar = isbn.charAt(9);
+                int checksum = (lastChar == 'X') ? 10 : Integer.parseInt(String.valueOf(lastChar));
+                sum += checksum;
+
+                return (sum % 11 == 0);
+            }
+            catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        else if (isbn.length() == 13) {
+            try {
+                int sum = 0;
+                for (int i = 0; i < 12; i++) {
+                    int digit = Integer.parseInt(isbn.substring(i, i + 1));
+                    sum += digit * (i % 2 == 0 ? 1 : 3);
+                }
+
+                int checksum = 10 - (sum % 10);
+                if (checksum == 10) {
+                    checksum = 0;
+                }
+
+                int lastDigit = Integer.parseInt(isbn.substring(12));
+                return (checksum == lastDigit);
+            }
+            catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
     }
 }

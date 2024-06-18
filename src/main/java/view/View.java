@@ -4,25 +4,46 @@ import controller.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static java.util.Collections.max;
 
+/**
+ * Abstract base class representing a view in the application.
+ * This class defines common properties and methods that all views must implement.
+ */
 public abstract class View {
     private final String PROMPT_TO_EXIT = "Press 'q' to " + (this instanceof MainMenu ? "quit." : "go back.");
-    private final String CURSOR = "\n>  ";
+    private static final String CURSOR = "\n>  ";
 
     protected Controller controller;
     protected String name;
     protected View prev;
 
-    public View(Controller controller, View prev) {
+    /**
+     * Constructor for initializing a View.
+     *
+     * @param controller the controller instance for handling user input and other interactions
+     * @param previous   the previous view in the view hierarchy
+     */
+    public View(Controller controller, View previous) {
         this.controller = controller;
-        this.prev = prev;
+        this.prev = previous;
     }
+
+    /**
+     * Abstract method to be implemented by subclasses to display the view.
+     */
     public abstract void show();
 
-    public static String addPadding2Text(String text, int maxPipeLength) {
+    /**
+     * Utility method to center-align text with padding.
+     *
+     * @param text          the text to be padded
+     * @param maxPipeLength the maximum length of the line to pad within
+     * @return the centered and padded text
+     */
+    public static String addPadding(String text, int maxPipeLength) {
         int paddingSize = (maxPipeLength - text.length()) / 2;
-        System.out.println(paddingSize);
         String padding = " ".repeat(paddingSize);
         String centeredName = padding + text + padding;
 
@@ -31,84 +52,93 @@ public abstract class View {
         return centeredName;
     }
 
-    private void printMenu(String name, List<String> options, boolean isError) {
-        int maxOptionLength = max(options.stream().map(String::length).toList()) + 2; // 2 for spaces
-        int maxPipeLength = maxOptionLength + 4;
-
-        String leftAlignFormat = "| %-1d | %-" + (maxOptionLength-2) + "s |%n";
-
-        System.out.format("-".repeat(maxPipeLength + 2) + "%n");
-        System.out.format("|%-" + maxOptionLength + "s|%n", addPadding2Text(name, maxPipeLength));
-        System.out.format("|----" + "-".repeat(maxOptionLength) + "|%n");
-        for (int i = 0; i < options.size(); i++) {
-            System.out.format(leftAlignFormat, i, options.get(i));
+    /**
+     * Validates the user input.
+     *
+     * @param input the user input
+     * @param max   the maximum valid number input
+     * @return true if the input is valid, false otherwise
+     */
+    public static boolean validInput(String input, int max) {
+        if (input.length() != 1) {
+            return false;
         }
-        System.out.format("-".repeat(maxPipeLength + 2) + "%n");
 
-        if (isError) {
-            System.out.println("Please only enter a number from 0 to " + (options.size() - 1));
+        if (input.charAt(0) == 'q') {
+            return true;
         }
-        System.out.print(PROMPT_TO_EXIT + CURSOR);
+
+        return input.charAt(0) >= '0' && input.charAt(0) < Integer.toString(max).charAt(0);
     }
 
-    private void printOptions(List<String> options, boolean isError) {
-        int maxOptionLength = max(options.stream().map(String::length).toList()) + 2; // 2 for spaces
-        int maxPipeLength = maxOptionLength + 4;
+    /**
+     * Displays a list of options and prompts the user for input.
+     *
+     * @param options the list of options to display
+     * @param tabMode flag indicating whether to display options in a table format
+     * @return the character input by the user
+     */
+    public char prompt(List<String> options, boolean tabMode) {
+        String input;
+        boolean isError = false;
 
-        String leftAlignFormat = " %-1d - %-" + (maxOptionLength-2) + "s %n";
+        do {
+            // Calculate the maximum line size for formatting
+            int maxLineSize = Math.max(name.length() - 1, max(options.stream().map(String::length).toList()));
 
-        System.out.print("\n");
-        for (int i = 0; i < options.size(); i++) {
-            System.out.format(leftAlignFormat, i, options.get(i));
+            // Put option's format in table format if tabMode is true
+            String lineFormat = tabMode ? "| %-1d | %-" + (maxLineSize) + "s |%n" : " %-1d - %-" + (maxLineSize) + "s %n";
+
+            System.out.print("\n");
+
+            // Display table's header
+            if (tabMode) {
+                System.out.format("-".repeat(maxLineSize + 8) + "%n");
+                System.out.format("|%-" + maxLineSize + "s|%n", View.addPadding(name, maxLineSize + 6));
+                System.out.format("|" + "-".repeat(maxLineSize + 6) + "|%n");
+            }
+
+            // Display each option
+            for (int i = 0; i < options.size(); i++) {
+                System.out.format(lineFormat, i, options.get(i));
+            }
+
+            // Display table's footer
+            if (tabMode) {
+                System.out.format("-".repeat(maxLineSize + 8));
+            }
+
+            // Display error message if input is invalid
+            if (isError) {
+                System.out.println("\nPlease only enter a number from 0 to " + (options.size() - 1));
+            }
+
+            // Prompt user for input
+            System.out.print("\n" + PROMPT_TO_EXIT + CURSOR);
+
+            input = controller.getScanner().next(); //Read user input
+            isError = !validInput(input, options.size()); //Validate user input
         }
-        System.out.print("\n");
+        while (isError);
 
-        if (isError) {
-            System.out.println("Please only enter a number from 0 to " + (options.size() - 1));
-        }
-        System.out.print(PROMPT_TO_EXIT + CURSOR);
-    }
-
-    public char promptOptions(List<String> options) {
-        List<Character> validInputs = new ArrayList<>(List.of('q'));
-        for (char c = '0'; c < '0' + options.size(); c++) {
-            validInputs.add(c);
-        }
-
-        printOptions(options, false);
-
-        String input = controller.getScanner().next();
-        while (input.length() != 1 || !validInputs.contains(input.charAt(0))) {
-            printOptions(options, true);
-            input = controller.getScanner().next();
-        }
         return input.charAt(0);
     }
 
-    public char promptMenu(String name, List<String> options) {
-        List<Character> validInputs = new ArrayList<>(List.of('q'));
-        for (char c = '0'; c < '0' + options.size(); c++) {
-            validInputs.add(c);
-        }
-
-        printMenu(name, options, false);
-
-        String input = controller.getScanner().next();
-        while (input.length() != 1 || !validInputs.contains(input.charAt(0))) {
-            printMenu(name, options, true);
-            input = controller.getScanner().next();
-        }
-        return input.charAt(0);
-    }
-
+    /**
+     * Displays a message and waits for the user to press 'q' to exit.
+     *
+     * @param s the message to display
+     */
     public void promptAndExit(String s) {
-        System.out.println(s);
-        System.out.print(PROMPT_TO_EXIT + CURSOR);
-        String input = controller.getScanner().next();
+        String input;
 
-        while (input.length() != 1 || input.charAt(0) != 'q') {
+        System.out.println(s);
+
+        do {
             System.out.print(PROMPT_TO_EXIT + CURSOR);
             input = controller.getScanner().next();
+
         }
+        while (input.length() != 1 || input.charAt(0) != 'q');
     }
 }

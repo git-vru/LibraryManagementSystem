@@ -27,9 +27,9 @@ public class ReportingMenu extends View {
 
     @Override
     public void show() {
-        char input = super.promptMenu(name, this.options);
+        char inputChar = super.prompt(this.options, true);
 
-        switch (input) {
+        switch (inputChar) {
             case '0':
                 List<String[]> bookList = controller.searchBook(book -> true, Comparator.comparing(Book::getTitle)).stream().map(book -> book.toCsv().split(";")).toList();
                 printTable("List of all books", bookList, Book.FORMAT, Book.COLUMN_NAMES);

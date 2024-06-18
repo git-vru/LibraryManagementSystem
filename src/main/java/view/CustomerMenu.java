@@ -1,15 +1,15 @@
 package view;
 
-import  controller.Controller;
+import controller.Controller;
 import utilities.CSVreader;
 import model.Customer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class CustomerMenu extends View {
-    //private utilities.CSVreader reader;
-    private char inputChar;
+    //private utilities.CSVreader reader
 
     private final List<String> options;
     private final List<String> options2;
@@ -74,14 +74,15 @@ public class CustomerMenu extends View {
     }
 
     public void show() {
-        inputChar = super.promptMenu(name, options);
+        char inputChar;
+        inputChar = super.prompt(options, true);
 
         if (inputChar == '0') {
             controller.setMenu(new CustomerInfo(controller, this));
 
         }
         else if (inputChar == '1') {
-            inputChar = super.promptOptions(options2);
+            inputChar = super.prompt(options2, false);
             if (inputChar == '0'){
                 addNewCustomer();
             }

@@ -3,6 +3,7 @@ package view;
 import controller.Controller;
 import model.BookCopy;
 import model.Customer;
+
 import java.util.Comparator;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class BorrowingMenu extends View {
     }
 
     public void show() {
-        char inputChar = super.promptMenu(name, options1);
+        char inputChar = super.prompt(options1, true);
 
         if (inputChar == '0') {
             System.out.print("Please enter a customer id: ");

@@ -16,7 +16,6 @@ public class    Customer {
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
-    private int paymentStatus;
     private final List<BookCopy> borrowedList;
 
     private final LocalDate subscriptionDate;
@@ -88,7 +87,7 @@ public class    Customer {
         String fullName = firstName + " " + lastName;
         int maxLength = max(data.stream().map(String::length).toList());
 
-        String header = View.addPadding2Text(fullName, 20 + maxLength);
+        String header = View.addPadding(fullName, 20 + maxLength);
 
         return String.format(
             "|--------------------" + "-".repeat(maxLength+2) + "|\n" +
