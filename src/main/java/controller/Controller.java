@@ -85,6 +85,16 @@ public class Controller {
     public Book addBook(String isbn, String title, String author , String publisher, String dateOfFirstPublication, String classificationNumber, int copyNb) {
 
         if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty() && !classificationNumber.isEmpty()) {
+            if (searchBookViaIsbn(isbn) != null) {
+                System.out.println("A book with this id already exists in the database!");
+                return null;
+            }
+
+            if (!validIsbn(isbn.replace("-", ""))) {
+                System.out.println("The given ISBN is not valid.");
+                return null;
+            }
+
             try {
                 LocalDate dateOfBirth = LocalDate.parse(dateOfFirstPublication, DATE_FORMAT);
                 Book book = new Book(title, author, isbn, dateOfBirth, classificationNumber, publisher);
@@ -102,8 +112,8 @@ public class Controller {
         }
         else {
             throw new IllegalArgumentException();
-
         }
+
         return null;
     }
 
@@ -315,5 +325,49 @@ public class Controller {
     public void setMenu(View menu) {
         this.menu = menu;
         this.menu.show();
+    }
+
+    public static boolean validIsbn(String isbn) {
+        if (isbn.length() == 10) {
+            try {
+                int sum = 0;
+                for (int i = 0; i < 9; i++) {
+                    int digit = Integer.parseInt(isbn.substring(i, i + 1));
+                    sum += digit * (10 - i);
+                }
+
+                char lastChar = isbn.charAt(9);
+                int checksum = (lastChar == 'X') ? 10 : Integer.parseInt(String.valueOf(lastChar));
+                sum += checksum;
+
+                return (sum % 11 == 0);
+            }
+            catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        else if (isbn.length() == 13) {
+            try {
+                int sum = 0;
+                for (int i = 0; i < 12; i++) {
+                    int digit = Integer.parseInt(isbn.substring(i, i + 1));
+                    sum += digit * (i % 2 == 0 ? 1 : 3);
+                }
+
+                int checksum = 10 - (sum % 10);
+                if (checksum == 10) {
+                    checksum = 0;
+                }
+
+                int lastDigit = Integer.parseInt(isbn.substring(12));
+                return (checksum == lastDigit);
+            }
+            catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
     }
 }
