@@ -62,7 +62,7 @@ public class BookTest {
 
     @Test
     void addBookSuccessfully() {
-        Book book = controller.addBook("0-345-40447-5", "Do Androids Dream of Electric Sheep?", "Philip K. Dick", "Lorem Ipsum", "01/05/1968", "DIC01", 3);
+        Book book = controller.addBook("0-345-40447-5", "Do Androids Dream of Electric Sheep?", "Philip K. Dick", "Lorem Ipsum", "01/05/1968", "DIC01", "3");
         assertEquals(bookListSize + 1, controller.getBookDatabase().size());
         assertTrue(controller.getBookDatabase().containsKey(book));
 
@@ -77,25 +77,25 @@ public class BookTest {
     @Test
     void addBookUnsuccessful() {
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("", "author","isbn", "Lorem Ipsum", "23/05/2024", "classificationNumber", 1);
+            controller.addBook("", "author","isbn", "Lorem Ipsum", "23/05/2024", "classificationNumber", "1");
         });
 
 
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("title", "","isbn", "Lorem Ipsum", "23/05/2024", "classificationNumber", 1);
+            controller.addBook("title", "","isbn", "Lorem Ipsum", "23/05/2024", "classificationNumber", "1");
         });
 
 
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("title", "author","", "Lorem Ipsum", "23/05/2024", "classificationNumber", 1);
+            controller.addBook("title", "author","", "Lorem Ipsum", "23/05/2024", "classificationNumber", "1");
         });
 
 
-        assertNull(controller.addBook("title", "author","isbn", "Lorem Ipsum", "24-24-24", "classificationNumber", 1));
+        assertNull(controller.addBook("title", "author","isbn", "Lorem Ipsum", "24-24-24", "classificationNumber", "1"));
 
 
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.addBook("title", "author","isbn", "Lorem Ipsum", "23/05/2024", "", 1);
+            controller.addBook("title", "author","isbn", "Lorem Ipsum", "23/05/2024", "", "1");
         });
         assertEquals(bookListSize, controller.getBookDatabase().size());
     }

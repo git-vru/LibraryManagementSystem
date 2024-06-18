@@ -54,7 +54,7 @@ public class Controller {
 
     //Book Methods
     //ToDo: add nb of book copy as argument
-    public Book addBook(String isbn, String title, String author , String publisher, String dateOfFirstPublication, String classificationNumber, int copyNb) {
+    public Book addBook(String isbn, String title, String author , String publisher, String dateOfFirstPublication, String classificationNumber, String copyNb) {
 
         if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty() && !classificationNumber.isEmpty()) {
             if (searchBookViaIsbn(isbn) != null) {
@@ -68,14 +68,17 @@ public class Controller {
             }
 
             try {
-                LocalDate dateOfBirth = LocalDate.parse(dateOfFirstPublication, DATE_FORMAT);
-                Book book = new Book(title, author, isbn, dateOfBirth, classificationNumber, publisher);
+                LocalDate dateOfPublication = LocalDate.parse(dateOfFirstPublication, DATE_FORMAT);
+                Book book = new Book(title, author, isbn, dateOfPublication, classificationNumber, publisher);
                 bookDatabase.put(book, new ArrayList<>());
 
-                for (int i = 0; i < copyNb; i++) {
+                for (int i = 0; i < Integer.parseInt(copyNb); i++) {
                     addBookCopy("", isbn);
                 }
                 return book;
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Error at parsing the number of book copy!");
             }
             catch (DateTimeParseException a) {
                 System.out.println("Error at passing the date!");

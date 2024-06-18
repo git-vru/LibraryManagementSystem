@@ -79,7 +79,7 @@ public class BookMenu extends View {
         if (!importedBooks.isEmpty()) System.out.println("Imported Books:");
 
         for (String[] data : importedBooks) {
-            Book book = controller.addBook(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim(), data[5].trim(), 1);
+            Book book = controller.addBook(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim(), data[5].trim(), data[6].trim());
             if (book != null) {
                 System.out.println(book);
                 importedBookCount++;
@@ -97,14 +97,14 @@ public class BookMenu extends View {
     private void addNewBook() {
         Book book = null;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please type :'<ISBN>,<Title>,<Author>,<Publisher>,<PublicationYear(YYYY-MM-DD)>,<Shelf Location>'");
+        System.out.println("Please type :'<ISBN>,<Title>,<Author>,<Publisher>,<PublicationYear(YYYY-MM-DD)>,<Shelf Location>,<# of copy>'");
 
         String input = scanner.nextLine().trim();
-        String[] parts = input.split(",", 5);
+        String[] parts = input.split(",", 6);
 
-        if (parts.length == 6) {
+        if (parts.length == 7) {
             try {
-                book = controller.addBook(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim(), parts[4].trim(), parts[5].trim(), 1);
+                book = controller.addBook(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim(), parts[4].trim(), parts[5].trim(), parts[6].trim());
             }
             catch (IllegalArgumentException a) {
                 System.out.println("Book could not be added due to wrong argument");
