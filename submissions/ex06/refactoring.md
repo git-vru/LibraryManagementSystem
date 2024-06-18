@@ -1,0 +1,23 @@
+## Found Issues
+
+- #1 Useless imports in multiple files: Resolve by !11
+- #2 Unused Methods: Resolve by !12
+- #3 Unused Variables: Resolve by !13
+- #4 Unclear naming of variables: Resolve by !21 & !24
+- #5 Variable should be local: Resolve by !14
+- #6 Controller class too large
+- #7 Not consistent with variable names: Resolve by !15
+- #8 Change Date format to dd/MM/yyyy: Resolve by !19
+- #9 Remove `searchBook(int by, String token)` method
+- #10 Unnecessary use of a variable in MainMenu: Resolve by !16
+- #11 Add comment to View class: Resolve by !23
+- #12 Refactor View class: Resolve by !23
+- #13 `borrowBookCopy` and `returnBookCopy` are not tested: Closed (already resolved)
+- #14 Lack of Error handling when importing book or book copies from csv
+- #15 ISBN not checked when adding book: Resolve by !25
+- #16 Throw exception when values are wrongly formatted: Resolve by !18
+- #17 Add a logger when adding object
+- #18 Rewrite methods to add/modify/delete objects: Open in !22
+- #19 Publisher can't be updated in the BookMenu Option
+- #20 Number of book copy is always one when a new book is created inline
+- #21 App crash when adding a book from csv with too few arguments 
