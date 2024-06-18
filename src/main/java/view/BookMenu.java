@@ -79,6 +79,11 @@ public class BookMenu extends View {
         if (!importedBooks.isEmpty()) System.out.println("Imported Books:");
 
         for (String[] data : importedBooks) {
+            if (data.length != 7) {
+                System.out.println("Error while parsing data. Bad Arguments number");
+                continue;
+            }
+
             Book book = controller.addBook(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), data[4].trim(), data[5].trim(), data[6].trim());
             if (book != null) {
                 System.out.println(book);
