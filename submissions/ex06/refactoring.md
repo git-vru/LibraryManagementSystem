@@ -8,7 +8,7 @@
 - #6 Controller class too large
 - #7 Not consistent with variable names: Resolve by !15
 - #8 Change Date format to dd/MM/yyyy: Resolve by !19
-- #9 Remove `searchBook(int by, String token)` method
+- #9 Remove `searchBook(int by, String token)` method: Resolve !27
 - #10 Unnecessary use of a variable in MainMenu: Resolve by !16
 - #11 Add comment to View class: Resolve by !23
 - #12 Refactor View class: Resolve by !23
