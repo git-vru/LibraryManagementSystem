@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class Controller {
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private View menu;
     private Scanner scanner;
     private final List<Customer> customers = new ArrayList<>();
@@ -181,16 +181,16 @@ public class Controller {
             throw new IllegalArgumentException("The given <customer_id> does not respect the correct format");
         }
 
-        if (!fee.matches("\\d*(\\.\\d{2})?")) {
+        if (!fee.matches("\\d*(\\.\\d{1,2})?")) {
             throw new IllegalArgumentException("The given <fee> does not respect the correct format");
         }
 
         if (!borrowedDate.matches("(0[1-9]|[12][0-9]|3[01]|)/(1[012]|0[1-9])/(19|20)\\d{2}")) {
-            throw new IllegalArgumentException("The given <borrowed_id> does not respect the correct format");
+            throw new IllegalArgumentException("The given <borrowed_date> does not respect the correct format");
         }
 
         if (!returnDate.matches("(0[1-9]|[12][0-9]|3[01]|)/(1[012]|0[1-9])/(19|20)\\d{2}")) {
-            throw new IllegalArgumentException("The given <return_id> does not respect the correct format");
+            throw new IllegalArgumentException("The given <return_date> does not respect the correct format");
         }
 
         Customer customer = searchCustomerViaId(customerId);

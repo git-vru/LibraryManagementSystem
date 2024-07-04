@@ -91,7 +91,7 @@ public class    Customer {
 
         return String.format(
             "|--------------------" + "-".repeat(maxLength+2) + "|\n" +
-            "| %s│\n" +
+            "| %s |\n" +
             "|-------------------|" + "-".repeat(maxLength+2) + "|\n" +
             "| ID                | %-" + maxLength + "s |\n" +
             "| Date of Birth     | %-" + maxLength + "s |\n" +

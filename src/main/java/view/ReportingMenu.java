@@ -27,6 +27,9 @@ public class ReportingMenu extends View {
 
     @Override
     public void show() {
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         char inputChar = super.prompt(this.options, true);
 
         switch (inputChar) {
@@ -68,6 +71,9 @@ public class ReportingMenu extends View {
     }
 
     public void printTable(String name, List<String[]> rows, String[] format, String[] columnNames) {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         int lineSize = Arrays.stream(format).mapToInt(s -> Integer.parseInt(s.replaceAll("%-?([0-9]{1,2})s", "$1"))).sum() + format.length*3 + 1;
         String spaces = " ".repeat((lineSize - name.length()) / 2);
 

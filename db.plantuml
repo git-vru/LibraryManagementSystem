@@ -1,0 +1,65 @@
+@startuml ex
+
+interface DataBase {
+	{abstract} - search(predicate: Predicate<T>, comparator: Comparator<T>): List<T>
+	{abstract} + add(agrs: List<String>): T
+	{abstract} + modify(args: List<String>): boolean
+	{abstract} + delete(id: String): void
+}
+
+class BookDB {
+	- entities: Map<Book, BookCopyDB>
+	--
+	- search(predicate: Predicate<Book>, comparator: Comparator<Book>): List<Book>
+	+ searchBookViaIsbn(isbn: String): Book
+	..
+	+ add(agrs: List<String>): Book
+	+ modify(args: List<String>): boolean
+	+ delete(id: String): void 
+	..
+}
+
+class CustomerDB {
+	- entities: List<Customer>
+	--
+	- search(predicate: Predicate<Customer>, comparator: Comparator<Customer>): List<Customer>
+	+ searchCustomerViaId(isbn: String): Customer
+	..
+	+ add(agrs: List<String>): Customer
+	+ modify(args: List<String>): boolean
+	+ delete(id: String): void
+}
+
+class BookCopyDB {
+	- entities: List<BookCopy>
+	--
+	- search(predicate: Predicate<BookCopy>, comparator: Comparator<BookCopy>): List<BookCopy>
+	+ searchBookCopyViaId(isbn: String): BookCopy
+	..
+	+ add(agrs: List<String>): BookCopy
+	+ addBorrowed(args: List<String>): BookCopy
+	+ delete(id: String): void
+}
+
+class Controller {
+	- bookDB: BookDB
+	- customer: CustomerDB
+	--
+	borrowBookCopy(customer: Customer, bookCopy: BookCopy): void
+	borrowBookCopy(customer: Customer, bookCopy: BookCopy, borrowedDate: LocalDate, returnDate: LocalDate, fee: float): void
+	returnBookCopy(customer: Customer, bookCopy: BookCopy): void
+	..
+	{static} validIsbn(isbn: String): boolean
+
+}
+
+BookDB -up-|> DataBase
+CustomerDB -up-|> DataBase
+BookCopyDB -up-|> DataBase
+
+Controller "0" -up-o "*" BookDB
+Controller "0" -up-o "*" CustomerDB
+BookDB "0" -ri-o "*" BookCopyDB
+
+
+@enduml

@@ -19,6 +19,9 @@ public class BorrowingMenu extends View {
     }
 
     public void show() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         char inputChar = super.prompt(options1, true);
 
         if (inputChar == '0') {
@@ -55,7 +58,7 @@ public class BorrowingMenu extends View {
             List<BookCopy> bookCopyList = controller.searchBookCopy(bc -> bc.getId().equals(bookCopyId), Comparator.comparing(BookCopy::getId));
 
             if (bookCopyList.isEmpty() || bookCopyList.get(0) == null) {
-                System.out.println("---\nNo book with this is has been found!\n");
+                System.out.println("---\nNo book with this is id has been found!\n");
                 prev.show();
             }
 
@@ -63,8 +66,8 @@ public class BorrowingMenu extends View {
                 controller.returnBookCopy(controller.searchCustomer(c -> c.getBorrowedList().contains(bookCopyList.get(0)), Comparator.comparing(Customer::getId)).get(0), bookCopyList.get(0));
                 super.promptAndExit("Book was successfully returned!");
             }
-            catch (IllegalArgumentException illegalArgumentException) {
-                super.promptAndExit(illegalArgumentException.getMessage());
+            catch (Exception e) {
+                super.promptAndExit("This Book Copy is not borrowed");
             }
         }
             prev.show();

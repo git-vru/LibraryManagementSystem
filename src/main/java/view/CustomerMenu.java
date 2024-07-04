@@ -74,6 +74,9 @@ public class CustomerMenu extends View {
     }
 
     public void show() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         char inputChar;
         inputChar = super.prompt(options, true);
 
@@ -82,6 +85,9 @@ public class CustomerMenu extends View {
 
         }
         else if (inputChar == '1') {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+
             inputChar = super.prompt(options2, false);
             if (inputChar == '0'){
                 addNewCustomer();

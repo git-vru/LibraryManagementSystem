@@ -83,6 +83,11 @@ public abstract class View {
         boolean isError = false;
 
         do {
+            if (isError) {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+
             // Calculate the maximum line size for formatting
             int maxLineSize = Math.max(name.length() - 1, max(options.stream().map(String::length).toList()));
 

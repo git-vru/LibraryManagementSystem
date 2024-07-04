@@ -20,7 +20,7 @@ class BookCopyTest {
     int bookCopyListSize;
     Controller controller = new Controller();
     Book book = new Book("Candide", "Voltaire","isbn02", LocalDate.of(1759, 1, 1), "VOL01", "Lorem Ipsum");
-    Book testBook = new Book("Les Fleurs du Mal", "Charles Baudelaire","isbn03", LocalDate.of(1800, 2, 2), "BAU01", "Lorem Ipsum");
+    Book testBook = new Book("Les Fleurs du Mal", "Charles Baudelaire","978-3-16-148410-0", LocalDate.of(1800, 2, 2), "BAU01", "Lorem Ipsum");
     BookCopy bookCopy = new BookCopy(book);
     Customer customer = new Customer("Vrushabh", "Jain", LocalDate.of(2004, 10, 30));
 
@@ -64,35 +64,35 @@ class BookCopyTest {
     @Test
     void addBookCopySuccessfully() {
         controller.getBookCopies(testBook).clear();
-        controller.addBookCopy("", "isbn03");
+        controller.addBookCopy("", "978-3-16-148410-0");
         assertEquals(1, controller.getBookCopies(testBook).size());
-        assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("isbn03")).contains(controller.getBookCopies(testBook).get(0)));
+        assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("978-3-16-148410-0")).contains(controller.getBookCopies(testBook).get(0)));
     }
 
     @Test
     void addBookCopyUnsuccessful() {
         controller.getBookCopies(testBook).clear();
 
-        controller.addBookCopy("", "isbndtfzghjbknl03");
+        assertThrows(IllegalArgumentException.class, () -> controller.addBookCopy("", "isbndtfzghjbknl03"));
         assertEquals(bookCopyListSize , controller.getBookCopies(book).size());
-        assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("isbn03")).isEmpty());
+        assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("978-3-16-148410-0")).isEmpty());
 
         assertThrows(IllegalArgumentException.class, () -> controller.addBorrowedBookCopy("", "", "1", "04/06/2024", "04/06/2024", "0.0"));
         assertThrows(IllegalArgumentException.class, () -> controller.addBorrowedBookCopy("", "isbn03", "1", "", "04/06/2024", "0.0"));
         assertThrows(IllegalArgumentException.class, () -> controller.addBorrowedBookCopy("", "isbn03", "1", "04/06/2024", "", "0.0"));
         assertThrows(IllegalArgumentException.class, () -> controller.addBorrowedBookCopy("", "isbn03", "1", "04/06/2024", "04/06/2024", ""));
 
-        controller.addBorrowedBookCopy("", "isbn03", "1", "33", "04/06/2024", "0.0");
+        assertThrows(IllegalArgumentException.class, () ->controller.addBorrowedBookCopy("", "978-3-16-148410-0", "1", "33", "04/06/2024", "10.0"));
         assertEquals(bookCopyListSize , controller.getBookCopies(book).size());
-        assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("isbn03")).isEmpty());
+        assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("978-3-16-148410-0")).isEmpty());
 
-        controller.addBorrowedBookCopy("", "isbn03", "1", "04/06/2024", "111", "0.0");
+        assertThrows(IllegalArgumentException.class, () ->controller.addBorrowedBookCopy("", "978-3-16-148410-0", "1", "04/06/2024", "111", "0.0"));
         assertEquals(bookCopyListSize , controller.getBookCopies(book).size());
-        assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("isbn03")).isEmpty());
+        assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("978-3-16-148410-0")).isEmpty());
 
-        controller.addBorrowedBookCopy("", "isbn03", "1", "04/06/2024", "04/06/2024", "a");
+        assertThrows(IllegalArgumentException.class, () ->controller.addBorrowedBookCopy("", "978-3-16-148410-0", "1", "04/06/2024", "04/06/2024", "a"));
         assertEquals(bookCopyListSize , controller.getBookCopies(book).size());
-        assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("isbn03")).isEmpty());
+        assertTrue(controller.getBookCopies(controller.searchBookViaIsbn("978-3-16-148410-0")).isEmpty());
     }
 
     @Test
@@ -115,8 +115,8 @@ class BookCopyTest {
         assertEquals("VOL01_2", results.get(results.size() - 1).getId());
 
         results = controller.searchBookCopy(copy -> true, Comparator.comparing(copy -> copy.getBook().getIsbn()));
-        assertEquals("isbn02", results.get(0).getBook().getIsbn());
-        assertEquals("isbn03", results.get(results.size() - 1).getBook().getIsbn());
+        assertEquals("978-3-16-148410-0", results.get(0).getBook().getIsbn());
+        assertEquals("isbn02", results.get(results.size() - 1).getBook().getIsbn());
     }
 
     @Test

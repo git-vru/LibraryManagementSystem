@@ -25,6 +25,9 @@ public class BookMenu extends View {
     }
 
     public void show() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         char inputChar = super.prompt(options1, true);
 
         if (inputChar == '0') {
@@ -40,6 +43,8 @@ public class BookMenu extends View {
                 this.show();
             }
 
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
             System.out.println(bookCopyList.get(0));
             inputChar = super.prompt(options3, false);
 
@@ -55,6 +60,8 @@ public class BookMenu extends View {
             this.show();
         }
         else if (inputChar == '2') {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
             inputChar = super.prompt(options2, true);
             if (inputChar == '0'){
                 addNewBook();
@@ -117,7 +124,7 @@ public class BookMenu extends View {
         System.out.println("Please type :'<ISBN>,<Title>,<Author>,<Publisher>,<PublicationYear(YYYY-MM-DD)>,<Shelf Location>,<# of copy>'");
 
         String input = scanner.nextLine().trim();
-        String[] parts = input.split(",", 6);
+        String[] parts = input.split(",", 7);
 
         if (parts.length == 7) {
             try {
