@@ -1,28 +1,47 @@
-### Note on the assignment 5
-Because no feedback for assignment 4 was provided on time, we decide to focus on the tasks 2 & 3.
-A full code review, doesn't make much sense considering the amount of code that has been changed/added.
-It's preferable for us to wait for the feedback and review the code in consequences, before deeply refactoring the project.
+# Library Management Software System
 
-# How to install the prototype
+## Introduction
+
+This project represents the culmination of our efforts in building a comprehensive Library Management Software System. Designed as part of a university course, this project was undertaken to simulate a real-world software development environment. Through a series of six incremental assignments, we have developed a fully functional system capable of managing library resources and user interactions.
+
+### Project Overview
+
+The Library Management Software System project involved:
+
+
+| Week | Task                    | Description                                                                                                                                                                                                                                                               |
+|------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1    | Specification           | We analyzed the system's requirements by identifying ambiguities and drafting questions for the client. This helped us clarify functional and non-functional requirements to guide the development of the Library Management Software.                                    |
+| 2    | Specification           | Using the client's responses, we developed a detailed Software Requirements Specification (SRS), including domain models, use case diagrams, and descriptions. We also built a basic CLI prototype to demonstrate menu navigation.                                        |
+| 3    | Test Case Creation      | We expanded the prototype with the core domain model classes, implemented key processes like deleting books and customers, and created unit tests using JUnit 5. A test coverage report was generated to ensure comprehensive testing.                                    |
+| 4    | Implementation          | We implemented the remaining core functionalities, such as importing CSV files, searching for book copies, borrowing/returning books, and generating reports. The project followed a Continuous Integration (CI) approach with GitLab and code reviews to ensure quality. |
+| 5    | Maintenance & Evolution | We made changes based on new client requirements, including adjusting CSV import formats to link book copies to customers and adding a new report on book copies per publisher. Extensive unit tests and error handling were added to support the new functionality.      |
+| 6    | Quality Assurance       | We performed a thorough analysis of the code for vulnerabilities using tools like SonarQube. We identified and fixed several issues through refactoring, improving maintainability, usability, and overall software quality.                                              |
+
+Note: the client here was not an actual client, but we did have feedback from out tutors on our tasks weekly as if from a client.
+
+This README provides a detailed overview of the project, including its features, technical specifications, and usage instructions.
+
+## How to install the prototype
 
 1. Download the source code or clone the project via ssh or https.
 2. Open IntelliJ (because it's the only IDE we are working with, and we are sure it works with it).
 3. Open the prototype folder in IntelliJ. ⚠️ THE WHOLE REPOSITORY FOLDER
 4. Wait for Gradle to install properly.
 
-## Run the prototype
+### Run the prototype
 1. Go in the main file (```src/main/java/Main.java```) and click on the first green play button, then the first option ```Run 'Main.main()'```.
 
-## Execute the test
+### Execute the test
 1. Go in test file (```src/test/java/controller/ControllerTest.java```) and click on the first green play button, then ```Run ControllerTest```.
 
-## Build the project (using Gradle)
+### Build the project (using Gradle)
 1. Open a terminal
 2. Go to the project folder and build the using the gradle command (i.e. ```./gradlew build``` on Linux/MacOS/WSL)
 3. Go to the build folder (```PROJECT_FOLDER/build/classes/java/main```)
 4. Run the program with ```java Main```
 
-## How to calculate the Coverage test
+### How to calculate the Coverage test
 1. Go in test file (```src/test/java/controller/ControllerTest.java```) and click on the ```Run``` button.
 2. choose ```Edit Configurations```.
 3. click on ```Modify options```.
@@ -61,7 +80,7 @@ Navigate to the book menu `0`
 In the book menu, enter `0`. Then enter `1` and then enter a book copy id.
 
 #### 2. Add a book copy:
-To add a book copy for a spesific book:
+To add a book copy for a specific book:
 In the book menu, search for any book `0` and enter `1` to add a book copy.
 
 To add a book copy from a csv file:
@@ -141,8 +160,21 @@ You can also look at the following examples to see how the different objects are
 
 ## Troubleshooting
 
-- If the green button doesn't appear or you can't run the program, please make sure that you open the right folder.
+- If the green button doesn't appear, or you can't run the program, please make sure that you open the right folder.
 - If the problem persists, please check your JDK version and your Gradle version.
+
+## Grade
+The project was presented at the end of the semester, demonstrating our ability to manage a complex software project from inception to completion.
+We received a grade of 44/50 or 88% on this project
+
+## Team
+Our team was called Kaputt Corp.
+The team consisted of 5 members whose names are:
+1. Fathia Ismail
+2. Julien-Alexandre Bertin Klein
+3. Ömer Kural
+4. Samuel Kemmler
+5. Vrushabh Jain
 
 
 
